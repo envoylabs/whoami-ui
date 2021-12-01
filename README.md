@@ -19,6 +19,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
+To interact with the contract, hit up the `whoami` contracts repo and run:
+
+```bash
+./scripts/deploy_local.sh juno16g2rahf5846rxzp3fwlswy08fz8ccuwk03k57y
+```
+
+Note that this will leave a daemonized container, `juno_whoami` running on your machine until you kill it.
+
 ## Requirements
 
 Please ensure you have the [Keplr wallet extension](https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap) installed in your Chrome based browser (Chrome, Brave, etc).
