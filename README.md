@@ -1,14 +1,6 @@
 ## Getting Started
 
-First, bootstrap your new project with this example using [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app):
-
-```bash
-npx create-next-app -e https://github.com/ebaker/next-cosmwasm-keplr-starter my-cosmwasm-dapp
-# or
-yarn create next-app -e https://github.com/ebaker/next-cosmwasm-keplr-starter my-cosmwasm-dapp
-```
-
-Next, setup your `.env` file by copying the example:
+First, setup your `.env` file by copying the example:
 
 ```bash
 cd my-cosmwasm-dapp
