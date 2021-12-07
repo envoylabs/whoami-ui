@@ -14,7 +14,7 @@ export const connectKeplr = async () => {
   // And it also injects the helper function to `window.keplr`.
   // If `window.getOfflineSigner` or `window.keplr` is null, Keplr extension may be not installed on browser.
   if (!window.getOfflineSigner || !window.keplr) {
-    alert('Please install keplr extension')
+    alert('Please install the keplr extension')
   } else {
     if (window.keplr.experimentalSuggestChain) {
       const stakingDenom = convertFromMicroDenom(
@@ -112,10 +112,10 @@ export const connectKeplr = async () => {
           },
         })
       } catch {
-        alert('Failed to suggest the chain')
+        alert('Failed to add the chain')
       }
     } else {
-      alert('Please use the recent version of keplr extension')
+      alert('Please use a more recent version of keplr extension')
     }
   }
 }
