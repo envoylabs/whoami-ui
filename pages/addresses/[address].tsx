@@ -6,9 +6,11 @@ import PageLink from 'components/PageLink'
 const ListUsernames: NextPage = () => {
 
   return (
-    <h1 className="text-3xl font-bold">
-      Usernames for your address:
-    </h1>
+    <WalletLoader>
+      <h1 className="text-3xl font-bold">
+        Usernames for your address:
+      </h1>
+    </WalletLoader>
   )
 }
 
