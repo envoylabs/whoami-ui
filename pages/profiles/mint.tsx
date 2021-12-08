@@ -7,6 +7,7 @@ import WalletLoader from 'components/WalletLoader';
 import { useSigningClient } from 'contexts/cosmwasm';
 import * as msgs from 'util/messages';
 import * as mt from 'util/types/messages';
+import * as R from 'ramda';
 
 type FormValues = {
   token_id: string; // the username
@@ -45,6 +46,21 @@ const Mint: NextPage = () => {
   const { register } = useForm<FormValues>();
   const onSubmit = (data: FormValues) => console.log(data);
 
+  const fields = [
+    ["token_id", "Username"],
+    ["public_name", "Name (optional)"],
+    ["public_bio", "Bio (optional)"],
+    ["email", "Email (optional)"],
+    ["external_url", "Website (optional)"],
+    ["twitter_id", "Twitter (optional)"],
+    ["discord_id", "Discord (optional)"],
+    ["telegram_id", "Telegram username (optional)"],
+    ["keybase_id", "Keybase.io (optional)"],
+    ["validator_operator_address", "Validator operator address (optional)"]
+  ]
+
+  const inputs = R.map((i) => <InputField key={i[0]} fieldName={i[0]} label={i[1]} register={register}/>, fields)
+
   return (
     <WalletLoader>
       <h1 className="text-3xl font-bold">
@@ -56,71 +72,9 @@ const Mint: NextPage = () => {
       </div>
 
       <form onSubmit={onSubmit}>
-        <InputField
-          fieldName="token_id"
-          label="Username"
-          register={register}
-        />
-
-        {/*        <InputField
-          fieldName="image"
-          label="Image URL"
-          register={register}
-        />*/}
-
-        <InputField
-          fieldName="public_name"
-          label="Name (optional)"
-          register={register}
-        />
-
-        <InputField
-          fieldName="public_bio"
-          label="Bio (optional)"
-          register={register}
-        />
-
-        <InputField
-          fieldName="email"
-          label="Email (optional)"
-          register={register}
-        />
-
-        <InputField
-          fieldName="external_url"
-          label="Website (optional)"
-          register={register}
-        />
-
-        <InputField
-          fieldName="twitter_id"
-          label="Twitter (optional)"
-          register={register}
-        />
-
-        <InputField
-          fieldName="discord_id"
-          label="Discord (optional)"
-          register={register}
-        />
-
-        <InputField
-          fieldName="telegram_id"
-          label="Telegram username (optional)"
-          register={register}
-        />
-
-        <InputField
-          fieldName="keybase_id"
-          label="Keybase (optional)"
-          register={register}
-        />
-
-        <InputField
-          fieldName="validator_operator_address"
-          label="Validator operator address (optional)"
-          register={register}
-        />
+        <>
+          {inputs}
+        </>
 
         <input 
           type="submit" 
