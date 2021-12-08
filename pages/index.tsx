@@ -9,30 +9,30 @@ const Home: NextPage = () => {
   const { walletAddress } = useSigningClient()
 
   return (
-      <WalletLoader>
-	  <h1 className="text-6xl font-bold">
-              {process.env.NEXT_PUBLIC_SITE_TITLE}
-	  </h1>
+    <WalletLoader>
+      <h1 className="text-6xl font-bold">
+        {process.env.NEXT_PUBLIC_SITE_TITLE}
+      </h1>
 
-	  <PageLink
-	      href="/register"
-	      title="Register"
-	      description="Register and configure a new name"
-	      Icon={LibraryIcon}
-	  />
-	  <PageLink
-	      href="/manage"
-	      title="Manage"
-	      description="Transfer, edit, or burn a name that you own"
-	      Icon={PencilIcon}
-	  />
-	  <PageLink
-	      href="/explore"
-	      title="Explore"
-	      description="Lookup addresses and explore registered names"
-	      Icon={MapIcon}
-	  />
-      </WalletLoader>
+      <PageLink
+          href="/profiles/mint"
+          title="Register"
+          description="Register and configure a new username"
+          Icon={LibraryIcon}
+      />
+      <PageLink
+          href={`/addresses/${walletAddress}`}
+          title="Manage"
+          description="Transfer, edit, or burn usernames that you own"
+          Icon={PencilIcon}
+      />
+      <PageLink
+          href="/explore"
+          title="Explore"
+          description="Lookup addresses and explore registered names"
+          Icon={MapIcon}
+      />
+    </WalletLoader>
   )
 }
 
