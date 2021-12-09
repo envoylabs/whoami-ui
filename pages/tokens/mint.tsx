@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useForm, UseFormRegister } from 'react-hook-form'
 import WalletLoader from 'components/WalletLoader'
+import { InputField } from 'components/InputField'
 import { useSigningClient } from 'contexts/cosmwasm'
-import { mintToken } from 'hooks/mint'
 import { defaultExecuteFee } from 'util/fee'
 import * as msgs from 'util/messages'
 import * as mt from 'util/types/messages'
@@ -27,30 +27,6 @@ type FormValues = {
   telegram_id: OptionString
   keybase_id: OptionString
   validator_operator_address: OptionString
-}
-
-function InputField({
-  fieldName,
-  label,
-  register,
-}: {
-  fieldName: string
-  label: string
-  register: UseFormRegister<FormValues>
-}) {
-  return (
-    <div className="p-6">
-      <div className="form-control">
-        <label className="label" htmlFor={fieldName}>
-          <span className="label-text font-bold">{label}</span>
-        </label>
-        <input
-          {...register(fieldName)}
-          className="block box-border m-0 w-full rounded input input-bordered focus:input-primary"
-        />
-      </div>
-    </div>
-  )
 }
 
 const Mint: NextPage = () => {
@@ -123,7 +99,7 @@ const Mint: NextPage = () => {
         defaultMemo
       )
       if (mintedToken) {
-        router.push(`/tokens/${token_id}`)
+        router.push(`/tokens/${token_id}/view`)
       }
     } catch (e) {
       console.log(e)
