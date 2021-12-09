@@ -1,2 +1,2 @@
-import { toBase64, toAscii } from '@cosmjs/encoding';
-import { convertDenomToHumanReadableDenom } from './conversion';
+import { toBase64, toAscii } from '@cosmjs/encoding'
+import { convertDenomToHumanReadableDenom } from './conversion'

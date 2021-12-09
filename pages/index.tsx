@@ -15,10 +15,10 @@ const Home: NextPage = () => {
       </h1>
 
       <PageLink
-          href="/tokens/mint"
-          title="Register"
-          description="Register and configure a new username"
-          Icon={LibraryIcon}
+        href="/tokens/mint"
+        title="Register"
+        description="Register and configure a new username"
+        Icon={LibraryIcon}
       />
       <PageLink
         href="/tokens/manage"
