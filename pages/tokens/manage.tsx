@@ -20,7 +20,7 @@ const Manage: NextPage = () => {
                 className="card bordered border-secondary hover:border-primary p-6 m-8"
                 key={key}
               >
-                <Link href={`/tokens/${token}`} passHref>
+                <Link href={`/tokens/${token}/view`} passHref>
                   <a>
                     <div className="card-title">
                       <h3 className="text-2xl font-bold flex">

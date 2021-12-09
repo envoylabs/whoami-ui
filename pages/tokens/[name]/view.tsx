@@ -8,6 +8,7 @@ const TokenView: NextPage = () => {
   const router = useRouter()
   const tokenName = router.query.name as string
   const { token } = useToken(tokenName)
+  const stringified = JSON.stringify(token, null, 2)
 
   if (!tokenName) {
     return null
@@ -20,10 +21,16 @@ const TokenView: NextPage = () => {
       {token ? (
         <div className="mockup-code p-3 mt-6" data-prefix="">
           <pre className="text-left">
-            <code>{token}</code>
+            <code>{stringified}</code>
           </pre>
         </div>
       ) : null}
+
+      <Link href={`/tokens/${tokenName}/update`} passHref>
+        <a>
+          <p className="font-bold flex">{`Update metadata for ${tokenName}`}</p>
+        </a>
+      </Link>
     </WalletLoader>
   )
 }

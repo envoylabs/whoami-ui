@@ -22,7 +22,7 @@ export function useToken(token_id: string) {
             token_id: token_id,
           },
         })
-        setToken(JSON.stringify(tokenInfo.extension, null, 4))
+        setToken(tokenInfo)
         setLoading(false)
       } catch (e) {
         console.error(e.error)
