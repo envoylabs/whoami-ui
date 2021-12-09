@@ -32,10 +32,9 @@ function WalletLoader({
 			 (<>
 			     <p>Please connect your Keplr wallet to continue</p>
 			 </>)
-			 :
+		   :
 			 (<>
 			     <p>Please install the <a href="https://keplr.app" className="link">Keplr wallet</a> to continue</p>
-			     <p>Once you've finished installation reload this page</p>
 			 </>)
       const actionButton = keplrInstalled ?
 			   (
@@ -52,7 +51,7 @@ function WalletLoader({
 	  <>
 	      {children}
 	      <div className="modal modal-open">
-		  <div className="modal-box">
+		  <div className="modal-box" >
 		      {actionText}
 		      <div className="modal-action justify-center">
 			  {actionButton}
