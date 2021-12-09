@@ -15,13 +15,13 @@ const Home: NextPage = () => {
       </h1>
 
       <PageLink
-        href="/register"
+        href="/tokens/mint"
         title="Register"
-        description="Register and configure a new name"
+        description="Register and configure a new username"
         Icon={LibraryIcon}
       />
       <PageLink
-        href="/manage"
+        href="/tokens/manage"
         title="Manage"
         description="Transfer, edit, or burn a name that you own"
         Icon={PencilIcon}

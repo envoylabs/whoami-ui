@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         >
           CosmJS
         </a>
-        <span className="pl-1">, </span>
+        ,
         <a
           className="pl-1 link link-primary link-hover"
           href="https://github.com/cosmoscontracts/juno"
