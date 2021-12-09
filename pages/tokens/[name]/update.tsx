@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useForm, UseFormRegister } from 'react-hook-form'
 import WalletLoader from 'components/WalletLoader'
-import { InputField } from 'components/InputField'
+import InputField from 'components/InputField'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useToken } from 'hooks/token'
 import { defaultExecuteFee } from 'util/fee'
@@ -34,26 +34,26 @@ const TokenUpdate: NextPage = () => {
   const tokenName = router.query.name as string
   const { token } = useToken(tokenName)
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+
   const { signingClient, walletAddress } = useSigningClient()
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      image: null,
-      image_data: null,
-      email: null,
-      external_url: null,
-      public_name: null,
-      public_bio: null,
-      twitter_id: null,
-      discord_id: null,
-      telegram_id: null,
-      keybase_id: null,
-      validator_operator_address: null,
+      image: token?.image || null,
+      image_data: token?.image_data || null,
+      email: token?.email || null,
+      external_url: token?.external_url || null,
+      public_name: token?.public_name || null,
+      public_bio: token?.public_bio || null,
+      twitter_id: token?.twitter_id || null,
+      discord_id: token?.discord_id || null,
+      telegram_id: token?.telegram_id || null,
+      keybase_id: token?.keybase_id || null,
+      validator_operator_address: token?.validator_operator_address || null,
     },
   })
 
   const onSubmit = async (data: FormValues) => {
     const {
-      token_id,
       image,
       image_data,
       email,
@@ -68,11 +68,9 @@ const TokenUpdate: NextPage = () => {
     } = data
 
     const msg = {
-      mint: {
-        owner: walletAddress,
-        token_id: token_id,
-        token_uri: null, // TODO - support later
-        extension: {
+      update_metadata: {
+        token_id: tokenName,
+        metadata: {
           image,
           image_data, // TODO - support later
           email,
@@ -93,15 +91,15 @@ const TokenUpdate: NextPage = () => {
     console.log(contractAddress)
     console.log(msg)
     try {
-      let mintedToken = await signingClient.execute(
+      let updatedToken = await signingClient.execute(
         walletAddress,
         contractAddress,
         msg,
         defaultExecuteFee,
         defaultMemo
       )
-      if (mintedToken) {
-        router.push(`/tokens/${token_id}/view`)
+      if (updatedToken) {
+        router.push(`/tokens/${tokenName}/view`)
       }
     } catch (e) {
       console.log(e)
@@ -122,7 +120,7 @@ const TokenUpdate: NextPage = () => {
 
   const inputs = R.map(
     (i) => (
-      <InputField
+      <InputField<FormValues>
         key={i[0]}
         fieldName={i[0]}
         label={i[1]}
@@ -134,13 +132,10 @@ const TokenUpdate: NextPage = () => {
 
   return (
     <WalletLoader>
-      <h1 className="text-3xl font-bold">Create your username</h1>
+      <h1 className="text-3xl font-bold">Update your profile</h1>
 
       <div className="p-6">
-        <p>
-          Only a username is required. Everything else is optional. If you are a
-          validator, consider filling in as much as possible.
-        </p>
+        <p>Update the data associated with your username.</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -149,7 +144,7 @@ const TokenUpdate: NextPage = () => {
         <input
           type="submit"
           className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
-          value="Create Username"
+          value="Update profile"
         />
       </form>
     </WalletLoader>

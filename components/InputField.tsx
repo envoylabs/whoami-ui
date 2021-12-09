@@ -1,11 +1,13 @@
-export default function InputField({
+import { UseFormRegister } from 'react-hook-form'
+
+export default function InputField<FormValuesT>({
   fieldName,
   label,
   register,
 }: {
   fieldName: string
   label: string
-  register: UseFormRegister<FormValues>
+  register: UseFormRegister<FormValuesT>
 }) {
   return (
     <div className="p-6">

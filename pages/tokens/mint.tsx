@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useForm, UseFormRegister } from 'react-hook-form'
 import WalletLoader from 'components/WalletLoader'
-import { InputField } from 'components/InputField'
+import InputField from 'components/InputField'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { defaultExecuteFee } from 'util/fee'
 import * as msgs from 'util/messages'
@@ -88,8 +88,6 @@ const Mint: NextPage = () => {
 
     const defaultMemo = ''
 
-    console.log(contractAddress)
-    console.log(msg)
     try {
       let mintedToken = await signingClient.execute(
         walletAddress,
@@ -121,7 +119,7 @@ const Mint: NextPage = () => {
 
   const inputs = R.map(
     (i) => (
-      <InputField
+      <InputField<FormValues>
         key={i[0]}
         fieldName={i[0]}
         label={i[1]}
