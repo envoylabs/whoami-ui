@@ -8,7 +8,7 @@ const ListUsernames: NextPage = () => {
   return (
     <WalletLoader>
       <h1 className="text-3xl font-bold">
-        Usernames for your address:
+        Usernames for this address:
       </h1>
     </WalletLoader>
   )

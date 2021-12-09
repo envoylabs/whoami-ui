@@ -12,7 +12,7 @@ export function isKeplrInstalled() {
   if (typeof window === 'undefined') {
     return false
   }
-    return !!(window.getOfflineSigner || window.keplr)
+  return !!(window.getOfflineSigner || window.keplr)
 }
 
 export const connectKeplr = async () => {
