@@ -2,6 +2,7 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import Link from 'next/link'
 import Image from 'next/image'
 import ThemeToggle from 'components/ThemeToggle'
+import { usePreferredAlias } from 'hooks/preferedAlias'
 
 function Nav() {
   const { walletAddress, connectWallet, disconnect } = useSigningClient()
@@ -12,6 +13,8 @@ function Nav() {
       disconnect()
     }
   }
+
+  const { alias } = usePreferredAlias()
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 
@@ -42,10 +45,10 @@ function Nav() {
         <ThemeToggle />
         <div className="flex flex-grow lg:flex-grow-0 max-w-full">
           <button
-            className="block btn btn-outline btn-primary w-full max-w-full truncate"
+            className="block btn btn-outline btn-primary w-full max-w-full truncate normal-case"
             onClick={handleConnect}
           >
-            {walletAddress || 'Connect Wallet'}
+            {alias || walletAddress || 'Connect Wallet'}
           </button>
         </div>
       </nav>

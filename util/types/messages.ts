@@ -1,6 +1,6 @@
 import { OptionString } from './base'
 
-interface Metadata {
+export interface Metadata {
   image: OptionString
   image_data: OptionString
   email: OptionString
