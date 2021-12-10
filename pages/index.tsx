@@ -13,6 +13,7 @@ const Home: NextPage = () => {
       <h1 className="text-6xl font-bold">
         {process.env.NEXT_PUBLIC_SITE_TITLE}
       </h1>
+      <p className="italic">Decentralized Name Service</p>
 
       <PageLink
         href="/tokens/mint"
