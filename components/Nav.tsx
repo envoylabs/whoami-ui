@@ -14,7 +14,7 @@ function Nav() {
     }
   }
 
-  const { alias, loadingAlias } = usePreferredAlias()
+  const { alias } = usePreferredAlias()
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 
