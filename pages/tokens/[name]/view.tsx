@@ -37,8 +37,7 @@ const TokenView: NextPage = () => {
         defaultMemo
       )
       if (updatedToken) {
-        console.log("updated")
-        //router.push(`/tokens/${tokenName}/view`)
+        router.push(`/tokens/manage`)
       }
     } catch (e) {
       // TODO env var for dev logging
