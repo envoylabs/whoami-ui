@@ -31,7 +31,7 @@ export function useToken(token_id: string) {
     }
 
     getToken()
-  })
+  }, [token])
 
   return { token, loadingToken }
 }

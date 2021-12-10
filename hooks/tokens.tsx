@@ -30,7 +30,7 @@ export function useTokenList() {
     }
 
     getTokens()
-  })
+  }, [tokens])
 
   return { tokens, loadingTokens }
 }

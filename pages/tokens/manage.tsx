@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import { useTokenList } from 'hooks/tokens'
-import { usePreferredAlias } from 'hooks/preferedAlias'
+import { usePreferredAlias } from 'hooks/preferredAlias'
 import Link from 'next/link'
 
 const Manage: NextPage = () => {
@@ -26,7 +26,7 @@ const Manage: NextPage = () => {
                       <h3 className="text-2xl font-bold flex">
                         {token}
                         {alias === token ? (
-                          <div className="badge ml-2 mt-2">preferred alias</div>
+                          <div className="badge ml-2 mt-2">primary</div>
                         ) : null}
                       </h3>
                     </div>
