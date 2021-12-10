@@ -2,7 +2,7 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import Link from 'next/link'
 import Image from 'next/image'
 import ThemeToggle from 'components/ThemeToggle'
-import { usePreferredAlias } from 'hooks/preferedAlias'
+import { usePreferredAlias } from 'hooks/preferredAlias'
 
 function Nav() {
   const { walletAddress, connectWallet, disconnect } = useSigningClient()
@@ -14,7 +14,7 @@ function Nav() {
     }
   }
 
-  const { alias } = usePreferredAlias()
+  const { alias, loadingAlias } = usePreferredAlias()
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 
