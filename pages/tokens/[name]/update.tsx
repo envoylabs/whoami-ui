@@ -8,6 +8,7 @@ import InputField from 'components/InputField'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useToken } from 'hooks/token'
 import { defaultExecuteFee } from 'util/fee'
+import { defaultMemo } from 'util/memo'
 import * as msgs from 'util/messages'
 import * as mt from 'util/types/messages'
 import { OptionString } from 'util/types/base'
@@ -86,10 +87,6 @@ const TokenUpdate: NextPage = () => {
       },
     }
 
-    const defaultMemo = ''
-
-    console.log(contractAddress)
-    console.log(msg)
     try {
       let updatedToken = await signingClient.execute(
         walletAddress,
@@ -102,7 +99,8 @@ const TokenUpdate: NextPage = () => {
         router.push(`/tokens/${tokenName}/view`)
       }
     } catch (e) {
-      console.log(e)
+      // TODO env var for dev logging
+      // console.log(e)
     }
   }
 

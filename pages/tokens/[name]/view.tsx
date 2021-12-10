@@ -4,18 +4,47 @@ import NameCard from 'components/NameCard'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useToken } from 'hooks/token'
 import { usePreferredAlias } from 'hooks/preferredAlias'
+import { defaultExecuteFee } from 'util/fee'
+import { defaultMemo } from 'util/memo'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
+import { useForm } from 'react-hook-form'
 
 const TokenView: NextPage = () => {
-  const { walletAddress } = useSigningClient()
+  const { walletAddress, signingClient } = useSigningClient()
+  const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
   const tokenName = router.query.name as string
   const { token } = useToken(tokenName)
   const { alias, loadingAlias } = usePreferredAlias()
 
-  console.log(tokenName)
-  console.log(alias)
+  const { register, handleSubmit } = useForm()
+
+  const onSubmit = async () => {
+
+    const msg = {
+      update_preferred_alias: {
+        token_id: tokenName
+      }
+    }
+
+    try {
+      let updatedToken = await signingClient.execute(
+        walletAddress,
+        contractAddress,
+        msg,
+        defaultExecuteFee,
+        defaultMemo
+      )
+      if (updatedToken) {
+        console.log("updated")
+        //router.push(`/tokens/${tokenName}/view`)
+      }
+    } catch (e) {
+      // TODO env var for dev logging
+      // console.log(e)
+    }
+  }
 
   if (!tokenName) {
     return null
@@ -43,9 +72,16 @@ const TokenView: NextPage = () => {
 
         {alias !== tokenName ? (
           <div className="p-1">
-            <a className="btn btn-outline mt-6">
-              <p className="font-bold flex">{`Set as primary`}</p>
-            </a>
+            <form onSubmit={handleSubmit(onSubmit)}>
+
+        <input
+          type="submit"
+          className="btn btn-outline mt-6"
+          value="Set as primary"
+        />
+      </form>
+
+
           </div>
         ) : null}
       </div>

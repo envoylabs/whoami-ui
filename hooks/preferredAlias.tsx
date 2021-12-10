@@ -31,7 +31,7 @@ export function usePreferredAlias() {
     }
 
     getAlias()
-  }, [])
+  }, [alias])
 
   return { alias, loadingAlias }
 }

@@ -7,6 +7,7 @@ import WalletLoader from 'components/WalletLoader'
 import InputField from 'components/InputField'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { defaultExecuteFee } from 'util/fee'
+import { defaultMemo } from 'util/memo'
 import * as msgs from 'util/messages'
 import * as mt from 'util/types/messages'
 import { OptionString } from 'util/types/base'
@@ -86,8 +87,6 @@ const Mint: NextPage = () => {
       },
     }
 
-    const defaultMemo = ''
-
     try {
       let mintedToken = await signingClient.execute(
         walletAddress,
@@ -100,7 +99,8 @@ const Mint: NextPage = () => {
         router.push(`/tokens/${token_id}/view`)
       }
     } catch (e) {
-      console.log(e)
+      // TODO env var for dev logging
+      // console.log(e)
     }
   }
 
