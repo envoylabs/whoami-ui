@@ -20,7 +20,3 @@ interface MintMsg {
   token_uri: OptionString
   extension: Metadata | null
 }
-
-enum ExecuteMsg {
-  mint = MintMsg,
-}

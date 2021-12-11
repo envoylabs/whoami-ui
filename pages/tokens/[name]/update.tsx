@@ -54,6 +54,10 @@ const TokenUpdate: NextPage = () => {
   })
 
   const onSubmit = async (data: FormValues) => {
+    if (!signingClient) {
+      return
+    }
+
     const {
       image,
       image_data,
@@ -105,24 +109,27 @@ const TokenUpdate: NextPage = () => {
   }
 
   const fields = [
-    ['public_name', 'Name (optional)'],
-    ['public_bio', 'Bio (optional)'],
-    ['email', 'Email (optional)'],
-    ['external_url', 'Website (optional)'],
-    ['twitter_id', 'Twitter (optional)'],
-    ['discord_id', 'Discord (optional)'],
-    ['telegram_id', 'Telegram username (optional)'],
-    ['keybase_id', 'Keybase.io (optional)'],
-    ['validator_operator_address', 'Validator operator address (optional)'],
+    ['token_id', 'Username', false],
+    ['public_name', 'Name', true],
+    ['public_bio', 'Bio', true],
+    ['image', 'Image URL', true],
+    ['email', 'Email', true],
+    ['external_url', 'Website', true],
+    ['twitter_id', 'Twitter', true],
+    ['discord_id', 'Discord', true],
+    ['telegram_id', 'Telegram username', true],
+    ['keybase_id', 'Keybase.io', true],
+    ['validator_operator_address', 'Validator operator address', true],
   ]
 
   const inputs = R.map(
     (i) => (
       <InputField<FormValues>
-        key={i[0]}
-        fieldName={i[0]}
-        label={i[1]}
+        key={i[0] as string}
+        fieldName={i[0] as string}
+        label={i[1] as string}
         register={register}
+        optional={i[2] as boolean}
       />
     ),
     fields

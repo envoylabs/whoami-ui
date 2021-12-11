@@ -8,7 +8,9 @@ import { defaultExecuteFee } from 'util/fee'
 import { defaultMemo } from 'util/memo'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useForm } from 'react-hook-form'
+import { Metadata } from 'util/types/messages'
 
 const TokenView: NextPage = () => {
   const { walletAddress, signingClient } = useSigningClient()
@@ -21,11 +23,14 @@ const TokenView: NextPage = () => {
   const { register, handleSubmit } = useForm()
 
   const onSubmit = async () => {
+    if (!signingClient) {
+      return
+    }
 
     const msg = {
       update_preferred_alias: {
-        token_id: tokenName
-      }
+        token_id: tokenName,
+      },
     }
 
     try {
@@ -51,7 +56,7 @@ const TokenView: NextPage = () => {
 
   return (
     <WalletLoader>
-      <NameCard name={tokenName} token={token} />
+      <NameCard name={tokenName} token={token as Metadata} />
       <div className="flex flex-wrap">
         <div className="p-1">
           <Link href={`/tokens/manage`} passHref>
@@ -69,18 +74,15 @@ const TokenView: NextPage = () => {
           </Link>
         </div>
 
-        {alias !== tokenName ? (
+        {alias || "" !== tokenName && signingClient ? (
           <div className="p-1">
             <form onSubmit={handleSubmit(onSubmit)}>
-
-        <input
-          type="submit"
-          className="btn btn-outline mt-6"
-          value="Set as primary"
-        />
-      </form>
-
-
+              <input
+                type="submit"
+                className="btn btn-outline mt-6"
+                value="Set as primary"
+              />
+            </form>
           </div>
         ) : null}
       </div>

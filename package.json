@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^11.1.2",
+    "@types/ramda": "^0.27.60",
     "@types/react": "17.0.19",
     "autoprefixer": "^10.3.3",
     "eslint": "7.32.0",
