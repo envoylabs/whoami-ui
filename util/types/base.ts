@@ -1,3 +1,3 @@
 type OptionString = string | null
 
-export { OptionString }
+export type { OptionString }

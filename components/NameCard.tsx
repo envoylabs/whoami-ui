@@ -1,11 +1,12 @@
 import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
+import Image from 'next/image'
 
 function ItemDisplay({ name, contents }: { name: string; contents: string }) {
   return (
     <>
-      <h3 className="text-3xl">{name}</h3>
-      <p className="font-mono text-lg">{contents}</p>
+      <h3 className="text-2xl">{name}</h3>
+      <p className="font-mono text-lg text-accent">{contents}</p>
     </>
   )
 }
@@ -22,8 +23,15 @@ export default function NameCard({
   }
   return (
     <div className="flex flex-wrap">
-      <div className="artboard phone-1 horizontal artboard-demo bg-gradient-to-tr from-primary to-accent">
-        <h3 className="text-6xl font-bold">{name}</h3>
+      <div className="card bordered border-none">
+        <figure>
+          <Image src={token.image ? token.image : ''} alt="The tokens profile image" />
+        </figure>
+
+        <div className="card-body bg-gradient-to-t from-accent to-primary">
+          <h2 className="card-title text-4xl font-bold">{name}</h2>
+          {token.public_bio ? <p>{token.public_bio}</p> : null}
+        </div>
       </div>
       <div className="items-center text-left m-5">
         <ItemDisplay name="Name" contents={name} />
@@ -35,6 +43,9 @@ export default function NameCard({
         ) : null}
         {token.public_name ? (
           <ItemDisplay name="Public Name" contents={token.public_name} />
+        ) : null}
+        {token.image ? (
+          <ItemDisplay name="Image URL" contents={token.image} />
         ) : null}
         {token.public_bio ? (
           <ItemDisplay name="Public Bio" contents={token.public_bio} />
