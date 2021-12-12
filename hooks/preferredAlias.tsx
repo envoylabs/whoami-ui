@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 export function usePreferredAlias() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const [alias, setAlias] = useState<[]>()
+  const [alias, setAlias] = useState<string>()
   const [loadingAlias, setLoading] = useState(false)
 
   const { walletAddress, signingClient } = useSigningClient()

@@ -11,7 +11,28 @@ function ItemDisplay({ name, contents }: { name: string; contents: string }) {
   )
 }
 
-export default function NameCard({
+export function TokenCard({
+  name,
+  token,
+}: {
+  name: string
+  token: Metadata
+}) {
+  return (
+    <div className="card bordered border-none w-96 bg-gradient-to-t from-accent to-primary mr-3">
+      <figure>
+        <img src={token.image ? token.image : "/JUNO.svg"} alt="The tokens profile image" />
+      </figure>
+
+      <div className="card-body">
+        <h2 className="card-title text-4xl font-bold">{name}</h2>
+        {token.public_bio ? <p>{token.public_bio}</p> : null}
+      </div>
+    </div>
+  )
+}
+
+export function NameCard({
   name,
   token,
 }: {
@@ -23,16 +44,7 @@ export default function NameCard({
   }
   return (
     <div className="flex flex-wrap">
-      <div className="card bordered border-none w-96 bg-gradient-to-t from-accent to-primary">
-        <figure>
-          <img src={token.image ? token.image : "/JUNO.svg"} alt="The tokens profile image" />
-        </figure>
-
-        <div className="card-body">
-          <h2 className="card-title text-4xl font-bold">{name}</h2>
-          {token.public_bio ? <p>{token.public_bio}</p> : null}
-        </div>
-      </div>
+      <TokenCard name={name} token={token} />
       <div className="items-center text-left m-5">
         <ItemDisplay name="Name" contents={name} />
         {token.email ? (

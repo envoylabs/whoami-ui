@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
-import NameCard from 'components/NameCard'
+import { NameCard } from 'components/NameCard'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useToken } from 'hooks/token'
 import { usePreferredAlias } from 'hooks/preferredAlias'
@@ -10,6 +10,7 @@ import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { Metadata } from 'util/types/messages'
+import { useTokenList } from 'hooks/tokens'
 
 const TokenView: NextPage = () => {
   const { walletAddress, signingClient } = useSigningClient()
@@ -17,6 +18,7 @@ const TokenView: NextPage = () => {
   const router = useRouter()
   const tokenName = router.query.name as string
   const { token } = useToken(tokenName)
+  const { tokens } = useTokenList()
   const { alias, loadingAlias } = usePreferredAlias()
 
   const { register, handleSubmit } = useForm()
@@ -73,7 +75,7 @@ const TokenView: NextPage = () => {
           </Link>
         </div>
 
-        {alias || "" !== tokenName && signingClient ? (
+        {alias as string !== tokenName && "" !== tokenName && signingClient ? (
           <div className="p-1">
             <form onSubmit={handleSubmit(onSubmit)}>
               <input
@@ -84,6 +86,15 @@ const TokenView: NextPage = () => {
             </form>
           </div>
         ) : null}
+        {tokenName && tokens && tokens.includes(tokenName) ?
+          <div className="p-1">
+            <Link href={`/tokens/${tokenName}/burn`} passHref>
+              <a className="btn btn-outline mt-6">
+                <p className="font-bold flex">{`Burn`}</p>
+              </a>
+            </Link>
+          </div>
+          : null}
       </div>
     </WalletLoader>
   )

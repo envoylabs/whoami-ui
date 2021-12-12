@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 export function useTokenList() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const [tokens, setTokens] = useState<[]>()
+  const [tokens, setTokens] = useState<Array<string>>()
   const [loadingTokens, setLoading] = useState(false)
 
   const { walletAddress, signingClient } = useSigningClient()
