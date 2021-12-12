@@ -23,12 +23,12 @@ export default function NameCard({
   }
   return (
     <div className="flex flex-wrap">
-      <div className="card bordered border-none">
+      <div className="card bordered border-none w-96 bg-gradient-to-t from-accent to-primary">
         <figure>
-          <Image src={token.image ? token.image : ''} alt="The tokens profile image" />
+          <img src={token.image ? token.image : "/JUNO.svg"} alt="The tokens profile image" />
         </figure>
 
-        <div className="card-body bg-gradient-to-t from-accent to-primary">
+        <div className="card-body">
           <h2 className="card-title text-4xl font-bold">{name}</h2>
           {token.public_bio ? <p>{token.public_bio}</p> : null}
         </div>

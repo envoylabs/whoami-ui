@@ -8,7 +8,6 @@ import { defaultExecuteFee } from 'util/fee'
 import { defaultMemo } from 'util/memo'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { Metadata } from 'util/types/messages'
 
