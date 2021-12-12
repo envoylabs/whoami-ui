@@ -29,8 +29,8 @@ const BurnToken: NextPage = () => {
 
     const msg = {
       burn: {
-        token_id: tokenName
-      }
+        token_id: tokenName,
+      },
     }
     try {
       let updatedToken = await signingClient.execute(
@@ -49,18 +49,21 @@ const BurnToken: NextPage = () => {
     }
   }
 
-
   return (
     <WalletLoader>
       <div className="flex flex-wrap">
-        {token ? <TokenCard name={tokenName} token={token as Metadata} /> : null}
+        {token ? (
+          <TokenCard name={tokenName} token={token as Metadata} />
+        ) : null}
         <div className="items-center text-left m-5">
           <h2 className="text-4xl font-bold">
             <FireIcon className="h-9 w-9 inline mr-2 mb-1" />
             Burn {tokenName}
           </h2>
           <p className="w-96">
-            This will permanently destroy the token. The token will no longer be visbile from the name service and another token with the same name will be mintable.
+            This will permanently destroy the token. The token will no longer be
+            visbile from the name service and another token with the same name
+            will be mintable.
           </p>
           <div className="p-1">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +74,6 @@ const BurnToken: NextPage = () => {
               />
             </form>
           </div>
-
         </div>
       </div>
     </WalletLoader>

@@ -11,20 +11,25 @@ function ItemDisplay({ name, contents }: { name: string; contents: string }) {
   )
 }
 
-export function TokenCard({
-  name,
-  token,
-}: {
-  name: string
-  token: Metadata
-}) {
+export function TokenCard({ name, token }: { name: string; token: Metadata }) {
   return (
-    <div className="card bordered border-none w-96 bg-gradient-to-t from-accent to-primary mr-3">
+    <div className="card bordered border-none w-96 bg-gradient-to-t from-accent to-primary">
       <figure>
-        <img src={token.image ? token.image : "/JUNO.svg"} alt="The tokens profile image" />
+        <img
+          src={token.image ? token.image : '/JUNO.svg'}
+          alt="The tokens profile image"
+          onError={(e) => {
+            // Cast is needed because typescript wants to
+            // support all possible browsers. This is a well
+            // known pattern `https://dillionmegida.com/p/default-image-src/`
+            let event = e as any
+            event.onerror = null
+            event.target.src = "/JUNO.svg"
+          }}
+        />
       </figure>
 
-      <div className="card-body">
+      <div className="card-body break-words">
         <h2 className="card-title text-4xl font-bold">{name}</h2>
         {token.public_bio ? <p>{token.public_bio}</p> : null}
       </div>
@@ -32,19 +37,15 @@ export function TokenCard({
   )
 }
 
-export function NameCard({
-  name,
-  token,
-}: {
-  name: string
-  token: Metadata
-}) {
+export function NameCard({ name, token }: { name: string; token: Metadata }) {
   if (!token) {
     return null
   }
   return (
     <div className="flex flex-wrap">
-      <TokenCard name={name} token={token} />
+      <div className="mr-3">
+        <TokenCard name={name} token={token} />
+      </div>
       <div className="items-center text-left m-5">
         <ItemDisplay name="Name" contents={name} />
         {token.email ? (

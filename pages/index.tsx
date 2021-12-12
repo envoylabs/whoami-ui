@@ -16,7 +16,7 @@ const Home: NextPage = () => {
       <p className="italic">Decentralized Name Service</p>
 
       <PageLink
-        href="/tokens/mint"
+        href="/tokens/register"
         title="Register"
         description="Register and configure a new username"
         Icon={LibraryIcon}

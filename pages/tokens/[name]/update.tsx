@@ -109,7 +109,6 @@ const TokenUpdate: NextPage = () => {
   }
 
   const fields = [
-    ['token_id', 'Username', false],
     ['public_name', 'Name', true],
     ['public_bio', 'Bio', true],
     ['image', 'Image URL', true],
@@ -130,6 +129,7 @@ const TokenUpdate: NextPage = () => {
         label={i[1] as string}
         register={register}
         optional={i[2] as boolean}
+        onChange={() => { }}
       />
     ),
     fields

@@ -1,22 +1,18 @@
 import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { useState } from 'react'
-import { useForm, UseFormRegister } from 'react-hook-form'
-import WalletLoader from 'components/WalletLoader'
 import InputField from 'components/InputField'
+import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { OptionString } from 'util/types/base'
+import { Metadata } from 'util/types/messages'
+import WalletLoader from 'components/WalletLoader'
+import { TokenCard } from 'components/NameCard'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { defaultExecuteFee } from 'util/fee'
 import { defaultMemo } from 'util/memo'
-import * as msgs from 'util/messages'
-import * as mt from 'util/types/messages'
-import { OptionString } from 'util/types/base'
 import * as R from 'ramda'
 
 type FormValues = {
-  token_id: string // the username
-  // these are all the extension fields.
-  // if they are empty, they should be nulled
   image: OptionString
   image_data: OptionString
   email: OptionString
@@ -30,25 +26,42 @@ type FormValues = {
   validator_operator_address: OptionString
 }
 
+const defaults = {
+  image: null,
+  image_data: null,
+  email: null,
+  external_url: null,
+  public_name: null,
+  public_bio: null,
+  twitter_id: null,
+  discord_id: null,
+  telegram_id: null,
+  keybase_id: null,
+  validator_operator_address: null,
+}
+
 const Mint: NextPage = () => {
   const router = useRouter()
-  const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const { signingClient, walletAddress } = useSigningClient()
+  const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+  const [token, setToken] = useState(defaults)
+
+  // React seems to be completely unwilling to reflow when a field
+  // is updated in token aboce via setToken. For some completely opaque
+  // reason adding a string state and then setting that whenever we'd
+  // like to have the state updated seems to resolve the issue. I have
+  // tried changing token to a JSON object to get around this (maybe
+  // non-strings are the issue) but then JSON.parse becomes deadset on
+  // returning a string so we can't get the token object back.
+  const [goddamitReact, setGoddamnitReact] = useState('')
   const { register, handleSubmit } = useForm<FormValues>({
-    defaultValues: {
-      image: null,
-      image_data: null,
-      email: null,
-      external_url: null,
-      public_name: null,
-      public_bio: null,
-      twitter_id: null,
-      discord_id: null,
-      telegram_id: null,
-      keybase_id: null,
-      validator_operator_address: null,
-    },
+    defaultValues: defaults,
   })
+
+  if (!router.isReady) {
+    return null
+  }
+  const token_id = router.query.name as string
 
   const onSubmit = async (data: FormValues) => {
     if (!signingClient) {
@@ -56,7 +69,6 @@ const Mint: NextPage = () => {
     }
 
     const {
-      token_id,
       image,
       image_data,
       email,
@@ -109,7 +121,6 @@ const Mint: NextPage = () => {
   }
 
   const fields = [
-    ['token_id', 'Username', false],
     ['public_name', 'Name', true],
     ['public_bio', 'Bio', true],
     ['image', 'Image URL', true],
@@ -130,6 +141,11 @@ const Mint: NextPage = () => {
         label={i[1] as string}
         register={register}
         optional={i[2] as boolean}
+        onChange={(e) => {
+          ;(token as any)[i[0] as string] = e.target.value
+          setToken(token)
+          setGoddamnitReact(e.target.value)
+        }}
       />
     ),
     fields
@@ -137,24 +153,25 @@ const Mint: NextPage = () => {
 
   return (
     <WalletLoader>
-      <h1 className="text-3xl font-bold">Create your username</h1>
+      <div className="flex flex-wrap">
+        <div className="mr-3">
+          <div className=" sticky top-5 mt-5">
+            <TokenCard
+              name={router.query.name as string}
+              token={token as Metadata}
+            />
+          </div>
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <>{inputs}</>
 
-      <div className="p-6">
-        <p className="max-w-prose">
-          Only a username is required. Everything else is optional. If you are a
-          validator, consider filling in as much as possible.
-        </p>
+          <input
+            type="submit"
+            className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
+            value="Create Username"
+          />
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <>{inputs}</>
-
-        <input
-          type="submit"
-          className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
-          value="Create Username"
-        />
-      </form>
     </WalletLoader>
   )
 }
