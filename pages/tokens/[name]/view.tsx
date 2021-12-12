@@ -75,7 +75,9 @@ const TokenView: NextPage = () => {
           </Link>
         </div>
 
-        {alias as string !== tokenName && "" !== tokenName && signingClient ? (
+        {(alias as string) !== tokenName &&
+        '' !== tokenName &&
+        signingClient ? (
           <div className="p-1">
             <form onSubmit={handleSubmit(onSubmit)}>
               <input
@@ -86,7 +88,8 @@ const TokenView: NextPage = () => {
             </form>
           </div>
         ) : null}
-        {tokenName && tokens && tokens.includes(tokenName) ?
+
+        {tokenName && tokens && tokens.includes(tokenName) ? (
           <div className="p-1">
             <Link href={`/tokens/${tokenName}/burn`} passHref>
               <a className="btn btn-outline mt-6">
@@ -94,7 +97,7 @@ const TokenView: NextPage = () => {
               </a>
             </Link>
           </div>
-          : null}
+        ) : null}
       </div>
     </WalletLoader>
   )
