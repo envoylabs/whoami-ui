@@ -24,7 +24,7 @@ export function TokenCard({ name, token }: { name: string; token: Metadata }) {
             // known pattern `https://dillionmegida.com/p/default-image-src/`
             let event = e as any
             event.onerror = null
-            event.target.src = "/JUNO.svg"
+            event.target.src = '/JUNO.svg'
           }}
         />
       </figure>

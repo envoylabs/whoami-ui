@@ -129,7 +129,7 @@ const TokenUpdate: NextPage = () => {
         label={i[1] as string}
         register={register}
         optional={i[2] as boolean}
-        onChange={() => { }}
+        onChange={() => {}}
       />
     ),
     fields

@@ -88,6 +88,7 @@ const TokenView: NextPage = () => {
             </form>
           </div>
         ) : null}
+
         {tokenName && tokens && tokens.includes(tokenName) ? (
           <div className="p-1">
             <Link href={`/tokens/${tokenName}/burn`} passHref>

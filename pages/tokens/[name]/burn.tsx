@@ -55,6 +55,7 @@ const BurnToken: NextPage = () => {
         {token ? (
           <TokenCard name={tokenName} token={token as Metadata} />
         ) : null}
+
         <div className="items-center text-left m-5">
           <h2 className="text-4xl font-bold">
             <FireIcon className="h-9 w-9 inline mr-2 mb-1" />
