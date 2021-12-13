@@ -44,7 +44,7 @@ const Register: NextPage = () => {
       <NameSearch query={searchQuery} setQuery={setSearchQuery} />
       {searchQuery !== '' ? (
         <>
-          <div className="mt-6 mb-6">
+          <div className="mt-6 mb-6 h-[700px]">
             {loading ? (
               <Loader />
             ) : (
