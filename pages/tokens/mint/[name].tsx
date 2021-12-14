@@ -46,14 +46,6 @@ const Mint: NextPage = () => {
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const [token, setToken] = useState(defaults)
 
-  // React seems to be completely unwilling to reflow when a field
-  // is updated in token aboce via setToken. For some completely opaque
-  // reason adding a string state and then setting that whenever we'd
-  // like to have the state updated seems to resolve the issue. I have
-  // tried changing token to a JSON object to get around this (maybe
-  // non-strings are the issue) but then JSON.parse becomes deadset on
-  // returning a string so we can't get the token object back.
-  const [goddamitReact, setGoddamnitReact] = useState('')
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: defaults,
   })
@@ -142,9 +134,7 @@ const Mint: NextPage = () => {
         register={register}
         optional={i[2] as boolean}
         onChange={(e) => {
-          ;(token as any)[i[0] as string] = e.target.value
-          setToken(token)
-          setGoddamnitReact(e.target.value)
+          setToken(curr => ({ ...curr, [i[0] as string]: e.target.value }))
         }}
       />
     ),
@@ -155,7 +145,7 @@ const Mint: NextPage = () => {
     <WalletLoader>
       <div className="flex flex-wrap">
         <div className="mr-3">
-          <div className=" sticky top-5 mt-5">
+          <div className="sticky top-5 mt-5">
             <TokenCard
               name={router.query.name as string}
               token={token as Metadata}
