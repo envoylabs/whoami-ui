@@ -100,7 +100,7 @@ const TokenUpdate: NextPage = () => {
         defaultMemo
       )
       if (updatedToken) {
-        router.push(`/tokens/${tokenName}/view`)
+        router.push(`/tokens/${tokenName}`)
       }
     } catch (e) {
       // TODO env var for dev logging
