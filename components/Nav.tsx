@@ -33,10 +33,9 @@ function Nav() {
           },
         })
         setAlias(aliasResponse.username)
-        console.log(aliasResponse)
         setLoading(false)
       } catch (e) {
-        console.log(e)
+        // console.log(e)
         return
       }
     }

@@ -29,7 +29,7 @@ const TokenView: NextPage = () => {
     }
 
     const msg = {
-      update_preferred_alias: {
+      update_primary_alias: {
         token_id: tokenName,
       },
     }
@@ -47,7 +47,7 @@ const TokenView: NextPage = () => {
       }
     } catch (e) {
       // TODO env var for dev logging
-      console.log(e)
+      // console.log(e)
     }
   }
 
