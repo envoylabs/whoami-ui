@@ -13,4 +13,4 @@ export const defaultMintFee: StdFee = {
   gas: '1000000',
 }
 
-export const defaultMintCost: Coin[] = coins(process.env.NEXT_PUBLIC_MINT_FEE, process.env.NEXT_PUBLIC_STAKING_DENOM!)
+export const defaultMintCost: Coin[] = coins(process.env.NEXT_PUBLIC_MINT_FEE!, process.env.NEXT_PUBLIC_STAKING_DENOM!)
