@@ -6,6 +6,9 @@ export const defaultExecuteFee: StdFee = {
 }
 
 export const defaultMintFee: StdFee = {
-  amount: coins(process.env.NEXT_PUBLIC_MINT_FEE!, process.env.NEXT_PUBLIC_STAKING_DENOM!),
+  amount: coins(
+    process.env.NEXT_PUBLIC_MINT_FEE!,
+    process.env.NEXT_PUBLIC_STAKING_DENOM!
+  ),
   gas: '1000000',
 }

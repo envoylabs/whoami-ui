@@ -139,7 +139,7 @@ const Mint: NextPage = () => {
         register={register}
         optional={i[2] as boolean}
         onChange={(e) => {
-          setToken(curr => ({ ...curr, [i[0] as string]: e.target.value }))
+          setToken((curr) => ({ ...curr, [i[0] as string]: e.target.value }))
         }}
       />
     ),

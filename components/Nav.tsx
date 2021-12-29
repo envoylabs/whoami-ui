@@ -7,7 +7,8 @@ import { useEffect, useState } from 'react'
 function Nav() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const { walletAddress, connectWallet, disconnect, signingClient } = useSigningClient()
+  const { walletAddress, connectWallet, disconnect, signingClient } =
+    useSigningClient()
   const handleConnect = () => {
     if (walletAddress.length === 0) {
       connectWallet()
