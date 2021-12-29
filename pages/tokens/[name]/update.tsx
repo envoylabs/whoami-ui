@@ -35,6 +35,7 @@ const TokenUpdate: NextPage = () => {
   const tokenName = router.query.name as string
   const { token } = useToken(tokenName)
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+  const [loading, setLoading] = useState(false)
 
   const { signingClient, walletAddress } = useSigningClient()
   const { register, handleSubmit } = useForm<FormValues>({
@@ -57,6 +58,8 @@ const TokenUpdate: NextPage = () => {
     if (!signingClient) {
       return
     }
+
+    setLoading(true)
 
     const {
       image,
@@ -100,11 +103,13 @@ const TokenUpdate: NextPage = () => {
         defaultMemo
       )
       if (updatedToken) {
+        setLoading(false)
         router.push(`/tokens/${tokenName}/view`)
       }
     } catch (e) {
       // TODO env var for dev logging
       // console.log(e)
+      setLoading(false)
     }
   }
 

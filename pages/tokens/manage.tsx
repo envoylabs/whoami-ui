@@ -1,12 +1,41 @@
+import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
-import { useTokenList } from 'hooks/tokens'
+// import { useTokenList } from 'hooks/tokens'
 import { usePreferredAlias } from 'hooks/preferredAlias'
 import Link from 'next/link'
+import { useSigningClient } from 'contexts/cosmwasm'
 
 const Manage: NextPage = () => {
-  const { tokens, loadingTokens } = useTokenList()
+  const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+  const [tokens, setTokens] = useState<Array<string>>([''])
+  const [loading, setLoading] = useState(false)
+
   const { alias, loadingAlias } = usePreferredAlias()
+  const { walletAddress, signingClient } = useSigningClient()
+
+  useEffect(() => {
+    if (!signingClient || !walletAddress) {
+      return
+    }
+
+    const getTokens = async () => {
+      setLoading(true)
+      try {
+        let tokenList = await signingClient.queryContractSmart(contract, {
+          tokens: {
+            owner: walletAddress,
+          },
+        })
+        setTokens(tokenList.tokens)
+        setLoading(false)
+      } catch (e) {
+        console.error(e.error)
+      }
+    }
+
+    getTokens()
+  }, [tokens.length])
 
   return (
     <WalletLoader>
