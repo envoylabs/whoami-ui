@@ -112,7 +112,7 @@ const Mint: NextPage = () => {
       }
     } catch (e) {
       // TODO env var for dev logging
-      console.log(e)
+      //console.log(e)
       setLoading(false)
     }
   }
