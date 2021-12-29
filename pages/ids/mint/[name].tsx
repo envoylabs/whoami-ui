@@ -8,7 +8,7 @@ import { Metadata } from 'util/types/messages'
 import WalletLoader from 'components/WalletLoader'
 import { TokenCard } from 'components/NameCard'
 import { useSigningClient } from 'contexts/cosmwasm'
-import { defaultMintFee, defaultMintCost } from 'util/fee'
+import { defaultMintFee, getMintCost } from 'util/fee'
 import { defaultMemo } from 'util/memo'
 import * as R from 'ramda'
 
@@ -99,17 +99,20 @@ const Mint: NextPage = () => {
     }
 
     try {
+
+      const mintCost = getMintCost(token_id)
+
       let mintedToken = await signingClient.execute(
         walletAddress,
         contractAddress,
         msg,
         defaultMintFee,
         defaultMemo,
-        defaultMintCost
+        mintCost
       )
       if (mintedToken) {
         setLoading(false)
-        router.push(`/tokens/${token_id}`)
+        router.push(`/ids/${token_id}`)
       }
     } catch (e) {
       // TODO env var for dev logging
