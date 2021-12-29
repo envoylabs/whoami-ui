@@ -1,7 +1,7 @@
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useEffect, useState } from 'react'
 
-export function usePreferredAlias() {
+export function usePrimaryAlias() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
   const [alias, setAlias] = useState<string>()
@@ -18,7 +18,7 @@ export function usePreferredAlias() {
       setLoading(true)
       try {
         let aliasResponse = await signingClient.queryContractSmart(contract, {
-          preferred_alias: {
+          primary_alias: {
             address: walletAddress,
           },
         })

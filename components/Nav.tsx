@@ -2,10 +2,13 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import Link from 'next/link'
 import Image from 'next/image'
 import ThemeToggle from 'components/ThemeToggle'
-import { usePreferredAlias } from 'hooks/preferredAlias'
+import { useEffect, useState } from 'react'
 
 function Nav() {
-  const { walletAddress, connectWallet, disconnect } = useSigningClient()
+  const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+
+  const { walletAddress, connectWallet, disconnect, signingClient } =
+    useSigningClient()
   const handleConnect = () => {
     if (walletAddress.length === 0) {
       connectWallet()
@@ -14,7 +17,32 @@ function Nav() {
     }
   }
 
-  const { alias } = usePreferredAlias()
+  const [alias, setAlias] = useState<string>()
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!signingClient || !walletAddress) {
+      return
+    }
+
+    const getAlias = async () => {
+      setLoading(true)
+      try {
+        let aliasResponse = await signingClient.queryContractSmart(contract, {
+          primary_alias: {
+            address: walletAddress,
+          },
+        })
+        setAlias(aliasResponse.username)
+        setLoading(false)
+      } catch (e) {
+        // console.log(e)
+        return
+      }
+    }
+
+    getAlias()
+  }, [walletAddress])
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 

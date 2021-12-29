@@ -8,7 +8,7 @@ import { Metadata } from 'util/types/messages'
 import WalletLoader from 'components/WalletLoader'
 import { TokenCard } from 'components/NameCard'
 import { useSigningClient } from 'contexts/cosmwasm'
-import { defaultExecuteFee } from 'util/fee'
+import { defaultMintFee } from 'util/fee'
 import { defaultMemo } from 'util/memo'
 import * as R from 'ramda'
 
@@ -45,6 +45,7 @@ const Mint: NextPage = () => {
   const { signingClient, walletAddress } = useSigningClient()
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const [token, setToken] = useState(defaults)
+  const [loading, setLoading] = useState(false)
 
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: defaults,
@@ -59,6 +60,8 @@ const Mint: NextPage = () => {
     if (!signingClient) {
       return
     }
+
+    setLoading(true)
 
     const {
       image,
@@ -100,15 +103,17 @@ const Mint: NextPage = () => {
         walletAddress,
         contractAddress,
         msg,
-        defaultExecuteFee,
+        defaultMintFee,
         defaultMemo
       )
       if (mintedToken) {
+        setLoading(false)
         router.push(`/tokens/${token_id}`)
       }
     } catch (e) {
       // TODO env var for dev logging
-      // console.log(e)
+      //console.log(e)
+      setLoading(false)
     }
   }
 
@@ -134,7 +139,7 @@ const Mint: NextPage = () => {
         register={register}
         optional={i[2] as boolean}
         onChange={(e) => {
-          setToken(curr => ({ ...curr, [i[0] as string]: e.target.value }))
+          setToken((curr) => ({ ...curr, [i[0] as string]: e.target.value }))
         }}
       />
     ),

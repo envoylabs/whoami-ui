@@ -1,12 +1,18 @@
+import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import { useTokenList } from 'hooks/tokens'
-import { usePreferredAlias } from 'hooks/preferredAlias'
+import { usePrimaryAlias } from 'hooks/primaryAlias'
 import Link from 'next/link'
+import { useSigningClient } from 'contexts/cosmwasm'
 
 const Manage: NextPage = () => {
-  const { tokens, loadingTokens } = useTokenList()
-  const { alias, loadingAlias } = usePreferredAlias()
+  const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+
+  const { tokens } = useTokenList()
+
+  const { alias, loadingAlias } = usePrimaryAlias()
+  const { walletAddress, signingClient } = useSigningClient()
 
   return (
     <WalletLoader>

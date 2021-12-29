@@ -16,7 +16,7 @@ export function TokenCard({ name, token }: { name: string; token: Metadata }) {
     <div className="card bordered border-none w-96 bg-gradient-to-t from-accent to-primary">
       <figure>
         <img
-          src={token.image ? token.image : '/JUNO.svg'}
+          src={token.image ? token.image : '/dens.svg'}
           alt="The tokens profile image"
           onError={(e) => {
             // Cast is needed because typescript wants to

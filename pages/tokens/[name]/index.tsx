@@ -3,7 +3,7 @@ import WalletLoader from 'components/WalletLoader'
 import { NameCard } from 'components/NameCard'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useToken } from 'hooks/token'
-import { usePreferredAlias } from 'hooks/preferredAlias'
+import { usePrimaryAlias } from 'hooks/primaryAlias'
 import { defaultExecuteFee } from 'util/fee'
 import { defaultMemo } from 'util/memo'
 import { useRouter } from 'next/dist/client/router'
@@ -19,7 +19,7 @@ const TokenView: NextPage = () => {
   const tokenName = router.query.name as string
   const { token } = useToken(tokenName)
   const { tokens } = useTokenList()
-  const { alias, loadingAlias } = usePreferredAlias()
+  const { alias, loadingAlias } = usePrimaryAlias()
 
   const { register, handleSubmit } = useForm()
 
@@ -29,7 +29,7 @@ const TokenView: NextPage = () => {
     }
 
     const msg = {
-      update_preferred_alias: {
+      update_primary_alias: {
         token_id: tokenName,
       },
     }
