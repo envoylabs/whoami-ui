@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, UseFormRegister } from 'react-hook-form'
 import WalletLoader from 'components/WalletLoader'
 import InputField from 'components/InputField'
@@ -12,6 +12,7 @@ import { defaultMemo } from 'util/memo'
 import * as msgs from 'util/messages'
 import * as mt from 'util/types/messages'
 import { OptionString } from 'util/types/base'
+import Loader from 'components/Loader'
 import * as R from 'ramda'
 
 // similar to the create form
@@ -33,11 +34,41 @@ type FormValues = {
 const TokenUpdate: NextPage = () => {
   const router = useRouter()
   const tokenName = router.query.name as string
-  const { token } = useToken(tokenName)
+
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const [loading, setLoading] = useState(false)
 
+  const [token, setToken] = useState<Metadata>()
+
   const { signingClient, walletAddress } = useSigningClient()
+
+  useEffect(() => {
+    if (!signingClient) {
+      return
+    }
+
+    const getToken = async () => {
+      //setLoading(true)
+      try {
+        let tokenInfo = await signingClient.queryContractSmart(
+          contractAddress,
+          {
+            nft_info: {
+              token_id: tokenName,
+            },
+          }
+        )
+        setToken(tokenInfo.extension)
+        console.log(tokenInfo)
+        //setLoading(false)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    getToken()
+  }, [tokenName])
+
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       image: token?.image || null,
@@ -103,8 +134,8 @@ const TokenUpdate: NextPage = () => {
         defaultMemo
       )
       if (updatedToken) {
-        setLoading(false)
         router.push(`/ids/${tokenName}`)
+        setLoading(false)
       }
     } catch (e) {
       // TODO env var for dev logging
@@ -142,21 +173,27 @@ const TokenUpdate: NextPage = () => {
 
   return (
     <WalletLoader>
-      <h1 className="text-3xl font-bold">Update your profile</h1>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <h1 className="text-3xl font-bold">Update your profile</h1>
 
-      <div className="p-6">
-        <p>Update the data associated with your username.</p>
-      </div>
+          <div className="p-6">
+            <p>Update the data associated with your username.</p>
+          </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <>{inputs}</>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <>{inputs}</>
 
-        <input
-          type="submit"
-          className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
-          value="Update profile"
-        />
-      </form>
+            <input
+              type="submit"
+              className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
+              value="Update profile"
+            />
+          </form>
+        </>
+      )}
     </WalletLoader>
   )
 }

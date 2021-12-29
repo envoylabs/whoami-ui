@@ -7,7 +7,7 @@ export default function TokenSearchResult({
   name,
   token,
   avaliable,
-  valid
+  valid,
 }: {
   name: string
   token: Metadata | undefined
@@ -18,19 +18,19 @@ export default function TokenSearchResult({
     <div>
       {avaliable ? (
         valid ? (
-        <div className="alert alert-success mb-2">
-          <div className="flex-1">
-            <LockOpenIcon className="h-6 w-6 inline mr-2" />
-            <label>available!</label>
+          <div className="alert alert-success mb-2">
+            <div className="flex-1">
+              <LockOpenIcon className="h-6 w-6 inline mr-2" />
+              <label>available!</label>
+            </div>
           </div>
-        </div>
         ) : (
           <div className="alert alert-dark mb-3">
-          <div className="flex-1">
-            <LockClosedIcon className="h-6 w-6 inline mr-2" />
-            <label>too long</label>
+            <div className="flex-1">
+              <LockClosedIcon className="h-6 w-6 inline mr-2" />
+              <label>too long</label>
+            </div>
           </div>
-        </div>
         )
       ) : (
         <div className="alert alert-info mb-3">
@@ -60,16 +60,14 @@ export default function TokenSearchResult({
       />
       {avaliable ? (
         valid ? (
-        <div className="p-1">
-          <Link href={`/ids/mint/${name}`} passHref>
-            <a className="btn btn-outline mt-6">
-              <p className="font-bold flex">{`Mint your new id`}</p>
-            </a>
-          </Link>
-        </div>
-        ) : (
-          null
-        )
+          <div className="p-1">
+            <Link href={`/ids/mint/${name}`} passHref>
+              <a className="btn btn-outline mt-6">
+                <p className="font-bold flex">{`Mint your new id`}</p>
+              </a>
+            </Link>
+          </div>
+        ) : null
       ) : (
         <div className="p-1">
           <Link href={`/ids/${name}`} passHref>

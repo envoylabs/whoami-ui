@@ -2,7 +2,7 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import { useEffect, useState } from 'react'
 import { Metadata } from 'util/types/messages'
 
-export function useToken(token_id: string) {
+export function useToken(tokenId: string) {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
   const [token, setToken] = useState<Metadata>()
@@ -20,7 +20,7 @@ export function useToken(token_id: string) {
       try {
         let tokenInfo = await signingClient.queryContractSmart(contract, {
           nft_info: {
-            token_id: token_id,
+            token_id: tokenId,
           },
         })
         setToken(tokenInfo.extension)
@@ -31,7 +31,7 @@ export function useToken(token_id: string) {
     }
 
     getToken()
-  }, [token_id])
+  }, [tokenId])
 
   return { token, loadingToken }
 }
