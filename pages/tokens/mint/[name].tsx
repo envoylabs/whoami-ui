@@ -108,7 +108,7 @@ const Mint: NextPage = () => {
       )
       if (mintedToken) {
         setLoading(false)
-        router.push(`/tokens/${token_id}/view`)
+        router.push(`/tokens/${token_id}`)
       }
     } catch (e) {
       // TODO env var for dev logging

@@ -104,7 +104,7 @@ const TokenUpdate: NextPage = () => {
       )
       if (updatedToken) {
         setLoading(false)
-        router.push(`/tokens/${tokenName}/view`)
+        router.push(`/tokens/${tokenName}`)
       }
     } catch (e) {
       // TODO env var for dev logging
