@@ -8,7 +8,7 @@ import { Metadata } from 'util/types/messages'
 import WalletLoader from 'components/WalletLoader'
 import { TokenCard } from 'components/NameCard'
 import { useSigningClient } from 'contexts/cosmwasm'
-import { defaultMintFee } from 'util/fee'
+import { defaultMintFee, defaultMintCost } from 'util/fee'
 import { defaultMemo } from 'util/memo'
 import * as R from 'ramda'
 
@@ -104,7 +104,8 @@ const Mint: NextPage = () => {
         contractAddress,
         msg,
         defaultMintFee,
-        defaultMemo
+        defaultMemo,
+        defaultMintCost
       )
       if (mintedToken) {
         setLoading(false)
@@ -112,7 +113,7 @@ const Mint: NextPage = () => {
       }
     } catch (e) {
       // TODO env var for dev logging
-      //console.log(e)
+      // console.log(e)
       setLoading(false)
     }
   }
