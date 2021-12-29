@@ -10,6 +10,7 @@ import { TokenCard } from 'components/NameCard'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { defaultMintFee, getMintCost } from 'util/fee'
 import { defaultMemo } from 'util/memo'
+import Loader from 'components/Loader'
 import * as R from 'ramda'
 
 type FormValues = {
@@ -99,7 +100,6 @@ const Mint: NextPage = () => {
     }
 
     try {
-
       const mintCost = getMintCost(token_id)
 
       let mintedToken = await signingClient.execute(
@@ -111,8 +111,8 @@ const Mint: NextPage = () => {
         mintCost
       )
       if (mintedToken) {
-        setLoading(false)
         router.push(`/ids/${token_id}`)
+        setLoading(false)
       }
     } catch (e) {
       // TODO env var for dev logging
@@ -152,25 +152,29 @@ const Mint: NextPage = () => {
 
   return (
     <WalletLoader>
-      <div className="flex flex-wrap">
-        <div className="mr-3">
-          <div className="sticky top-5 mt-5">
-            <TokenCard
-              name={router.query.name as string}
-              token={token as Metadata}
-            />
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="flex flex-wrap">
+          <div className="mr-3">
+            <div className="sticky top-5 mt-5">
+              <TokenCard
+                name={router.query.name as string}
+                token={token as Metadata}
+              />
+            </div>
           </div>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <>{inputs}</>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <>{inputs}</>
 
-          <input
-            type="submit"
-            className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
-            value="Create Username"
-          />
-        </form>
-      </div>
+            <input
+              type="submit"
+              className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
+              value="Create Username"
+            />
+          </form>
+        </div>
+      )}
     </WalletLoader>
   )
 }

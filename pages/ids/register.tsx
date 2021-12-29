@@ -52,7 +52,7 @@ const Register: NextPage = () => {
                 name={searchQuery}
                 token={token}
                 avaliable={!token}
-                valid={(searchQuery.length < 21) ? true : false}
+                valid={searchQuery.length < 21 ? true : false}
               />
             )}
           </div>

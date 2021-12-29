@@ -59,49 +59,49 @@ const TokenView: NextPage = () => {
     <WalletLoader>
       {token ? (
         <>
-      <NameCard name={tokenName} token={token as Metadata} />
-      <div className="flex flex-wrap">
-        <div className="p-1">
-          <Link href={`/ids/manage`} passHref>
-            <a className="btn btn-outline mt-6">
-              <p className="font-bold flex">{`< Back`}</p>
-            </a>
-          </Link>
-        </div>
+          <NameCard name={tokenName} token={token as Metadata} />
+          <div className="flex flex-wrap">
+            <div className="p-1">
+              <Link href={`/ids/manage`} passHref>
+                <a className="btn btn-outline mt-6">
+                  <p className="font-bold flex">{`< Back`}</p>
+                </a>
+              </Link>
+            </div>
 
-        <div className="p-1">
-          <Link href={`/ids/${tokenName}/update`} passHref>
-            <a className="btn btn-outline mt-6">
-              <p className="font-bold flex">{`Update metadata`}</p>
-            </a>
-          </Link>
-        </div>
+            <div className="p-1">
+              <Link href={`/ids/${tokenName}/update`} passHref>
+                <a className="btn btn-outline mt-6">
+                  <p className="font-bold flex">{`Update metadata`}</p>
+                </a>
+              </Link>
+            </div>
 
-        {(alias as string) !== tokenName &&
-        '' !== tokenName &&
-        signingClient ? (
-          <div className="p-1">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <input
-                type="submit"
-                className="btn btn-outline mt-6"
-                value="Set as primary"
-              />
-            </form>
+            {(alias as string) !== tokenName &&
+            '' !== tokenName &&
+            signingClient ? (
+              <div className="p-1">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <input
+                    type="submit"
+                    className="btn btn-outline mt-6"
+                    value="Set as primary"
+                  />
+                </form>
+              </div>
+            ) : null}
+
+            {tokenName && tokens && tokens.includes(tokenName) ? (
+              <div className="p-1">
+                <Link href={`/ids/${tokenName}/burn`} passHref>
+                  <a className="btn btn-outline mt-6">
+                    <p className="font-bold flex">{`Burn`}</p>
+                  </a>
+                </Link>
+              </div>
+            ) : null}
           </div>
-        ) : null}
-
-        {tokenName && tokens && tokens.includes(tokenName) ? (
-          <div className="p-1">
-            <Link href={`/ids/${tokenName}/burn`} passHref>
-              <a className="btn btn-outline mt-6">
-                <p className="font-bold flex">{`Burn`}</p>
-              </a>
-            </Link>
-          </div>
-        ) : null}
-      </div>
-      </>
+        </>
       ) : (
         <h1 className="text-6xl font-bold">Not found</h1>
       )}
