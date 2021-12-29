@@ -43,7 +43,7 @@ const TokenView: NextPage = () => {
         defaultMemo
       )
       if (updatedToken) {
-        router.push(`/tokens/manage`)
+        router.push(`/ids/manage`)
       }
     } catch (e) {
       // TODO env var for dev logging
@@ -57,10 +57,12 @@ const TokenView: NextPage = () => {
 
   return (
     <WalletLoader>
+      {token ? (
+        <>
       <NameCard name={tokenName} token={token as Metadata} />
       <div className="flex flex-wrap">
         <div className="p-1">
-          <Link href={`/tokens/manage`} passHref>
+          <Link href={`/ids/manage`} passHref>
             <a className="btn btn-outline mt-6">
               <p className="font-bold flex">{`< Back`}</p>
             </a>
@@ -68,7 +70,7 @@ const TokenView: NextPage = () => {
         </div>
 
         <div className="p-1">
-          <Link href={`/tokens/${tokenName}/update`} passHref>
+          <Link href={`/ids/${tokenName}/update`} passHref>
             <a className="btn btn-outline mt-6">
               <p className="font-bold flex">{`Update metadata`}</p>
             </a>
@@ -91,7 +93,7 @@ const TokenView: NextPage = () => {
 
         {tokenName && tokens && tokens.includes(tokenName) ? (
           <div className="p-1">
-            <Link href={`/tokens/${tokenName}/burn`} passHref>
+            <Link href={`/ids/${tokenName}/burn`} passHref>
               <a className="btn btn-outline mt-6">
                 <p className="font-bold flex">{`Burn`}</p>
               </a>
@@ -99,6 +101,10 @@ const TokenView: NextPage = () => {
           </div>
         ) : null}
       </div>
+      </>
+      ) : (
+        <h1 className="text-6xl font-bold">Not found</h1>
+      )}
     </WalletLoader>
   )
 }

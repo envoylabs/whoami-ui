@@ -16,19 +16,19 @@ const Home: NextPage = () => {
       <p className="italic">Decentralized Name Service</p>
 
       <PageLink
-        href="/tokens/register"
+        href="/ids/register"
         title="Register"
-        description="Register and configure a new username"
+        description="Register and configure a new name"
         Icon={LibraryIcon}
       />
       <PageLink
-        href="/tokens/manage"
+        href="/ids/manage"
         title="Manage"
         description="Transfer, edit, or burn a name that you own"
         Icon={PencilIcon}
       />
       <PageLink
-        href="/explore"
+        href="/ids/search"
         title="Explore"
         description="Lookup addresses and explore registered names"
         Icon={MapIcon}

@@ -41,7 +41,7 @@ const BurnToken: NextPage = () => {
         defaultMemo
       )
       if (updatedToken) {
-        router.push(`/tokens/manage`)
+        router.push(`/ids/manage`)
       }
     } catch (e) {
       // TODO env var for dev logging

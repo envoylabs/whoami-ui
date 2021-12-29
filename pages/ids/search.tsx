@@ -7,7 +7,8 @@ import { Metadata } from 'util/types/messages'
 import TokenSearchResult from 'components/TokenSearchResult'
 import Loader from 'components/Loader'
 
-const Register: NextPage = () => {
+// TODO - make this functionally distinct from register
+const Search: NextPage = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [token, setToken] = useState<Metadata | undefined>()
   const [loading, setLoading] = useState(false)
@@ -52,6 +53,7 @@ const Register: NextPage = () => {
                 name={searchQuery}
                 token={token}
                 avaliable={!token}
+                valid={(searchQuery.length < 21) ? true : false}
               />
             )}
           </div>
@@ -61,4 +63,4 @@ const Register: NextPage = () => {
   )
 }
 
-export default Register
+export default Search
