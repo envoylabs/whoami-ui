@@ -34,7 +34,7 @@ function WalletLoader({
     ) : (
       <>
         <p>
-          Please install the{' '}
+          Please connect your{' '}
           <a href="https://keplr.app" className="link">
             Keplr wallet
           </a>{' '}

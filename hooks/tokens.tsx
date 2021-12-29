@@ -30,7 +30,7 @@ export function useTokenList() {
     }
 
     getTokens()
-  }, [tokens.length])
+  }, [tokens.length, walletAddress])
 
   return { tokens, loadingTokens }
 }
