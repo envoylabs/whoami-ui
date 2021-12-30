@@ -1,8 +1,7 @@
 import type { NextPage } from 'next'
-import WalletLoader from 'components/WalletLoader'
 import NameSearch from 'components/NameSearch'
 import { useEffect, useState } from 'react'
-import { useSigningClient } from 'contexts/cosmwasm'
+import { getNonSigningClient } from 'hooks/cosmwasm'
 import { Metadata } from 'util/types/messages'
 import TokenSearchResult from 'components/TokenSearchResult'
 import Loader from 'components/Loader'
@@ -13,19 +12,15 @@ const Search: NextPage = () => {
   const [token, setToken] = useState<Metadata | undefined>()
   const [loading, setLoading] = useState(false)
 
-  const { signingClient } = useSigningClient()
-
   useEffect(() => {
-    if (!signingClient) {
-      return
-    }
     const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
     const doLoad = async (name: string) => {
       setLoading(true)
       try {
+        const client = await getNonSigningClient()
         // If this query fails it means that the token does not exist.
-        const token = await signingClient.queryContractSmart(contract, {
+        const token = await client.queryContractSmart(contract, {
           nft_info: {
             token_id: name,
           },
@@ -40,7 +35,7 @@ const Search: NextPage = () => {
   }, [searchQuery])
 
   return (
-    <WalletLoader>
+    <>
       <h1 className="text-6xl font-bold mb-2">Find a name</h1>
       <NameSearch query={searchQuery} setQuery={setSearchQuery} />
       {searchQuery !== '' ? (
@@ -54,12 +49,13 @@ const Search: NextPage = () => {
                 token={token}
                 avaliable={!token}
                 valid={searchQuery.length < 21 ? true : false}
+                loggedIn={false}
               />
             )}
           </div>
         </>
       ) : null}
-    </WalletLoader>
+    </>
   )
 }
 

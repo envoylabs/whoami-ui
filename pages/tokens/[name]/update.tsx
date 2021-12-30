@@ -1,18 +1,22 @@
 import type { NextPage } from 'next'
-import InputField from 'components/InputField'
-import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { OptionString } from 'util/types/base'
-import { Metadata } from 'util/types/messages'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { useForm, UseFormRegister } from 'react-hook-form'
 import WalletLoader from 'components/WalletLoader'
-import { TokenCard } from 'components/NameCard'
+import InputField from 'components/InputField'
 import { useSigningClient } from 'contexts/cosmwasm'
-import { defaultMintFee, getMintCost } from 'util/fee'
+import { useToken } from 'hooks/token'
+import { defaultExecuteFee } from 'util/fee'
 import { defaultMemo } from 'util/memo'
+import * as msgs from 'util/messages'
+import * as mt from 'util/types/messages'
+import { OptionString } from 'util/types/base'
 import Loader from 'components/Loader'
 import * as R from 'ramda'
 
+// similar to the create form
+// these are the update values
 type FormValues = {
   image: OptionString
   image_data: OptionString
@@ -27,35 +31,58 @@ type FormValues = {
   validator_operator_address: OptionString
 }
 
-const defaults = {
-  image: null,
-  image_data: null,
-  email: null,
-  external_url: null,
-  public_name: null,
-  public_bio: null,
-  twitter_id: null,
-  discord_id: null,
-  telegram_id: null,
-  keybase_id: null,
-  validator_operator_address: null,
-}
-
-const Mint: NextPage = () => {
+const TokenUpdate: NextPage = () => {
   const router = useRouter()
-  const { signingClient, walletAddress } = useSigningClient()
+  const tokenName = router.query.name as string
+
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-  const [token, setToken] = useState(defaults)
   const [loading, setLoading] = useState(false)
 
-  const { register, handleSubmit } = useForm<FormValues>({
-    defaultValues: defaults,
-  })
+  const [token, setToken] = useState<Metadata>()
 
-  if (!router.isReady) {
-    return null
-  }
-  const token_id = router.query.name as string
+  const { signingClient, walletAddress } = useSigningClient()
+
+  useEffect(() => {
+    if (!tokenName || !signingClient) {
+      return
+    }
+
+    const getToken = async () => {
+      //setLoading(true)
+      try {
+        let tokenInfo = await signingClient.queryContractSmart(
+          contractAddress,
+          {
+            nft_info: {
+              token_id: tokenName,
+            },
+          }
+        )
+        setToken(tokenInfo.extension)
+        //setLoading(false)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    getToken()
+  }, [tokenName])
+
+  const { register, handleSubmit } = useForm<FormValues>({
+    defaultValues: {
+      image: token?.image || null,
+      image_data: token?.image_data || null,
+      email: token?.email || null,
+      external_url: token?.external_url || null,
+      public_name: token?.public_name || null,
+      public_bio: token?.public_bio || null,
+      twitter_id: token?.twitter_id || null,
+      discord_id: token?.discord_id || null,
+      telegram_id: token?.telegram_id || null,
+      keybase_id: token?.keybase_id || null,
+      validator_operator_address: token?.validator_operator_address || null,
+    },
+  })
 
   const onSubmit = async (data: FormValues) => {
     if (!signingClient) {
@@ -79,11 +106,9 @@ const Mint: NextPage = () => {
     } = data
 
     const msg = {
-      mint: {
-        owner: walletAddress,
-        token_id: token_id,
-        token_uri: null, // TODO - support later
-        extension: {
+      update_metadata: {
+        token_id: tokenName,
+        metadata: {
           image,
           image_data, // TODO - support later
           email,
@@ -100,18 +125,15 @@ const Mint: NextPage = () => {
     }
 
     try {
-      const mintCost = getMintCost(token_id)
-
-      let mintedToken = await signingClient.execute(
+      let updatedToken = await signingClient.execute(
         walletAddress,
         contractAddress,
         msg,
-        defaultMintFee,
-        defaultMemo,
-        mintCost
+        defaultExecuteFee,
+        defaultMemo
       )
-      if (mintedToken) {
-        router.push(`/ids/${token_id}`)
+      if (updatedToken) {
+        router.push(`/tokens/${tokenName}`)
         setLoading(false)
       }
     } catch (e) {
@@ -142,9 +164,7 @@ const Mint: NextPage = () => {
         label={i[1] as string}
         register={register}
         optional={i[2] as boolean}
-        onChange={(e) => {
-          setToken((curr) => ({ ...curr, [i[0] as string]: e.target.value }))
-        }}
+        onChange={() => {}}
       />
     ),
     fields
@@ -155,28 +175,26 @@ const Mint: NextPage = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex flex-wrap">
-          <div className="mr-3">
-            <div className="sticky top-5 mt-5">
-              <TokenCard
-                name={router.query.name as string}
-                token={token as Metadata}
-              />
-            </div>
+        <>
+          <h1 className="text-3xl font-bold">Update your profile</h1>
+
+          <div className="p-6">
+            <p>Update the data associated with your username.</p>
           </div>
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <>{inputs}</>
 
             <input
               type="submit"
-              className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
-              value="Create Username"
+              className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
+              value="Update profile"
             />
           </form>
-        </div>
+        </>
       )}
     </WalletLoader>
   )
 }
 
-export default Mint
+export default TokenUpdate

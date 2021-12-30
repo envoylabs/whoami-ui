@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { connectKeplr } from 'services/keplr'
-import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate'
+import {
+  SigningCosmWasmClient,
+  CosmWasmClient,
+} from '@cosmjs/cosmwasm-stargate'
 
 export interface ISigningCosmWasmClientContext {
   walletAddress: string
@@ -69,4 +72,9 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
     connectWallet,
     disconnect,
   }
+}
+
+export const getNonSigningClient = async () => {
+  const client = await CosmWasmClient.connect(PUBLIC_RPC_ENDPOINT)
+  return client
 }
