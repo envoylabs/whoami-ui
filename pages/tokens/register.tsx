@@ -53,6 +53,7 @@ const Register: NextPage = () => {
                 token={token}
                 avaliable={!token}
                 valid={searchQuery.length < 21 ? true : false}
+                loggedIn={true}
               />
             )}
           </div>

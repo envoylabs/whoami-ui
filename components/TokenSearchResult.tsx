@@ -8,11 +8,13 @@ export default function TokenSearchResult({
   token,
   avaliable,
   valid,
+  loggedIn,
 }: {
   name: string
   token: Metadata | undefined
   avaliable: boolean
   valid: boolean
+  loggedIn: boolean
 }) {
   return (
     <div>
@@ -58,21 +60,31 @@ export default function TokenSearchResult({
           }
         }
       />
-      {avaliable ? (
-        valid ? (
+      {loggedIn ? (
+        avaliable ? (
+          valid ? (
+            <div className="p-1">
+              <Link href={`/tokens/mint/${name}`} passHref>
+                <a className="btn btn-outline mt-6">
+                  <p className="font-bold flex">{`Mint your new id`}</p>
+                </a>
+              </Link>
+            </div>
+          ) : null
+        ) : (
           <div className="p-1">
-            <Link href={`/ids/mint/${name}`} passHref>
+            <Link href={`/tokens/${name}`} passHref>
               <a className="btn btn-outline mt-6">
-                <p className="font-bold flex">{`Mint your new id`}</p>
+                <p className="font-bold flex">{`View`}</p>
               </a>
             </Link>
           </div>
-        ) : null
+        )
       ) : (
         <div className="p-1">
           <Link href={`/ids/${name}`} passHref>
             <a className="btn btn-outline mt-6">
-              <p className="font-bold flex">{`View token`}</p>
+              <p className="font-bold flex">{`View`}</p>
             </a>
           </Link>
         </div>

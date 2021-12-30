@@ -1,7 +1,7 @@
+import { useState, useEffect } from 'react'
 import type { NextPage } from 'next'
-import WalletLoader from 'components/WalletLoader'
 import { NameCard } from 'components/NameCard'
-import { useSigningClient } from 'contexts/cosmwasm'
+import { getNonSigningClient } from 'hooks/cosmwasm'
 import { useToken } from 'hooks/token'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
 import { defaultExecuteFee } from 'util/fee'
@@ -13,99 +13,54 @@ import { Metadata } from 'util/types/messages'
 import { useTokenList } from 'hooks/tokens'
 
 const TokenView: NextPage = () => {
-  const { walletAddress, signingClient } = useSigningClient()
-  const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+  const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
   const tokenName = router.query.name as string
-  const { token } = useToken(tokenName)
-  const { tokens } = useTokenList()
-  const { alias, loadingAlias } = usePrimaryAlias()
 
-  const { register, handleSubmit } = useForm()
+  const [token, setToken] = useState<Metadata>()
+  const [loading, setLoading] = useState(false)
 
-  const onSubmit = async () => {
-    if (!signingClient) {
-      return
-    }
+  useEffect(() => {
+    if (!tokenName) return
 
-    const msg = {
-      update_primary_alias: {
-        token_id: tokenName,
-      },
-    }
-
-    try {
-      let updatedToken = await signingClient.execute(
-        walletAddress,
-        contractAddress,
-        msg,
-        defaultExecuteFee,
-        defaultMemo
-      )
-      if (updatedToken) {
-        router.push(`/ids/manage`)
+    const getToken = async () => {
+      setLoading(true)
+      try {
+        const client = await getNonSigningClient()
+        let tokenInfo = await client.queryContractSmart(contract, {
+          nft_info: {
+            token_id: tokenName,
+          },
+        })
+        setToken(tokenInfo.extension)
+        setLoading(false)
+      } catch (e) {
+        console.log(e)
       }
-    } catch (e) {
-      // TODO env var for dev logging
-      // console.log(e)
     }
-  }
 
-  if (!tokenName) {
-    return null
-  }
+    getToken()
+  }, [tokenName])
 
   return (
-    <WalletLoader>
+    <>
       {token ? (
         <>
           <NameCard name={tokenName} token={token as Metadata} />
           <div className="flex flex-wrap">
             <div className="p-1">
-              <Link href={`/ids/manage`} passHref>
+              <Link href={`/ids/search`} passHref>
                 <a className="btn btn-outline mt-6">
-                  <p className="font-bold flex">{`< Back`}</p>
+                  <p className="font-bold flex">{`< Back to search`}</p>
                 </a>
               </Link>
             </div>
-
-            <div className="p-1">
-              <Link href={`/ids/${tokenName}/update`} passHref>
-                <a className="btn btn-outline mt-6">
-                  <p className="font-bold flex">{`Update metadata`}</p>
-                </a>
-              </Link>
-            </div>
-
-            {(alias as string) !== tokenName &&
-            '' !== tokenName &&
-            signingClient ? (
-              <div className="p-1">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <input
-                    type="submit"
-                    className="btn btn-outline mt-6"
-                    value="Set as primary"
-                  />
-                </form>
-              </div>
-            ) : null}
-
-            {tokenName && tokens && tokens.includes(tokenName) ? (
-              <div className="p-1">
-                <Link href={`/ids/${tokenName}/burn`} passHref>
-                  <a className="btn btn-outline mt-6">
-                    <p className="font-bold flex">{`Burn`}</p>
-                  </a>
-                </Link>
-              </div>
-            ) : null}
           </div>
         </>
       ) : (
         <h1 className="text-6xl font-bold">Not found</h1>
       )}
-    </WalletLoader>
+    </>
   )
 }
 

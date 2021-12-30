@@ -26,7 +26,7 @@ export function useToken(tokenId: string) {
         setToken(tokenInfo.extension)
         setLoading(false)
       } catch (e) {
-        console.error(e.error)
+        console.log(e)
       }
     }
 

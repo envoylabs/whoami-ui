@@ -2,27 +2,27 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import WalletLoader from 'components/WalletLoader'
 import PageLink from 'components/PageLink'
-import { useSigningClient } from 'contexts/cosmwasm'
+//import { useSigningClient } from 'contexts/cosmwasm'
 import { LibraryIcon, MapIcon, PencilIcon } from '@heroicons/react/solid'
 
 const Home: NextPage = () => {
-  const { walletAddress } = useSigningClient()
+  //const { walletAddress } = useSigningClient()
 
   return (
-    <WalletLoader>
+    <>
       <h1 className="text-6xl font-bold">
         {process.env.NEXT_PUBLIC_SITE_TITLE}
       </h1>
       <p className="italic">Decentralized Name Service</p>
 
       <PageLink
-        href="/ids/register"
+        href="/tokens/register"
         title="Register"
         description="Register and configure a new name"
         Icon={LibraryIcon}
       />
       <PageLink
-        href="/ids/manage"
+        href="/tokens/manage"
         title="Manage"
         description="Transfer, edit, or burn a name that you own"
         Icon={PencilIcon}
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
         description="Lookup addresses and explore registered names"
         Icon={MapIcon}
       />
-    </WalletLoader>
+    </>
   )
 }
 
