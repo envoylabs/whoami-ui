@@ -40,7 +40,7 @@ const ListUsernames: NextPage = () => {
     }
 
     getAlias()
-  }, [address])
+  }, [address, contract])
 
   const [tokens, setTokens] = useState<Array<string>>([])
 
@@ -64,7 +64,7 @@ const ListUsernames: NextPage = () => {
     }
 
     getTokens()
-  }, [address])
+  }, [address, contract])
 
   return (
     <>

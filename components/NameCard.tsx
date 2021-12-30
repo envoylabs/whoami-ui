@@ -17,14 +17,14 @@ export function TokenCard({ name, token }: { name: string; token: Metadata }) {
       <figure>
         <img
           src={token.image ? token.image : '/dens.svg'}
-          alt="The tokens profile image"
+          alt="The image associated with this name"
           onError={(e) => {
             // Cast is needed because typescript wants to
             // support all possible browsers. This is a well
             // known pattern `https://dillionmegida.com/p/default-image-src/`
             let event = e as any
             event.onerror = null
-            event.target.src = '/JUNO.svg'
+            event.target.src = '/dens.svg'
           }}
         />
       </figure>

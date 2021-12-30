@@ -12,6 +12,7 @@ import { defaultMemo } from 'util/memo'
 import * as msgs from 'util/messages'
 import * as mt from 'util/types/messages'
 import { OptionString } from 'util/types/base'
+import { Metadata } from 'util/types/messages'
 import Loader from 'components/Loader'
 import * as R from 'ramda'
 
@@ -66,7 +67,7 @@ const TokenUpdate: NextPage = () => {
     }
 
     getToken()
-  }, [tokenName])
+  }, [tokenName, contractAddress, signingClient])
 
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
