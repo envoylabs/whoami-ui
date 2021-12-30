@@ -40,7 +40,7 @@ const TokenView: NextPage = () => {
     }
 
     getToken()
-  }, [tokenName])
+  }, [tokenName, contract])
 
   return (
     <>

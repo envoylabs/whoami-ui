@@ -36,7 +36,7 @@ const Register: NextPage = () => {
       setLoading(false)
     }
     doLoad(searchQuery)
-  }, [searchQuery])
+  }, [searchQuery, signingClient])
 
   return (
     <WalletLoader>
