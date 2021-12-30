@@ -1,7 +1,7 @@
 {
   "junoLight": {
-    "primary": "#f0827d",
-    "primary-focus": "#e67873",
+    "primary": "#ec008c",
+    "primary-focus": "#00aeef",
     "primary-content": "#fff",
     "secondary": "#9f9f9f",
     "secondary-focus": "#959595",
@@ -22,8 +22,8 @@
     "error": "#f06c65"
   },
   "junoDark": {
-    "primary": "#f0827d",
-    "primary-focus": "#e67873",
+    "primary": "#ec008c",
+    "primary-focus": "#00aeef",
     "primary-content": "#2b303b",
     "secondary": "#9f9f9f",
     "secondary-focus": "#959595",
