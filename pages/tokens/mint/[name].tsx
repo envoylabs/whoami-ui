@@ -7,8 +7,13 @@ import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
 import WalletLoader from 'components/WalletLoader'
 import { TokenCard } from 'components/NameCard'
+import { Error } from 'components/Error'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { defaultMintFee, getMintCost } from 'util/fee'
+import {
+  convertMicroDenomToDenom,
+  convertDenomToHumanReadableDenom,
+} from 'util/conversion'
 import { defaultMemo } from 'util/memo'
 import Loader from 'components/Loader'
 import * as R from 'ramda'
@@ -45,8 +50,10 @@ const Mint: NextPage = () => {
   const router = useRouter()
   const { signingClient, walletAddress } = useSigningClient()
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+  const denom = process.env.NEXT_PUBLIC_STAKING_DENOM
   const [token, setToken] = useState(defaults)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
 
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: defaults,
@@ -56,6 +63,13 @@ const Mint: NextPage = () => {
     return null
   }
   const token_id = router.query.name as string
+
+  // this returns an array of denoms.
+  // in practice we usually want the first for display
+  // and the array for sending to the contract
+  const mintCost = getMintCost(token_id)
+  const humanMintCost = convertMicroDenomToDenom(mintCost[0].amount)
+  const humanDenom = R.toUpper(convertDenomToHumanReadableDenom(denom))
 
   const onSubmit = async (data: FormValues) => {
     if (!signingClient) {
@@ -78,10 +92,14 @@ const Mint: NextPage = () => {
       validator_operator_address,
     } = data
 
+    // this should already be done,
+    // but paranoia, ok?
+    const normalizedTokenId = R.toLower(token_id)
+
     const msg = {
       mint: {
         owner: walletAddress,
-        token_id: token_id,
+        token_id: normalizedTokenId,
         token_uri: null, // TODO - support later
         extension: {
           image,
@@ -100,7 +118,7 @@ const Mint: NextPage = () => {
     }
 
     try {
-      const mintCost = getMintCost(token_id)
+      // const mintCost = getMintCost(token_id)
 
       let mintedToken = await signingClient.execute(
         walletAddress,
@@ -117,6 +135,7 @@ const Mint: NextPage = () => {
     } catch (e) {
       // TODO env var for dev logging
       // console.log(e)
+      setError(e.message)
       setLoading(false)
     }
   }
@@ -155,25 +174,51 @@ const Mint: NextPage = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex flex-wrap">
-          <div className="mr-3">
-            <div className="sticky top-5 mt-5">
-              <TokenCard
-                name={router.query.name as string}
-                token={token as Metadata}
+        <>
+          <div
+            class="flex items-center bg-blue-500 text-white text-sm font-bold px-4 py-3"
+            role="alert"
+          >
+            <svg
+              class="fill-current w-4 h-4 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z" />
+            </svg>
+            <p>
+              The mint cost for this token is {humanMintCost}
+              {humanDenom}
+            </p>
+          </div>
+          {error && (
+            <div class="py-4">
+              <Error
+                errorTitle={'Something went wrong!'}
+                errorMessage={error}
               />
             </div>
-          </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <>{inputs}</>
+          )}
+          <div className="flex flex-wrap">
+            <div className="mr-3">
+              <div className="sticky top-5 mt-5">
+                <TokenCard
+                  name={router.query.name as string}
+                  token={token as Metadata}
+                />
+              </div>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <>{inputs}</>
 
-            <input
-              type="submit"
-              className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
-              value="Create Username"
-            />
-          </form>
-        </div>
+              <input
+                type="submit"
+                className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
+                value="Create Username"
+              />
+            </form>
+          </div>
+        </>
       )}
     </WalletLoader>
   )

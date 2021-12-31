@@ -2,6 +2,7 @@ import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/solid'
 import { Metadata } from 'util/types/messages'
 import { TokenCard } from './NameCard'
 import Link from 'next/link'
+import * as R from 'ramda'
 
 export default function TokenSearchResult({
   name,
@@ -16,6 +17,8 @@ export default function TokenSearchResult({
   valid: boolean
   loggedIn: boolean
 }) {
+  const normalizedName = R.toLower(name)
+
   return (
     <div>
       {avaliable ? (
@@ -43,7 +46,7 @@ export default function TokenSearchResult({
         </div>
       )}
       <TokenCard
-        name={name}
+        name={normalizedName}
         token={
           token || {
             image: null,
@@ -64,7 +67,7 @@ export default function TokenSearchResult({
         avaliable ? (
           valid ? (
             <div className="p-1">
-              <Link href={`/tokens/mint/${name}`} passHref>
+              <Link href={`/tokens/mint/${normalizedName}`} passHref>
                 <a className="btn btn-outline mt-6">
                   <p className="font-bold flex">{`Mint your new id`}</p>
                 </a>
@@ -73,7 +76,7 @@ export default function TokenSearchResult({
           ) : null
         ) : (
           <div className="p-1">
-            <Link href={`/tokens/${name}`} passHref>
+            <Link href={`/tokens/${normalizedName}`} passHref>
               <a className="btn btn-outline mt-6">
                 <p className="font-bold flex">{`View`}</p>
               </a>
@@ -82,7 +85,7 @@ export default function TokenSearchResult({
         )
       ) : (
         <div className="p-1">
-          <Link href={`/ids/${name}`} passHref>
+          <Link href={`/ids/${normalizedName}`} passHref>
             <a className="btn btn-outline mt-6">
               <p className="font-bold flex">{`View`}</p>
             </a>
