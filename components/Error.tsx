@@ -7,7 +7,6 @@ export function Error({
   errorTitle: string
   errorMessage?: string
 }) {
-  if (R.isNil(errorMessage) || R.isEmpty(errorMessage)) return null
 
   return (
     <div
