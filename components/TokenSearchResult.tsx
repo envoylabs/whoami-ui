@@ -54,7 +54,7 @@ export default function TokenSearchResult({
             email: null,
             external_url: null,
             public_name: null,
-            public_bio: 'your bio here!',
+            public_bio: (loggedIn ? 'your bio here!' : null),
             twitter_id: null,
             discord_id: null,
             telegram_id: null,
