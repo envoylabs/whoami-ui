@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { NextPage } from 'next'
 import { NameCard } from 'components/NameCard'
+import { Notice } from 'components/Notice'
 import { getNonSigningClient } from 'hooks/cosmwasm'
 import { useToken } from 'hooks/token'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
@@ -35,17 +36,46 @@ const TokenView: NextPage = () => {
         setToken(tokenInfo.extension)
         setLoading(false)
       } catch (e) {
-        console.log(e)
+        // console.log(e)
       }
     }
 
     getToken()
   }, [tokenName, contract])
 
+  const [owner, setOwner] = useState()
+
+  useEffect(() => {
+    if (!tokenName) return
+
+    const getOwner = async () => {
+      setLoading(true)
+      try {
+        const client = await getNonSigningClient()
+        let owner = await client.queryContractSmart(contract, {
+          owner_of: {
+            token_id: tokenName,
+          },
+        })
+        setOwner(owner.owner)
+        setLoading(false)
+      } catch (e) {
+        // console.log(e)
+      }
+    }
+
+    getOwner()
+  }, [tokenName, contract])
+
   return (
     <>
       {token ? (
         <>
+          {owner && (
+            <div className="py-4">
+              <Notice message={`Address: ${owner}`} />
+            </div>
+          )}
           <NameCard name={tokenName} token={token as Metadata} />
           <div className="flex flex-wrap">
             <div className="p-1">

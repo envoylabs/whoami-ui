@@ -1,3 +1,5 @@
+import * as R from 'ramda'
+
 export default function NameSearch({
   query,
   setQuery,
@@ -5,6 +7,9 @@ export default function NameSearch({
   query: string
   setQuery: Function
 }) {
+  const normalize = (inputString: string) =>
+    R.replace(/[^a-z0-9\-\_]/g, '', inputString)
+
   return (
     <div className="form-control w-96">
       <label className="label">
@@ -15,7 +20,9 @@ export default function NameSearch({
         placeholder="name"
         className="input input-primary input-bordered"
         value={query}
-        onInput={(e) => setQuery((e.target as HTMLTextAreaElement).value)}
+        onInput={(e) =>
+          setQuery(normalize((e.target as HTMLTextAreaElement).value))
+        }
         spellCheck="false"
       />
     </div>

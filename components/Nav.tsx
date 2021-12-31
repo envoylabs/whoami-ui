@@ -42,7 +42,7 @@ function Nav() {
     }
 
     getAlias()
-  }, [walletAddress, contract, signingClient])
+  }, [alias, walletAddress, contract, signingClient])
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 

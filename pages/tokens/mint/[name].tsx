@@ -7,8 +7,14 @@ import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
 import WalletLoader from 'components/WalletLoader'
 import { TokenCard } from 'components/NameCard'
+import { Error } from 'components/Error'
+import { Notice } from 'components/Notice'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { defaultMintFee, getMintCost } from 'util/fee'
+import {
+  convertMicroDenomToDenom,
+  convertDenomToHumanReadableDenom,
+} from 'util/conversion'
 import { defaultMemo } from 'util/memo'
 import Loader from 'components/Loader'
 import * as R from 'ramda'
@@ -45,8 +51,10 @@ const Mint: NextPage = () => {
   const router = useRouter()
   const { signingClient, walletAddress } = useSigningClient()
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+  const denom = process.env.NEXT_PUBLIC_STAKING_DENOM as string
   const [token, setToken] = useState(defaults)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
 
   const { register, handleSubmit } = useForm<FormValues>({
     defaultValues: defaults,
@@ -56,6 +64,13 @@ const Mint: NextPage = () => {
     return null
   }
   const token_id = router.query.name as string
+
+  // this returns an array of denoms.
+  // in practice we usually want the first for display
+  // and the array for sending to the contract
+  const mintCost = getMintCost(token_id)
+  const humanMintCost = convertMicroDenomToDenom(mintCost[0].amount)
+  const humanDenom = R.toUpper(convertDenomToHumanReadableDenom(denom))
 
   const onSubmit = async (data: FormValues) => {
     if (!signingClient) {
@@ -78,10 +93,14 @@ const Mint: NextPage = () => {
       validator_operator_address,
     } = data
 
+    // this should already be done,
+    // but paranoia, ok?
+    const normalizedTokenId = R.toLower(token_id)
+
     const msg = {
       mint: {
         owner: walletAddress,
-        token_id: token_id,
+        token_id: normalizedTokenId,
         token_uri: null, // TODO - support later
         extension: {
           image,
@@ -100,7 +119,7 @@ const Mint: NextPage = () => {
     }
 
     try {
-      const mintCost = getMintCost(token_id)
+      // const mintCost = getMintCost(token_id)
 
       let mintedToken = await signingClient.execute(
         walletAddress,
@@ -117,6 +136,7 @@ const Mint: NextPage = () => {
     } catch (e) {
       // TODO env var for dev logging
       // console.log(e)
+      setError(e.message)
       setLoading(false)
     }
   }
@@ -155,25 +175,39 @@ const Mint: NextPage = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex flex-wrap">
-          <div className="mr-3">
-            <div className="sticky top-5 mt-5">
-              <TokenCard
-                name={router.query.name as string}
-                token={token as Metadata}
+        <>
+          <Notice
+            message={`The mint cost for this token is ${humanMintCost} ${humanDenom}`}
+          />
+
+          {error && (
+            <div className="py-4">
+              <Error
+                errorTitle={'Something went wrong!'}
+                errorMessage={error}
               />
             </div>
-          </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <>{inputs}</>
+          )}
+          <div className="flex flex-wrap">
+            <div className="mr-3">
+              <div className="sticky top-5 mt-5">
+                <TokenCard
+                  name={router.query.name as string}
+                  token={token as Metadata}
+                />
+              </div>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <>{inputs}</>
 
-            <input
-              type="submit"
-              className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
-              value="Create Username"
-            />
-          </form>
-        </div>
+              <input
+                type="submit"
+                className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
+                value="Create Username"
+              />
+            </form>
+          </div>
+        </>
       )}
     </WalletLoader>
   )
