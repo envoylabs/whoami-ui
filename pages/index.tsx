@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import WalletLoader from 'components/WalletLoader'
 import PageLink from 'components/PageLink'
-//import { useSigningClient } from 'contexts/cosmwasm'
 import { LibraryIcon, MapIcon, PencilIcon } from '@heroicons/react/solid'
 
 const Home: NextPage = () => {
