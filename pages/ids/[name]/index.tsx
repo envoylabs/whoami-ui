@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import type { NextPage } from 'next'
 import { NameCard } from 'components/NameCard'
 import { Notice } from 'components/Notice'
+import { CopyInput } from 'components/CopyInput'
 import { getNonSigningClient } from 'hooks/cosmwasm'
 import { useToken } from 'hooks/token'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
@@ -71,12 +72,12 @@ const TokenView: NextPage = () => {
     <>
       {token ? (
         <>
+          <NameCard name={tokenName} token={token as Metadata} />
           {owner && (
             <div className="py-4">
-              <Notice message={`Address: ${owner}`} />
+              <CopyInput inputText={owner!} label={'Copy Wallet Address'} />
             </div>
           )}
-          <NameCard name={tokenName} token={token as Metadata} />
           <div className="flex flex-wrap">
             <div className="p-1">
               <Link href={`/ids/search`} passHref>
