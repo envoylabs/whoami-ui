@@ -43,13 +43,15 @@ const TokenUpdate: NextPage = () => {
 
   const { signingClient, walletAddress } = useSigningClient()
 
+  const { register, handleSubmit, reset } = useForm<FormValues>()
+
   useEffect(() => {
     if (!tokenName || !signingClient) {
       return
     }
 
     const getToken = async () => {
-      //setLoading(true)
+      setLoading(true)
       try {
         let tokenInfo = await signingClient.queryContractSmart(
           contractAddress,
@@ -60,30 +62,29 @@ const TokenUpdate: NextPage = () => {
           }
         )
         setToken(tokenInfo.extension)
-        //setLoading(false)
+        reset({
+          image: tokenInfo.extension.image,
+          image_data: tokenInfo.extension.image_data,
+          email: tokenInfo.extension.email,
+          external_url: tokenInfo.extension.external_url,
+          public_name: tokenInfo.extension.public_name,
+          public_bio: tokenInfo.extension.public_bio,
+          twitter_id: tokenInfo.extension.twitter_id,
+          discord_id: tokenInfo.extension.discord_id,
+          telegram_id: tokenInfo.extension.telegram_id,
+          keybase_id: tokenInfo.extension.keybase_id,
+          validator_operator_address:
+            tokenInfo.extension.validator_operator_address,
+        })
+        setLoading(false)
       } catch (e) {
-        console.log(e)
+        // console.log(e)
+        setLoading(false)
       }
     }
 
     getToken()
-  }, [tokenName, contractAddress, signingClient])
-
-  const { register, handleSubmit } = useForm<FormValues>({
-    defaultValues: {
-      image: token?.image || null,
-      image_data: token?.image_data || null,
-      email: token?.email || null,
-      external_url: token?.external_url || null,
-      public_name: token?.public_name || null,
-      public_bio: token?.public_bio || null,
-      twitter_id: token?.twitter_id || null,
-      discord_id: token?.discord_id || null,
-      telegram_id: token?.telegram_id || null,
-      keybase_id: token?.keybase_id || null,
-      validator_operator_address: token?.validator_operator_address || null,
-    },
-  })
+  }, [tokenName, contractAddress, signingClient, reset])
 
   const onSubmit = async (data: FormValues) => {
     if (!signingClient) {
