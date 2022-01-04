@@ -75,7 +75,7 @@ const TokenView: NextPage = () => {
           <NameCard name={tokenName} token={token as Metadata} />
           {owner && (
             <div className="py-4">
-              <CopyInput inputText={owner!} label={'Copy Wallet Address'} />
+              <CopyInput inputText={owner!} label={'Copy'} />
             </div>
           )}
           <div className="flex flex-wrap">
