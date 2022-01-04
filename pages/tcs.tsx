@@ -1,18 +1,21 @@
+import type { NextPage } from 'next'
+
 const Tcs: NextPage = () => {
   return (
     <div className="flex flex-col items-center text-left md:w-1/2 p-4">
       <h2 className="text-4xl p-4 font-bold">TERMS AND CONDITIONS OF USE</h2>
 
       <p className="p-2">
-        The Decentralized Name Service (referred to in these terms as 'DENS') is
-        a distributed application, or dApp, that runs on the Juno network,
-        although it can be run on any CosmWasm-enabled chain. It runs on a
-        custom smart contract developed and maintained by Envoy Labs. The Smart
-        Contract(s) that power The Decentralized Name Service, and the
-        user-interface are referred to in these terms as the 'App'. The DENS
-        contributors and Envoy Labs are collectively referred to as its
-        'Authors'. DENS allows users to mint 'names', also referred to as
-        Tokens, CosmWasm Tokens, or NFTs. These use the CosmWasm NFT standard.
+        The Decentralized Name Service (referred to in these terms as
+        &lsquo;DENS&rsquo;) is a distributed application, or dApp, that runs on
+        the Juno network, although it can be run on any CosmWasm-enabled chain.
+        It runs on a custom smart contract developed and maintained by Envoy
+        Labs. The Smart Contract(s) that power The Decentralized Name Service,
+        and the user-interface are referred to in these terms as the
+        &lsquo;App&rsquo;. The DENS contributors and Envoy Labs are collectively
+        referred to as its &lsquo;Authors&lsquo;. DENS allows users to mint
+        &lsquo;Names&rsquo;, also referred to as Tokens, CosmWasm Tokens, or
+        NFTs. These use the CosmWasm NFT standard.
       </p>
 
       <h2 className="text-4xl p-4 font-bold">AGREEMENT TO TERMS</h2>
@@ -33,9 +36,9 @@ const Tcs: NextPage = () => {
       </p>
 
       <p className="p-2">
-        We will alert you about any changes by updating the 'Last updated' date
-        of these Terms and Conditions, and you waive any right to receive
-        specific notice of each such change.
+        We will alert you about any changes by updating the &lsquo;Last
+        updated&rsquo; date of these Terms and Conditions, and you waive any
+        right to receive specific notice of each such change.
       </p>
 
       <p className="p-2">
@@ -121,9 +124,9 @@ const Tcs: NextPage = () => {
 
       <p className="p-2">
         The App may include hyperlinks to other websites or resources
-        (collectively, 'External Sites'), which are provided solely as a
-        convenience to our users. We have no control over any External Sites.
-        You acknowledge and agree that we are not responsible for the
+        (collectively, &lsquo;External Sites&rsquo;), which are provided solely
+        as a convenience to our users. We have no control over any External
+        Sites. You acknowledge and agree that we are not responsible for the
         availability of any External Sites, and that we do not endorse any
         advertising, products or other materials on or made available from any
         External Sites. Furthermore, you acknowledge and agree that we are not
