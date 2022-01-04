@@ -2,7 +2,6 @@ import { ReactNode } from 'react'
 import Head from 'next/head'
 import Nav from './Nav'
 import Link from 'next/link'
-import { ClipboardIcon } from '@heroicons/react/solid'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -18,7 +17,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         {children}
       </main>
       <footer className="flex flex-wrap items-center justify-center md:w-1/2 h-24 border-t">
-        <div className="flex flex-row break-after-auto pt-4">
+        <div className="md:w-full items-center justify-center text-center pt-4">
           Powered by{' '}
           <a
             className="pl-1 link link-primary link-hover"
@@ -42,7 +41,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </a>
           .
         </div>
-        <div className="text-center pb-4">
+        <div className="md:w-full items-center justify-center text-center pb-4">
           <p>
             This is <strong>alpha software</strong>. By using it, you are
             agreeing to the
