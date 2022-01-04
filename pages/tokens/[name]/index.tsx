@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import { NameCard } from 'components/NameCard'
+import { CopyInput } from 'components/CopyInput'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useToken } from 'hooks/token'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
@@ -22,6 +23,15 @@ const TokenView: NextPage = () => {
   const { alias, loadingAlias } = usePrimaryAlias()
 
   const { register, handleSubmit } = useForm()
+
+  const getHost = () => {
+    if (typeof window !== 'undefined') {
+      const host = window.location.host
+      return host
+    } else {
+      return process.env.NEXT_PUBLIC_HOST as string
+    }
+  }
 
   const onSubmit = async () => {
     if (!signingClient) {
@@ -60,6 +70,14 @@ const TokenView: NextPage = () => {
       {token ? (
         <>
           <NameCard name={tokenName} token={token as Metadata} />
+          <div className="flex flex-wrap">
+            <div className="py-4">
+              <CopyInput
+                inputText={`${getHost()}/ids/${tokenName}`}
+                label={'Copy'}
+              />
+            </div>
+          </div>
           <div className="flex flex-wrap">
             <div className="p-1">
               <Link href={`/tokens/manage`} passHref>

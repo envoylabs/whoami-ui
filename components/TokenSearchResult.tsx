@@ -83,7 +83,7 @@ export default function TokenSearchResult({
             </Link>
           </div>
         )
-      ) : (
+      ) : avaliable ? null : (
         <div className="p-1">
           <Link href={`/ids/${normalizedName}`} passHref>
             <a className="btn btn-outline mt-6">
