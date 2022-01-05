@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import { NameCard } from 'components/NameCard'
+import { Error } from 'components/Error'
 import { CopyInput } from 'components/CopyInput'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useToken } from 'hooks/token'
@@ -18,9 +20,10 @@ const TokenView: NextPage = () => {
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
   const tokenName = router.query.name as string
-  const { token } = useToken(tokenName)
+  const { token } = useToken(tokenName, walletAddress)
   const { tokens } = useTokenList()
   const { alias, loadingAlias } = usePrimaryAlias()
+  const [error, setError] = useState()
 
   const { register, handleSubmit } = useForm()
 
@@ -58,6 +61,7 @@ const TokenView: NextPage = () => {
     } catch (e) {
       // TODO env var for dev logging
       // console.log(e)
+      setError(e.message)
     }
   }
 
@@ -69,6 +73,14 @@ const TokenView: NextPage = () => {
     <WalletLoader>
       {token ? (
         <>
+          {error && (
+            <div className="py-4">
+              <Error
+                errorTitle={'Something went wrong!'}
+                errorMessage={error}
+              />
+            </div>
+          )}
           <NameCard name={tokenName} token={token as Metadata} />
           <div className="flex flex-wrap">
             <div className="py-4">
@@ -87,17 +99,10 @@ const TokenView: NextPage = () => {
               </Link>
             </div>
 
-            <div className="p-1">
-              <Link href={`/tokens/${tokenName}/update`} passHref>
-                <a className="btn btn-outline mt-6">
-                  <p className="font-bold flex">{`Update metadata`}</p>
-                </a>
-              </Link>
-            </div>
-
             {(alias as string) !== tokenName &&
             '' !== tokenName &&
-            signingClient ? (
+            signingClient &&
+            tokens.includes(tokenName) ? (
               <div className="p-1">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <input
@@ -110,18 +115,28 @@ const TokenView: NextPage = () => {
             ) : null}
 
             {tokenName && tokens && tokens.includes(tokenName) ? (
-              <div className="p-1">
-                <Link href={`/tokens/${tokenName}/burn`} passHref>
-                  <a className="btn btn-outline mt-6">
-                    <p className="font-bold flex">{`Burn`}</p>
-                  </a>
-                </Link>
-              </div>
+              <>
+                <div className="p-1">
+                  <Link href={`/tokens/${tokenName}/update`} passHref>
+                    <a className="btn btn-outline mt-6">
+                      <p className="font-bold flex">{`Update metadata`}</p>
+                    </a>
+                  </Link>
+                </div>
+
+                <div className="p-1">
+                  <Link href={`/tokens/${tokenName}/burn`} passHref>
+                    <a className="btn btn-outline mt-6">
+                      <p className="font-bold flex">{`Burn`}</p>
+                    </a>
+                  </Link>
+                </div>
+              </>
             ) : null}
           </div>
         </>
       ) : (
-        <h1 className="text-6xl font-bold">Not found</h1>
+        <h1 className="text-4xl font-bold">Not found</h1>
       )}
     </WalletLoader>
   )

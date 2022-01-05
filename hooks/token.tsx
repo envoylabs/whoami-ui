@@ -2,7 +2,7 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import { useEffect, useState } from 'react'
 import { Metadata } from 'util/types/messages'
 
-export function useToken(tokenId: string) {
+export function useToken(tokenId: string, walletAddress: string) {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
   const [token, setToken] = useState<Metadata>()
@@ -31,7 +31,7 @@ export function useToken(tokenId: string) {
     }
 
     getToken()
-  }, [tokenId])
+  }, [tokenId, walletAddress])
 
   return { token, loadingToken }
 }

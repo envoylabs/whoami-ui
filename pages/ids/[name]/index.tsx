@@ -89,7 +89,7 @@ const TokenView: NextPage = () => {
           </div>
         </>
       ) : (
-        <h1 className="text-6xl font-bold">Not found</h1>
+        <h1 className="text-4xl font-bold">Not found</h1>
       )}
     </>
   )

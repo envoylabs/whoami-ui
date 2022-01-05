@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
@@ -5,6 +6,7 @@ import { FireIcon } from '@heroicons/react/solid'
 import { useToken } from 'hooks/token'
 import { useRouter } from 'next/dist/client/router'
 import { TokenCard } from 'components/NameCard'
+import { Error } from 'components/Error'
 import { Metadata } from 'util/types/messages'
 import { useForm } from 'react-hook-form'
 import { defaultExecuteFee } from 'util/fee'
@@ -16,7 +18,8 @@ const BurnToken: NextPage = () => {
   const { handleSubmit } = useForm()
   const { signingClient, walletAddress } = useSigningClient()
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-  const { token } = useToken(tokenName)
+  const { token } = useToken(tokenName, walletAddress)
+  const [error, setError] = useState()
 
   if (!tokenName) {
     return null
@@ -45,13 +48,19 @@ const BurnToken: NextPage = () => {
       }
     } catch (e) {
       // TODO env var for dev logging
-      console.log(e)
+      // console.log(e)
+      setError(e.message)
     }
   }
 
   return (
     <WalletLoader>
       <div className="flex flex-wrap">
+        {error && (
+          <div className="py-4">
+            <Error errorTitle={'Something went wrong!'} errorMessage={error} />
+          </div>
+        )}
         {token ? (
           <TokenCard name={tokenName} token={token as Metadata} />
         ) : null}
