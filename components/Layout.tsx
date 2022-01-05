@@ -4,10 +4,11 @@ import Nav from './Nav'
 import Link from 'next/link'
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const siteTitle = process.env.NEXT_PUBLIC_SITE_TITLE
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-base-100 text-base-content">
       <Head>
-        <title>{process.env.NEXT_PUBLIC_SITE_TITLE}</title>
+        <title>{siteTitle}</title>
         <meta name="description" content="The Decentralized Name Service" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -40,6 +41,17 @@ export default function Layout({ children }: { children: ReactNode }) {
             Keplr
           </a>
           .
+        </div>
+        <div className="md:w-full items-center justify-center text-center">
+          <p>
+            To integrate with {siteTitle},
+            <Link href={'/integrating'} passHref>
+              <a className="pl-1 link link-primary link-hover">
+                follow these instructions
+              </a>
+            </Link>
+            .
+          </p>
         </div>
         <div className="md:w-full items-center justify-center text-center pb-4">
           <p>

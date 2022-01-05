@@ -1,13 +1,14 @@
 import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
 import Image from 'next/image'
+import * as R from 'ramda'
 
 function ItemDisplay({ name, contents }: { name: string; contents: string }) {
   return (
-    <>
+    <div className="flex-wrap">
       <h3 className="text-2xl">{name}</h3>
       <p className="font-mono text-lg text-accent">{contents}</p>
-    </>
+    </div>
   )
 }
 
@@ -52,13 +53,29 @@ export function NameCard({ name, token }: { name: string; token: Metadata }) {
           <ItemDisplay name="Email" contents={token.email} />
         ) : null}
         {token.external_url ? (
-          <ItemDisplay name="External URL" contents={token.external_url} />
+          <div className="flex-wrap">
+            <h3 className="text-2xl">External URL</h3>
+            <a
+              href={token.external_url}
+              target="_blank"
+              rel="noreferrer"
+              className="pl-1 font-mono text-lg link link-primary link-hover"
+            >{`${R.take(20, token.external_url)}...`}</a>
+          </div>
         ) : null}
         {token.public_name ? (
           <ItemDisplay name="Public Name" contents={token.public_name} />
         ) : null}
         {token.image ? (
-          <ItemDisplay name="Image URL" contents={token.image} />
+          <div className="flex-wrap">
+            <h3 className="text-2xl">Image URL</h3>
+            <a
+              href={token.image}
+              target="_blank"
+              rel="noreferrer"
+              className="pl-1 font-mono text-lg link link-primary link-hover"
+            >{`${R.take(20, token.image)}...`}</a>
+          </div>
         ) : null}
         {token.public_bio ? (
           <ItemDisplay name="Public Bio" contents={token.public_bio} />

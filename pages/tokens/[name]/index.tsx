@@ -32,7 +32,7 @@ const TokenView: NextPage = () => {
       const host = window.location.host
       return host
     } else {
-      return process.env.NEXT_PUBLIC_HOST as string
+      return process.env.NEXT_PUBLIC_SITE_HOST as string
     }
   }
 

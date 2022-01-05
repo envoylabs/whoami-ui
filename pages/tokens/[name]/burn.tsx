@@ -72,7 +72,7 @@ const BurnToken: NextPage = () => {
           </h2>
           <p className="w-96">
             This will permanently destroy the token. The token will no longer be
-            visbile from the name service and another token with the same name
+            visible from the name service and another token with the same name
             will be mintable.
           </p>
           <div className="p-1">

@@ -35,7 +35,7 @@ const ListUsernames: NextPage = () => {
         setAlias(aliasResponse.username)
         setLoading(false)
       } catch (e) {
-        console.log(e)
+        // console.log(e)
       }
     }
 
@@ -59,7 +59,7 @@ const ListUsernames: NextPage = () => {
         setTokens(tokenList.tokens)
         setLoading(false)
       } catch (e) {
-        console.log(e)
+        // console.log(e)
       }
     }
 
@@ -70,7 +70,7 @@ const ListUsernames: NextPage = () => {
     <>
       {!loading && alias ? (
         <>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold pt-16">
             Names for <code>{address}</code>
           </h1>
           {tokens !== undefined ? (
