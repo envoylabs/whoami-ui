@@ -2,7 +2,7 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import Link from 'next/link'
 import Image from 'next/image'
 import ThemeToggle from 'components/ThemeToggle'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 function Nav() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
@@ -19,11 +19,11 @@ function Nav() {
     }
   }
 
-  const reconnect = () => {
+  const reconnect = useCallback(() => {
     disconnect()
     setAlias(undefined)
     connectWallet()
-  }
+  }, [disconnect, connectWallet])
 
   useEffect(() => {
     window.addEventListener('keplr_keystorechange', reconnect)

@@ -31,7 +31,7 @@ export function usePrimaryAlias() {
     }
 
     getAlias()
-  }, [alias])
+  }, [alias, walletAddress])
 
   return { alias, loadingAlias }
 }
