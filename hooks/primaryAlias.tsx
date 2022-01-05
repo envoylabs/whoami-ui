@@ -25,7 +25,7 @@ export function usePrimaryAlias() {
         setAlias(aliasResponse.username)
         setLoading(false)
       } catch (e) {
-        console.error(e.error)
+        console.error(e.message)
         return
       }
     }
