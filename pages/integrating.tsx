@@ -5,15 +5,6 @@ const Integrating: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const siteTitle = process.env.NEXT_PUBLIC_SITE_TITLE
 
-  const getHost = () => {
-    if (typeof window !== 'undefined') {
-      const host = window.location.host
-      return host
-    } else {
-      return process.env.NEXT_PUBLIC_SITE_HOST as string
-    }
-  }
-
   return (
     <>
       <div className="text-left xl:w-1/2 p-6">
@@ -26,21 +17,21 @@ const Integrating: NextPage = () => {
 
         <div className="flex flex-wrap items-center justify-center  pb-4">
           <p className="w-full">To see a single name (without logging in):</p>
-          <pre>{`${getHost()}/ids/[token-name]`}</pre>
+          <pre className="text-left w-full">{`/ids/[token-name]`}</pre>
         </div>
 
         <div className="flex flex-wrap items-center justify-center  pb-4">
           <p className="w-full">
             To see all the names registered to a wallet (without logging in):
           </p>
-          <pre>{`${getHost()}/addresses/[address]`}</pre>
+          <pre className="text-left w-full">{`/addresses/[address]`}</pre>
         </div>
 
         <div className="flex flex-wrap items-center justify-center  pb-4">
           <p className="w-full">
             To see the primary alias (without logging in):
           </p>
-          <pre>{`${getHost()}/addresses/[address]/primary`}</pre>
+          <pre className="text-left w-full">{`/addresses/[address]/primary`}</pre>
         </div>
 
         <h3 className="text-2xl font-bold py-6">For Developers:</h3>
