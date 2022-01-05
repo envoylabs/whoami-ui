@@ -16,8 +16,10 @@ const Manage: NextPage = () => {
 
   return (
     <WalletLoader>
-      <h2 className="text-4xl">Welcome back{alias ? ', ' + alias : null}!</h2>
-      <h1 className="text-6xl font-bold">Manage your names</h1>
+      <h2 className="text-4xl pt-16">
+        Welcome back{alias ? ', ' + alias : null}!
+      </h2>
+      <h2 className="text-4xl font-bold">Manage your names</h2>
       {tokens !== undefined ? (
         <ul>
           {tokens.map((token, key) => {

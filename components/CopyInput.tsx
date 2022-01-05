@@ -3,6 +3,8 @@ import React, {
   useState,
   SyntheticEvent,
   MutableRefObject,
+  useCallback,
+  useEffect,
 } from 'react'
 import { Notice } from 'components/Notice'
 import { ClipboardIcon } from '@heroicons/react/solid'
@@ -17,15 +19,20 @@ export function CopyInput({
 }) {
   const [copySuccess, setCopySuccess] = useState('')
   const textAreaRef = useRef() as MutableRefObject<HTMLInputElement>
+  const [docReady, setDocReady] = useState(false)
 
-  function copyToClipboard(e: SyntheticEvent) {
+  const copyToClipboard = useCallback((e: SyntheticEvent) => {
     if (!R.isNil(textAreaRef)) {
       textAreaRef.current.select()
       document.execCommand('copy')
       // e.target.focus()
       setCopySuccess('Copied!')
     }
-  }
+  }, [])
+
+  const ready = useEffect(() => {
+    setDocReady(true)
+  }, [])
 
   return (
     <form className="w-full">
@@ -37,7 +44,7 @@ export function CopyInput({
           value={inputText}
         />
 
-        {document.queryCommandSupported('copy') && (
+        {docReady && document.queryCommandSupported('copy') && (
           <>
             {R.isEmpty(copySuccess) ? (
               <button
