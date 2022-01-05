@@ -14,6 +14,7 @@ import * as mt from 'util/types/messages'
 import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
 import Loader from 'components/Loader'
+import { Error } from 'components/Error'
 import * as R from 'ramda'
 
 // similar to the create form
@@ -38,11 +39,10 @@ const TokenUpdate: NextPage = () => {
 
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const [loading, setLoading] = useState(false)
-
+  const [error, setError] = useState()
   const [token, setToken] = useState<Metadata>()
 
   const { signingClient, walletAddress } = useSigningClient()
-
   const { register, handleSubmit, reset } = useForm<FormValues>()
 
   useEffect(() => {
@@ -141,6 +141,7 @@ const TokenUpdate: NextPage = () => {
     } catch (e) {
       // TODO env var for dev logging
       // console.log(e)
+      setError(e.message)
       setLoading(false)
     }
   }
@@ -178,6 +179,14 @@ const TokenUpdate: NextPage = () => {
         <Loader />
       ) : (
         <>
+          {error && (
+            <div className="py-4">
+              <Error
+                errorTitle={'Something went wrong!'}
+                errorMessage={error}
+              />
+            </div>
+          )}
           <h1 className="text-3xl font-bold">Update your profile</h1>
 
           <div className="p-6">
