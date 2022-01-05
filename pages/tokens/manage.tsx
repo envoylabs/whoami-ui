@@ -11,8 +11,8 @@ const Manage: NextPage = () => {
 
   const { tokens } = useTokenList()
 
-  const { alias, loadingAlias } = usePrimaryAlias()
   const { walletAddress, signingClient } = useSigningClient()
+  const { alias, loadingAlias } = usePrimaryAlias()
 
   return (
     <WalletLoader>
