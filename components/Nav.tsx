@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react'
 
 function Nav() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
+  const [alias, setAlias] = useState<string>()
+  const [loading, setLoading] = useState(false)
 
   const { walletAddress, connectWallet, disconnect, signingClient } =
     useSigningClient()
@@ -17,8 +19,19 @@ function Nav() {
     }
   }
 
-  const [alias, setAlias] = useState<string>()
-  const [loading, setLoading] = useState(false)
+  const reconnect = () => {
+    disconnect()
+    setAlias(undefined)
+    connectWallet()
+  }
+
+  useEffect(() => {
+    window.addEventListener('keplr_keystorechange', reconnect)
+
+    return () => {
+      window.removeEventListener('keplr_keystorechange', reconnect)
+    }
+  }, [reconnect])
 
   useEffect(() => {
     if (!signingClient || !walletAddress) {
