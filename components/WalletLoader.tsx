@@ -17,6 +17,12 @@ function WalletLoader({
     connectWallet,
   } = useSigningClient()
 
+  const [keplrInstalled, setKeplrInstalled] = useState<boolean | undefined>()
+
+  useEffect(() => {
+    setKeplrInstalled(isKeplrInstalled())
+  }, [])
+
   if (loading || clientLoading) {
     return (
       <div className="flex justify-center">
@@ -24,12 +30,6 @@ function WalletLoader({
       </div>
     )
   }
-
-  const [keplrInstalled, setKeplrInstalled] = useState()
-
-  useEffect(() => {
-    setKeplrInstalled(isKeplrInstalled())
-  }, [])
 
   if (walletAddress === '') {
     const actionText = keplrInstalled ? (
