@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 import { useSigningClient } from 'contexts/cosmwasm'
 import Loader from './Loader'
 import { isKeplrInstalled } from 'services/keplr'
@@ -17,6 +17,12 @@ function WalletLoader({
     connectWallet,
   } = useSigningClient()
 
+  const [keplrInstalled, setKeplrInstalled] = useState<boolean | undefined>()
+
+  useEffect(() => {
+    setKeplrInstalled(isKeplrInstalled())
+  }, [])
+
   if (loading || clientLoading) {
     return (
       <div className="flex justify-center">
@@ -26,7 +32,6 @@ function WalletLoader({
   }
 
   if (walletAddress === '') {
-    const keplrInstalled = isKeplrInstalled()
     const actionText = keplrInstalled ? (
       <>
         <p>Please connect your Keplr wallet to continue</p>
