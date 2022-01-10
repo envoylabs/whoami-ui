@@ -84,7 +84,7 @@ function Nav() {
           </Link>
         </div>
         <ThemeToggle />
-        <div className="flex flex-grow lg:flex-grow-0 max-w-full">
+        <div className="px-4 flex flex-grow lg:flex-grow-0 max-w-full">
           <button
             className="block btn btn-outline btn-primary w-full max-w-full truncate normal-case"
             onClick={handleConnect}

@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import InputField from 'components/InputField'
-import { useForm } from 'react-hook-form'
+import { useForm, RegisterOptions, FieldError } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { OptionString } from 'util/types/base'
@@ -56,7 +56,11 @@ const Mint: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
 
-  const { register, handleSubmit } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
     defaultValues: defaults,
   })
 
@@ -141,17 +145,44 @@ const Mint: NextPage = () => {
     }
   }
 
+  const emailRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
   const fields = [
-    ['public_name', 'Name', true],
-    ['public_bio', 'Bio', true],
-    ['image', 'Image URL', true],
-    ['email', 'Email', true],
-    ['external_url', 'Website', true],
-    ['twitter_id', 'Twitter', true],
-    ['discord_id', 'Discord', true],
-    ['telegram_id', 'Telegram username', true],
-    ['keybase_id', 'Keybase.io', true],
-    ['validator_operator_address', 'Validator operator address', true],
+    ['public_name', 'Name', { required: false, maxLength: 20 }],
+    ['public_bio', 'Bio', { required: false, maxLength: 320 }],
+    ['image', 'Image URL', { required: false, maxLength: 2048 }],
+    [
+      'email',
+      'Email',
+      { required: false, pattern: emailRegex, maxLength: 320 },
+    ],
+    ['external_url', 'Website', { required: false, maxLength: 2048 }],
+    [
+      'twitter_id',
+      'Twitter',
+      { required: false, pattern: /[^a-z0-9\-\_]+/, maxLength: 50 },
+    ],
+    [
+      'discord_id',
+      'Discord',
+      { required: false, pattern: /[^a-z0-9\-\_]+/, maxLength: 50 },
+    ],
+    [
+      'telegram_id',
+      'Telegram username',
+      { required: false, pattern: /[^a-z0-9\-\_]+/, maxLength: 50 },
+    ],
+    [
+      'keybase_id',
+      'Keybase.io',
+      { required: false, pattern: /[^a-z0-9\-\_]+/, maxLength: 50 },
+    ],
+    [
+      'validator_operator_address',
+      'Validator operator address',
+      { required: false },
+    ],
   ]
 
   const inputs = R.map(
@@ -161,7 +192,7 @@ const Mint: NextPage = () => {
         fieldName={i[0] as string}
         label={i[1] as string}
         register={register}
-        optional={i[2] as boolean}
+        validationParams={i[2] as RegisterOptions}
         onChange={(e) => {
           setToken((curr) => ({ ...curr, [i[0] as string]: e.target.value }))
         }}
@@ -169,6 +200,16 @@ const Mint: NextPage = () => {
     ),
     fields
   )
+
+  const errKeyToHuman = (key: string) => {
+    const keysArr = R.map((f) => f[0], fields)
+    const index = R.findIndex((i: string) => R.equals(key, i), keysArr as string[])
+    return R.equals(index, -1) ? null : fields[index][1]
+  }
+
+  const formatErrors = (errors: FieldError[]) => {
+    return R.join(', ', R.map(errKeyToHuman, R.keys(errors)))
+  }
 
   return (
     <WalletLoader>
@@ -185,6 +226,16 @@ const Mint: NextPage = () => {
               <Error
                 errorTitle={'Something went wrong!'}
                 errorMessage={error}
+              />
+            </div>
+          )}
+          {!R.isEmpty(errors) && (
+            <div className="py-4">
+              <Error
+                errorTitle={'Form error'}
+                errorMessage={`Please check these fields: ${formatErrors(
+                  errors
+                )}`}
               />
             </div>
           )}
