@@ -2,7 +2,13 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { useForm, UseFormRegister, RegisterOptions, FieldError } from 'react-hook-form'
+import {
+  useForm,
+  UseFormRegister,
+  RegisterOptions,
+  FieldError,
+  FieldErrors,
+} from 'react-hook-form'
 import WalletLoader from 'components/WalletLoader'
 import InputField from 'components/InputField'
 import { useSigningClient } from 'contexts/cosmwasm'
@@ -31,6 +37,13 @@ type FormValues = {
   keybase_id: OptionString
   validator_operator_address: OptionString
 }
+
+interface Field {
+  fieldId: string
+  fieldName: string
+  validationParams: RegisterOptions
+}
+type Fields = Field[]
 
 const TokenUpdate: NextPage = () => {
   const router = useRouter()
@@ -153,65 +166,106 @@ const TokenUpdate: NextPage = () => {
   const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-  const fields = [
-    ['public_name', 'Name', { required: false, maxLength: 20 }],
-    ['public_bio', 'Bio', { required: false, maxLength: 320 }],
-    ['image', 'Image URL', { required: false, maxLength: 2048 }],
-    [
-      'email',
-      'Email',
-      { required: false, pattern: emailRegex, maxLength: 320 },
-    ],
-    ['external_url', 'Website', { required: false, maxLength: 2048 }],
-    [
-      'twitter_id',
-      'Twitter',
-      { required: false, pattern: /[a-z0-9\-\_]+/, maxLength: 50 },
-    ],
-    [
-      'discord_id',
-      'Discord',
-      { required: false, pattern: /[a-z0-9\-\_]+/, maxLength: 50 },
-    ],
-    [
-      'telegram_id',
-      'Telegram username',
-      { required: false, pattern: /[a-z0-9\-\_]+/, maxLength: 50 },
-    ],
-    [
-      'keybase_id',
-      'Keybase.io',
-      { required: false, pattern: /[a-z0-9\-\_]+/, maxLength: 50 },
-    ],
-    [
-      'validator_operator_address',
-      'Validator operator address',
-      { required: false },
-    ],
+  const fields: Fields = [
+    {
+      fieldId: 'public_name',
+      fieldName: 'Name',
+      validationParams: { required: false, maxLength: 20 },
+    },
+    {
+      fieldId: 'public_bio',
+      fieldName: 'Bio',
+      validationParams: { required: false, maxLength: 320 },
+    },
+    {
+      fieldId: 'image',
+      fieldName: 'Image URL',
+      validationParams: { required: false, maxLength: 2048 },
+    },
+    {
+      fieldId: 'email',
+      fieldName: 'Email',
+      validationParams: {
+        required: false,
+        pattern: emailRegex,
+        maxLength: 320,
+      },
+    },
+    {
+      fieldId: 'external_url',
+      fieldName: 'Website',
+      validationParams: { required: false, maxLength: 2048 },
+    },
+    {
+      fieldId: 'twitter_id',
+      fieldName: 'Twitter',
+      validationParams: {
+        required: false,
+        pattern: /[^a-z0-9\-\_]+/,
+        maxLength: 50,
+      },
+    },
+    {
+      fieldId: 'discord_id',
+      fieldName: 'Discord',
+      validationParams: {
+        required: false,
+        pattern: /[^a-z0-9\-\_]+/,
+        maxLength: 50,
+      },
+    },
+    {
+      fieldId: 'telegram_id',
+      fieldName: 'Telegram username',
+      validationParams: {
+        required: false,
+        pattern: /[^a-z0-9\-\_]+/,
+        maxLength: 50,
+      },
+    },
+    {
+      fieldId: 'keybase_id',
+      fieldName: 'Keybase.io',
+      validationParams: {
+        required: false,
+        pattern: /[^a-z0-9\-\_]+/,
+        maxLength: 50,
+      },
+    },
+    {
+      fieldId: 'validator_operator_address',
+      fieldName: 'Validator operator address',
+      validationParams: { required: false },
+    },
   ]
 
   const inputs = R.map(
     (i) => (
       <InputField<FormValues>
-        key={i[0] as string}
-        fieldName={i[0] as string}
-        label={i[1] as string}
+        key={i.fieldId as string}
+        fieldName={i.fieldId as string}
+        label={i.fieldName as string}
         register={register}
-        validationParams={i[2] as RegisterOptions}
+        validationParams={i.validationParams as RegisterOptions}
         onChange={() => {}}
       />
     ),
     fields
   )
 
-  const errKeyToHuman = (key: string) => {
-    const keysArr = R.map((f) => f[0], fields)
-    const index = R.findIndex((i: string) => R.equals(key, i), keysArr as string[])
-    return R.equals(index, -1) ? null : fields[index][1]
+  const errKeyToHuman = (key: string): string => {
+    const keysArr = R.map((f) => f.fieldId, fields)
+    const index = R.findIndex(
+      (i: string) => R.equals(key, i),
+      keysArr as string[]
+    )
+    return R.equals(index, -1) ? '' : fields[index].fieldName
   }
 
-  const formatErrors = (errors: FieldError[]) => {
-    return R.join(', ', R.map(errKeyToHuman, R.keys(errors)))
+  const formatErrors = (errors: FieldErrors): string => {
+    const errorsArray: string[] = R.map((err): string => err.type, errors)
+    console.log(errorsArray)
+    return R.join(', ', R.map(errKeyToHuman, errorsArray))
   }
 
   return (
