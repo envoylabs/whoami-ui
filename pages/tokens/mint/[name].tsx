@@ -237,24 +237,12 @@ const Mint: NextPage = () => {
         register={register}
         validationParams={i.validationParams as RegisterOptions}
         onChange={(e) => {
-          setToken((curr) => ({ ...curr, [i[0] as string]: e.target.value }))
+          setToken((curr) => ({ ...curr, [i.fieldId as string]: e.target.value }))
         }}
       />
     ),
     fields
   )
-
-  const errKeyToHuman = (key: string) => {
-    const keysArr = R.map((f) => f.fieldId, fields)
-    const index = R.findIndex(
-      (i: string) => R.equals(key, i),
-      keysArr as string[]
-    )
-    return R.equals(index, -1) ? null : fields[index].fieldName
-  }
-
-  const formatErrors = (errors: FieldError[]) =>
-    R.join(', ', R.map(errKeyToHuman, R.keys(errors)))
 
   return (
     <WalletLoader>
@@ -278,7 +266,7 @@ const Mint: NextPage = () => {
             <div className="py-4">
               <Error
                 errorTitle={'Form error'}
-                errorMessage={`Please check these fields: ${formatErrors(
+                errorMessage={`Please check these fields: ${R.keys(
                   errors
                 )}`}
               />

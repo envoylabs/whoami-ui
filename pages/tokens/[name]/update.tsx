@@ -253,18 +253,6 @@ const TokenUpdate: NextPage = () => {
     fields
   )
 
-  const errKeyToHuman = (key: string) => {
-    const keysArr = R.map((f) => f.fieldId, fields)
-    const index = R.findIndex(
-      (i: string) => R.equals(key, i),
-      keysArr as string[]
-    )
-    return R.equals(index, -1) ? null : fields[index].fieldName
-  }
-
-  const formatErrors = (errors: FieldError[]) =>
-    R.join(', ', R.map(errKeyToHuman, R.keys(errors)))
-
   return (
     <WalletLoader>
       {loading ? (
@@ -283,9 +271,7 @@ const TokenUpdate: NextPage = () => {
             <div className="py-4">
               <Error
                 errorTitle={'Form error'}
-                errorMessage={`Please check these fields: ${formatErrors(
-                  errors
-                )}`}
+                errorMessage={`Please check these fields: ${R.keys(errors)}`}
               />
             </div>
           )}
