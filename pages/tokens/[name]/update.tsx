@@ -253,20 +253,17 @@ const TokenUpdate: NextPage = () => {
     fields
   )
 
-  const errKeyToHuman = (key: string): string => {
+  const errKeyToHuman = (key: string) => {
     const keysArr = R.map((f) => f.fieldId, fields)
     const index = R.findIndex(
       (i: string) => R.equals(key, i),
       keysArr as string[]
     )
-    return R.equals(index, -1) ? '' : fields[index].fieldName
+    return R.equals(index, -1) ? null : fields[index].fieldName
   }
 
-  const formatErrors = (errors: FieldErrors): string => {
-    const errorsArray: string[] = R.map((err): string => err.type, errors)
-    console.log(errorsArray)
-    return R.join(', ', R.map(errKeyToHuman, errorsArray))
-  }
+  const formatErrors = (errors: FieldError[]) =>
+    R.join(', ', R.map(errKeyToHuman, R.keys(errors)))
 
   return (
     <WalletLoader>
