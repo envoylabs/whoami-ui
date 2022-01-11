@@ -76,7 +76,7 @@ export default function TokenSearchResult({
           ) : null
         ) : (
           <div className="p-1">
-            <Link href={`/tokens/${normalizedName}`} passHref>
+            <Link href={`/ids/${normalizedName}`} passHref>
               <a className="btn btn-outline mt-6">
                 <p className="font-bold flex">{`View`}</p>
               </a>

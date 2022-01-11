@@ -135,8 +135,13 @@ const Mint: NextPage = () => {
         mintCost
       )
       if (mintedToken) {
-        router.push(`/tokens/${token_id}`)
-        setLoading(false)
+        router.push({
+          pathname: `/tokens/${token_id}`,
+          query: {
+            tokensAltered: true,
+          },
+        })
+        // setLoading(false)
       }
     } catch (e) {
       // TODO env var for dev logging

@@ -3,11 +3,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 import ThemeToggle from 'components/ThemeToggle'
 import { useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/dist/client/router'
 
 function Nav() {
+  const router = useRouter()
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const [alias, setAlias] = useState<string>()
   const [loading, setLoading] = useState(false)
+  const [dirty, setDirty] = useState(false)
+
+  useEffect(() => {
+    if (router.query.tokensAltered) {
+      setDirty(true)
+    }
+  }, [router.query.tokensAltered])
 
   const { walletAddress, connectWallet, disconnect, signingClient } =
     useSigningClient()
@@ -48,14 +57,16 @@ function Nav() {
         })
         setAlias(aliasResponse.username)
         setLoading(false)
+        setDirty(false)
       } catch (e) {
+        setLoading(false)
         // console.log(e)
         return
       }
     }
 
     getAlias()
-  }, [alias, walletAddress, contract, signingClient])
+  }, [alias, walletAddress, contract, signingClient, dirty])
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 
