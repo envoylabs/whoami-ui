@@ -189,7 +189,10 @@ const TokenUpdate: NextPage = () => {
             <div className="py-4">
               <Error
                 errorTitle={'Form error'}
-                errorMessage={`Please check these fields: ${R.join(', ', getMintFormErrors(errors))}`}
+                errorMessage={`Please check these fields: ${R.join(
+                  ', ',
+                  getMintFormErrors(errors)
+                )}`}
               />
             </div>
           )}

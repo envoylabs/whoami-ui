@@ -16,6 +16,7 @@ import {
   convertDenomToHumanReadableDenom,
 } from 'util/conversion'
 import { defaultMemo } from 'util/memo'
+import { mintFields, getMintFormErrors } from 'util/forms'
 import Loader from 'components/Loader'
 import * as R from 'ramda'
 
@@ -46,13 +47,6 @@ const defaults = {
   keybase_id: null,
   validator_operator_address: null,
 }
-
-interface Field {
-  fieldId: string
-  fieldName: string
-  validationParams: RegisterOptions
-}
-type Fields = Field[]
 
 const Mint: NextPage = () => {
   const router = useRouter()
@@ -152,96 +146,23 @@ const Mint: NextPage = () => {
     }
   }
 
-  const emailRegex =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
-  const fields: Fields = [
-    {
-      fieldId: 'public_name',
-      fieldName: 'Name',
-      validationParams: { required: false, maxLength: 20 },
-    },
-    {
-      fieldId: 'public_bio',
-      fieldName: 'Bio',
-      validationParams: { required: false, maxLength: 320 },
-    },
-    {
-      fieldId: 'image',
-      fieldName: 'Image URL',
-      validationParams: { required: false, maxLength: 2048 },
-    },
-    {
-      fieldId: 'email',
-      fieldName: 'Email',
-      validationParams: {
-        required: false,
-        pattern: emailRegex,
-        maxLength: 320,
-      },
-    },
-    {
-      fieldId: 'external_url',
-      fieldName: 'Website',
-      validationParams: { required: false, maxLength: 2048 },
-    },
-    {
-      fieldId: 'twitter_id',
-      fieldName: 'Twitter',
-      validationParams: {
-        required: false,
-        pattern: /[^a-z0-9\-\_]+/,
-        maxLength: 50,
-      },
-    },
-    {
-      fieldId: 'discord_id',
-      fieldName: 'Discord',
-      validationParams: {
-        required: false,
-        pattern: /[^a-z0-9\-\_]+/,
-        maxLength: 50,
-      },
-    },
-    {
-      fieldId: 'telegram_id',
-      fieldName: 'Telegram username',
-      validationParams: {
-        required: false,
-        pattern: /[^a-z0-9\-\_]+/,
-        maxLength: 50,
-      },
-    },
-    {
-      fieldId: 'keybase_id',
-      fieldName: 'Keybase.io',
-      validationParams: {
-        required: false,
-        pattern: /[^a-z0-9\-\_]+/,
-        maxLength: 50,
-      },
-    },
-    {
-      fieldId: 'validator_operator_address',
-      fieldName: 'Validator operator address',
-      validationParams: { required: false },
-    },
-  ]
-
   const inputs = R.map(
     (i) => (
       <InputField<FormValues>
         key={i.fieldId as string}
-        fieldName={i.fieldName as string}
+        fieldName={i.fieldId as string}
         label={i.fieldName as string}
         register={register}
         validationParams={i.validationParams as RegisterOptions}
         onChange={(e) => {
-          setToken((curr) => ({ ...curr, [i.fieldId as string]: e.target.value }))
+          setToken((curr) => ({
+            ...curr,
+            [i.fieldId as string]: e.target.value,
+          }))
         }}
       />
     ),
-    fields
+    mintFields
   )
 
   return (
@@ -266,8 +187,9 @@ const Mint: NextPage = () => {
             <div className="py-4">
               <Error
                 errorTitle={'Form error'}
-                errorMessage={`Please check these fields: ${R.keys(
-                  errors
+                errorMessage={`Please check these fields: ${R.join(
+                  ', ',
+                  getMintFormErrors(errors)
                 )}`}
               />
             </div>
