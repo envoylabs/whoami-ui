@@ -2,7 +2,13 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { useForm, UseFormRegister } from 'react-hook-form'
+import {
+  useForm,
+  UseFormRegister,
+  RegisterOptions,
+  FieldError,
+  FieldErrors,
+} from 'react-hook-form'
 import WalletLoader from 'components/WalletLoader'
 import InputField from 'components/InputField'
 import { useSigningClient } from 'contexts/cosmwasm'
@@ -12,6 +18,7 @@ import * as msgs from 'util/messages'
 import * as mt from 'util/types/messages'
 import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
+import { mintFields, getMintFormErrors } from 'util/forms'
 import Loader from 'components/Loader'
 import { Error } from 'components/Error'
 import * as R from 'ramda'
@@ -42,7 +49,12 @@ const TokenUpdate: NextPage = () => {
   const [token, setToken] = useState<Metadata>()
 
   const { signingClient, walletAddress } = useSigningClient()
-  const { register, handleSubmit, reset } = useForm<FormValues>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>()
 
   useEffect(() => {
     if (!tokenName || !signingClient) {
@@ -145,31 +157,18 @@ const TokenUpdate: NextPage = () => {
     }
   }
 
-  const fields = [
-    ['public_name', 'Name', true],
-    ['public_bio', 'Bio', true],
-    ['image', 'Image URL', true],
-    ['email', 'Email', true],
-    ['external_url', 'Website', true],
-    ['twitter_id', 'Twitter', true],
-    ['discord_id', 'Discord', true],
-    ['telegram_id', 'Telegram username', true],
-    ['keybase_id', 'Keybase.io', true],
-    ['validator_operator_address', 'Validator operator address', true],
-  ]
-
   const inputs = R.map(
     (i) => (
       <InputField<FormValues>
-        key={i[0] as string}
-        fieldName={i[0] as string}
-        label={i[1] as string}
+        key={i.fieldId as string}
+        fieldName={i.fieldId as string}
+        label={i.fieldName as string}
         register={register}
-        optional={i[2] as boolean}
+        validationParams={i.validationParams as RegisterOptions}
         onChange={() => {}}
       />
     ),
-    fields
+    mintFields
   )
 
   return (
@@ -183,6 +182,17 @@ const TokenUpdate: NextPage = () => {
               <Error
                 errorTitle={'Something went wrong!'}
                 errorMessage={error}
+              />
+            </div>
+          )}
+          {!R.isEmpty(errors) && (
+            <div className="py-4">
+              <Error
+                errorTitle={'Form error'}
+                errorMessage={`Please check these fields: ${R.join(
+                  ', ',
+                  getMintFormErrors(errors)
+                )}`}
               />
             </div>
           )}

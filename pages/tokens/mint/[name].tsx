@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import InputField from 'components/InputField'
-import { useForm } from 'react-hook-form'
+import { useForm, RegisterOptions, FieldError } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { OptionString } from 'util/types/base'
@@ -16,6 +16,7 @@ import {
   convertDenomToHumanReadableDenom,
 } from 'util/conversion'
 import { defaultMemo } from 'util/memo'
+import { mintFields, getMintFormErrors } from 'util/forms'
 import Loader from 'components/Loader'
 import * as R from 'ramda'
 
@@ -56,7 +57,11 @@ const Mint: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
 
-  const { register, handleSubmit } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
     defaultValues: defaults,
   })
 
@@ -141,33 +146,23 @@ const Mint: NextPage = () => {
     }
   }
 
-  const fields = [
-    ['public_name', 'Name', true],
-    ['public_bio', 'Bio', true],
-    ['image', 'Image URL', true],
-    ['email', 'Email', true],
-    ['external_url', 'Website', true],
-    ['twitter_id', 'Twitter', true],
-    ['discord_id', 'Discord', true],
-    ['telegram_id', 'Telegram username', true],
-    ['keybase_id', 'Keybase.io', true],
-    ['validator_operator_address', 'Validator operator address', true],
-  ]
-
   const inputs = R.map(
     (i) => (
       <InputField<FormValues>
-        key={i[0] as string}
-        fieldName={i[0] as string}
-        label={i[1] as string}
+        key={i.fieldId as string}
+        fieldName={i.fieldId as string}
+        label={i.fieldName as string}
         register={register}
-        optional={i[2] as boolean}
+        validationParams={i.validationParams as RegisterOptions}
         onChange={(e) => {
-          setToken((curr) => ({ ...curr, [i[0] as string]: e.target.value }))
+          setToken((curr) => ({
+            ...curr,
+            [i.fieldId as string]: e.target.value,
+          }))
         }}
       />
     ),
-    fields
+    mintFields
   )
 
   return (
@@ -185,6 +180,17 @@ const Mint: NextPage = () => {
               <Error
                 errorTitle={'Something went wrong!'}
                 errorMessage={error}
+              />
+            </div>
+          )}
+          {!R.isEmpty(errors) && (
+            <div className="py-4">
+              <Error
+                errorTitle={'Form error'}
+                errorMessage={`Please check these fields: ${R.join(
+                  ', ',
+                  getMintFormErrors(errors)
+                )}`}
               />
             </div>
           )}
