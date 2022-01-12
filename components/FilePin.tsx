@@ -16,12 +16,9 @@ const FilePin = () => {
     const file = e.target.files[0]
 
     try {
-      const ipfs = create({
-        url: 'https://api.pinata.cloud/psa',
-        repo: 'file-path' + Math.random(),
-      })
+      const ipfs = create()
       const { cid } = await ipfs.add(file)
-      const url = `https://gateway.pinata.cloud/ipfs/${cid.string}`
+      const url = `https://ipfs.io/ipfs/${cid.string}`
       updateFileUrl(url)
       setLoading(false)
     } catch (error) {
@@ -39,7 +36,7 @@ const FilePin = () => {
         <>
           <div className="">
             {error && (
-              <div className="py-4 w-1/2">
+              <div className="py-4 w-full">
                 <Error
                   errorTitle={'File upload failed!'}
                   errorMessage={error}
