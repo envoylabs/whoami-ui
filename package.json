@@ -15,7 +15,7 @@
     "@cosmjs/stargate": "^0.27.0",
     "@heroicons/react": "^1.0.5",
     "daisyui": "^1.14.0",
-    "ipfs-http-client": "^55.0.0",
+    "ipfs-http-client": "^50.1.2",
     "next": "11.1.1",
     "ramda": "^0.27.1",
     "react": "17.0.2",
