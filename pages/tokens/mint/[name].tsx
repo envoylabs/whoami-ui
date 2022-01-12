@@ -9,6 +9,7 @@ import WalletLoader from 'components/WalletLoader'
 import { TokenCard } from 'components/NameCard'
 import { Error } from 'components/Error'
 import { Notice } from 'components/Notice'
+import FilePin from 'components/FilePin'
 import { useSigningClient } from 'contexts/cosmwasm'
 import { defaultMintFee, getMintCost } from 'util/fee'
 import {
@@ -199,7 +200,7 @@ const Mint: NextPage = () => {
               />
             </div>
           )}
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap pt-4">
             <div className="mr-3">
               <div className="sticky top-5 mt-5">
                 <TokenCard
@@ -208,15 +209,19 @@ const Mint: NextPage = () => {
                 />
               </div>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <>{inputs}</>
+            <FilePin />
+            <div>
+              <h4 className="text-2xl">Profile data</h4>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <>{inputs}</>
 
-              <input
-                type="submit"
-                className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
-                value="Create Username"
-              />
-            </form>
+                <input
+                  type="submit"
+                  className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
+                  value="Create Username"
+                />
+              </form>
+            </div>
           </div>
         </>
       )}
