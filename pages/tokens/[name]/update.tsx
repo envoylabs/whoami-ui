@@ -20,6 +20,7 @@ import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
 import { mintFields, getMintFormErrors } from 'util/forms'
 import Loader from 'components/Loader'
+import FilePin from 'components/FilePin'
 import { Error } from 'components/Error'
 import * as R from 'ramda'
 
@@ -201,16 +202,18 @@ const TokenUpdate: NextPage = () => {
           <div className="p-6">
             <p>Update the data associated with your username.</p>
           </div>
+          <FilePin />
+          <div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <>{inputs}</>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <>{inputs}</>
-
-            <input
-              type="submit"
-              className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
-              value="Update profile"
-            />
-          </form>
+              <input
+                type="submit"
+                className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
+                value="Update profile"
+              />
+            </form>
+          </div>
         </>
       )}
     </WalletLoader>
