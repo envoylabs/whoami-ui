@@ -202,14 +202,16 @@ const TokenUpdate: NextPage = () => {
             <p>Update the data associated with your username.</p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4">
             <>{inputs}</>
 
-            <input
-              type="submit"
-              className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
-              value="Update profile"
-            />
+            <div className="py-4">
+              <input
+                type="submit"
+                className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
+                value="Update profile"
+              />
+            </div>
           </form>
         </>
       )}
