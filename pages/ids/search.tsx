@@ -4,17 +4,19 @@ import { useEffect, useState } from 'react'
 import { getNonSigningClient } from 'hooks/cosmwasm'
 import { Metadata } from 'util/types/messages'
 import TokenSearchResult from 'components/TokenSearchResult'
+import { CopyInput } from 'components/CopyInput'
 import Loader from 'components/Loader'
 
 // TODO - make this functionally distinct from register
 const Search: NextPage = () => {
+  const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const [searchQuery, setSearchQuery] = useState('')
   const [token, setToken] = useState<Metadata | undefined>()
   const [loading, setLoading] = useState(false)
+  const [tokenName, setTokenName] = useState<string | undefined>()
+  const [owner, setOwner] = useState<string | undefined>()
 
   useEffect(() => {
-    const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-
     const doLoad = async (name: string) => {
       setLoading(true)
       try {
@@ -26,13 +28,39 @@ const Search: NextPage = () => {
           },
         })
         setToken(token.extension)
+        setTokenName(name)
       } catch (e) {
         setToken(undefined)
+        setOwner(undefined)
       }
       setLoading(false)
     }
     doLoad(searchQuery)
-  }, [searchQuery])
+  }, [searchQuery, contract])
+
+  useEffect(() => {
+    if (!tokenName) return
+
+    const getOwner = async () => {
+      setLoading(true)
+      try {
+        const client = await getNonSigningClient()
+        let owner = await client.queryContractSmart(contract, {
+          owner_of: {
+            token_id: tokenName,
+          },
+        })
+        setOwner(owner.owner)
+        setLoading(false)
+      } catch (e) {
+        // console.log(e)
+        setLoading(false)
+        setOwner(undefined)
+      }
+    }
+
+    getOwner()
+  }, [tokenName, contract])
 
   return (
     <>
@@ -44,13 +72,20 @@ const Search: NextPage = () => {
             {loading ? (
               <Loader />
             ) : (
-              <TokenSearchResult
-                name={searchQuery}
-                token={token}
-                avaliable={!token}
-                valid={searchQuery.length < 21 ? true : false}
-                loggedIn={false}
-              />
+              <>
+                <TokenSearchResult
+                  name={searchQuery}
+                  token={token}
+                  avaliable={!token}
+                  valid={searchQuery.length < 21 ? true : false}
+                  loggedIn={false}
+                />
+                {owner && (
+                  <div className="py-4">
+                    <CopyInput inputText={owner!} label={'Copy'} />
+                  </div>
+                )}
+              </>
             )}
           </div>
         </>
