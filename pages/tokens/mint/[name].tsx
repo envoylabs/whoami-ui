@@ -211,7 +211,7 @@ const Mint: NextPage = () => {
             </div>
             <FilePin />
             <div>
-              <h4 className="text-2xl">Profile data</h4>
+              <h4 className="text-2xl py-4">Profile data</h4>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <>{inputs}</>
 
