@@ -32,6 +32,7 @@ const Search: NextPage = () => {
       } catch (e) {
         setToken(undefined)
         setOwner(undefined)
+        setTokenName(undefined)
       }
       setLoading(false)
     }
