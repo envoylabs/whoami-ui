@@ -11,21 +11,22 @@ const FilePin = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
 
-  const onChange = async (e) => {
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(undefined)
     setLoading(true)
-    const file = e.target.files[0]
-
-    try {
-      const ipfs = create(ipfsEndpoint)
-      const { cid } = await ipfs.add(file)
-      const url = `https://ipfs.io/ipfs/${cid.string}`
-      updateFileUrl(url)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      console.log(error)
-      setError(`Error uploading file: ${error.message}`)
+    if (!R.isNil(e)) {
+      try {
+        const file = e.target.files[0]
+        const ipfs = create(ipfsEndpoint)
+        const { cid } = await ipfs.add(file)
+        const url = `https://ipfs.io/ipfs/${cid.string}`
+        updateFileUrl(url)
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        console.log(error)
+        setError(`Error uploading file: ${error.message}`)
+      }
     }
   }
 
