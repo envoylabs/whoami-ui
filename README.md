@@ -27,6 +27,35 @@ To interact with the contract, hit up the `whoami` contracts repo and run:
 
 Note that this will leave a daemonized container, `juno_whoami` running on your machine until you kill it.
 
+#### IPFS setup
+
+##### IPFS desktop
+
+Install desktop, then:
+
+```sh
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["webui://-", "http://localhost:3000", "http://127.0.0.1:5001", "https://webui.ipfs.io"]'
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "POST"]'
+```
+
+##### With docker
+
+Then deploy a local IPFS node (run from inside this repo):
+
+```sh
+docker run -d --name ipfs_host -v ./ipfsdata/export:/export -v ./ipfsdata/data:/data/ipfs -p 4001:4001 -p 4001:4001/udp -p 127.0.0.1:8080:8080 -p 127.0.0.1:5001:5001 ipfs/go-ipfs:latest
+```
+
+Watch logs: `docker logs -f ipfs_host` until you see:
+
+```
+listening on /ip4/0.0.0.0/tcp/8080
+```
+
+Then swarm: `docker exec ipfs_host ipfs swarm peers`
+
+[More info here](https://docs.ipfs.io/how-to/run-ipfs-inside-docker/). You can also run via CLI or the desktop app.
+
 ## Requirements
 
 Please ensure you have the [Keplr wallet extension](https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap) installed in your Chrome based browser (Chrome, Brave, etc).

@@ -6,6 +6,7 @@ import Loader from 'components/Loader'
 import * as R from 'ramda'
 
 const FilePin = () => {
+  const ipfsEndpoint = process.env.NEXT_PUBLIC_IPFS_API as string
   const [fileUrl, updateFileUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
@@ -16,7 +17,7 @@ const FilePin = () => {
     const file = e.target.files[0]
 
     try {
-      const ipfs = create()
+      const ipfs = create(ipfsEndpoint)
       const { cid } = await ipfs.add(file)
       const url = `https://ipfs.io/ipfs/${cid.string}`
       updateFileUrl(url)
@@ -81,15 +82,9 @@ const FilePin = () => {
                     </label>
                   </div>
                 </div>
-                <div className="flex justify-center p-2">
-                  <button className="w-full px-4 py-2 text-white bg-blue-500 rounded shadow-xl">
-                    Create
-                  </button>
-                </div>
               </div>
             </div>
           </div>
-          {fileUrl && <img src={fileUrl} width="600px" />}
         </>
       )}
     </div>
