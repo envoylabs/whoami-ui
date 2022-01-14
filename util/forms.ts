@@ -50,7 +50,7 @@ const mintFields: Fields = [
     fieldName: 'Twitter',
     validationParams: {
       required: false,
-      pattern: /[^a-z0-9\-\_]+/,
+      pattern: /[a-z0-9\-\_]+/,
       maxLength: 50,
     },
   },
@@ -59,7 +59,7 @@ const mintFields: Fields = [
     fieldName: 'Discord',
     validationParams: {
       required: false,
-      pattern: /[^a-z0-9\-\_]+/,
+      pattern: /[a-z0-9\-\_]+/,
       maxLength: 50,
     },
   },
@@ -68,7 +68,7 @@ const mintFields: Fields = [
     fieldName: 'Telegram username',
     validationParams: {
       required: false,
-      pattern: /[^a-z0-9\-\_]+/,
+      pattern: /[a-z0-9\-\_]+/,
       maxLength: 50,
     },
   },
@@ -77,7 +77,7 @@ const mintFields: Fields = [
     fieldName: 'Keybase.io',
     validationParams: {
       required: false,
-      pattern: /[^a-z0-9\-\_]+/,
+      pattern: /[a-z0-9\-\_]+/,
       maxLength: 50,
     },
   },
