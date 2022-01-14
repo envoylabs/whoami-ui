@@ -8,7 +8,7 @@ import { useRouter } from 'next/dist/client/router'
 function Nav() {
   const router = useRouter()
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-  const [alias, setAlias] = useState<string>()
+  const [alias, setAlias] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
   const [dirty, setDirty] = useState(false)
 
@@ -25,6 +25,7 @@ function Nav() {
       connectWallet()
     } else {
       disconnect()
+      setAlias(undefined)
     }
   }
 
@@ -60,6 +61,7 @@ function Nav() {
         setDirty(false)
       } catch (e) {
         setLoading(false)
+        setAlias(undefined)
         // console.log(e)
         return
       }

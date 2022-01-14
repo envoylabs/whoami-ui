@@ -176,9 +176,11 @@ const Mint: NextPage = () => {
         <Loader />
       ) : (
         <>
-          <Notice
-            message={`The mint cost for this token is ${humanMintCost} ${humanDenom}`}
-          />
+          <div className="py-4">
+            <Notice
+              message={`The mint cost for this token is ${humanMintCost} ${humanDenom}`}
+            />
+          </div>
 
           {error && (
             <div className="py-4">
