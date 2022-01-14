@@ -39,7 +39,7 @@ export function CopyInput({
       <div className="flex items-center border-b py-2 w-full">
         <input
           readOnly
-          className="appearance-none bg-transparent border-none text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+          className="appearance-none bg-transparent border-none base-200 mr-3 py-1 px-2 leading-tight focus:outline-none"
           ref={textAreaRef}
           value={inputText}
         />
