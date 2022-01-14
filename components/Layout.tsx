@@ -14,7 +14,10 @@ export default function Layout({ children }: { children: ReactNode }) {
       </Head>
 
       <Nav />
-      <main className="flex flex-col items-center justify-center w-full flex-1 p-2 md:px-20 text-center">
+      <main
+        className="flex flex-col items-center justify-center w-full flex-1 p-2 md:px-20 text-center"
+        style={{ backgroundImage: "url('/dens.svg')" }}
+      >
         {children}
       </main>
       <footer className="flex flex-wrap items-center justify-center md:w-1/2 h-24 border-t">
