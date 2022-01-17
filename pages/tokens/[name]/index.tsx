@@ -77,7 +77,7 @@ const TokenView: NextPage = () => {
             <div className="py-4">
               <Error
                 errorTitle={'Something went wrong!'}
-                errorMessage={error}
+                errorMessage={error!}
               />
             </div>
           )}
