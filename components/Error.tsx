@@ -1,10 +1,10 @@
 import * as R from 'ramda'
 
 const formatError = (errorMessage: string): string => {
-  if (errorMessage.length > 50) {
+  if (errorMessage.length < 100) {
     return errorMessage
   } else {
-    return `...${R.takeLast(50, errorMessage)}`
+    return `[Error] ...${R.takeLast(100, errorMessage)}`
   }
 }
 
