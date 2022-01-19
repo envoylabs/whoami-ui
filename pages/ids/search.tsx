@@ -64,7 +64,7 @@ const Search: NextPage = () => {
   }, [tokenName, contract])
 
   return (
-    <div className="flex flex-col w-full justify-center py-6">
+    <div className="flex flex-col w-full justify-center py-12">
       <div className="flex w-full justify-center">
         <h1 className="text-6xl font-bold mb-2">Find a name</h1>
       </div>

@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   //const { walletAddress } = useSigningClient()
 
   return (
-    <>
+    <div className="flex flex-col w-full py-12">
       <h1 className="text-6xl font-bold py-6">
         {process.env.NEXT_PUBLIC_SITE_TITLE}
       </h1>
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
           Icon={MapIcon}
         />
       </div>
-    </>
+    </div>
   )
 }
 
