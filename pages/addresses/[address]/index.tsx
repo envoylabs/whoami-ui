@@ -70,40 +70,43 @@ const ListUsernames: NextPage = () => {
   return (
     <>
       {!loading && alias ? (
-        <>
+        <div className="flex flex-col justify-center pt-6">
           <h1 className="text-3xl font-bold pt-16">
             Names for <code>{address}</code>
           </h1>
           {tokens !== undefined ? (
-            <ul>
-              {tokens.map((token, key) => {
-                return (
-                  <li
-                    className="card bordered border-secondary hover:border-primary p-6 m-8"
-                    key={key}
-                  >
-                    <Link href={`/ids/${token}`} passHref>
-                      <a>
-                        <div className="card-title">
-                          <h3 className="text-2xl font-bold flex">
-                            {token}
-                            {alias === token ? (
-                              <div className="badge ml-2 mt-2">primary</div>
-                            ) : null}
-                          </h3>
-                        </div>
-                      </a>
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
+            <div className="flex w-full justify-center">
+              <ul>
+                {tokens.map((token, key) => {
+                  return (
+                    <div className="flex w-full justify-center" key={key}>
+                      <li className="card bordered border-secondary hover:border-primary py-4 px-8 mt-6">
+                        <Link href={`/ids/${token}`} passHref>
+                          <a>
+                            <div className="card-title">
+                              <h3 className="text-2xl font-bold flex">
+                                {token}
+                                {alias === token ? (
+                                  <div className="badge ml-2 mt-2">primary</div>
+                                ) : null}
+                              </h3>
+                            </div>
+                          </a>
+                        </Link>
+                      </li>
+                    </div>
+                  )
+                })}
+              </ul>
+            </div>
           ) : (
             <p>No tokens</p>
           )}
-        </>
+        </div>
       ) : (
-        <Loader />
+        <div className="flex w-full justify-center py-12">
+          <Loader />
+        </div>
       )}
     </>
   )

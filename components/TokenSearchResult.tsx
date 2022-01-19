@@ -20,49 +20,57 @@ export default function TokenSearchResult({
   const normalizedName = R.toLower(name)
 
   return (
-    <div>
+    <div className="w-full">
       {avaliable ? (
         valid ? (
-          <div className="alert alert-success mb-2">
-            <div className="flex-1">
-              <LockOpenIcon className="h-6 w-6 inline mr-2" />
-              <label>available!</label>
+          <div className="flex w-full justify-center">
+            <div className="alert alert-success mb-2 w-96">
+              <div className="flex-1">
+                <LockOpenIcon className="h-6 w-6 inline mr-2" />
+                <label>available!</label>
+              </div>
             </div>
           </div>
         ) : (
-          <div className="alert alert-dark mb-3">
-            <div className="flex-1">
-              <LockClosedIcon className="h-6 w-6 inline mr-2" />
-              <label>too long</label>
+          <div className="flex w-full justify-center">
+            <div className="alert alert-dark mb-3 w-96">
+              <div className="flex-1">
+                <LockClosedIcon className="h-6 w-6 inline mr-2" />
+                <label>too long</label>
+              </div>
             </div>
           </div>
         )
       ) : (
-        <div className="alert alert-info mb-3">
-          <div className="flex-1">
-            <LockClosedIcon className="h-6 w-6 inline mr-2" />
-            <label>minted</label>
+        <div className="flex w-full justify-center">
+          <div className="alert alert-info mb-3 w-96">
+            <div className="flex-1">
+              <LockClosedIcon className="h-6 w-6 inline mr-2" />
+              <label>minted</label>
+            </div>
           </div>
         </div>
       )}
-      <TokenCard
-        name={normalizedName}
-        token={
-          token || {
-            image: null,
-            image_data: null,
-            email: null,
-            external_url: null,
-            public_name: null,
-            public_bio: loggedIn ? 'your bio here!' : null,
-            twitter_id: null,
-            discord_id: null,
-            telegram_id: null,
-            keybase_id: null,
-            validator_operator_address: null,
+      <div className="flex w-full justify-center">
+        <TokenCard
+          name={normalizedName}
+          token={
+            token || {
+              image: null,
+              image_data: null,
+              email: null,
+              external_url: null,
+              public_name: null,
+              public_bio: loggedIn ? 'your bio here!' : null,
+              twitter_id: null,
+              discord_id: null,
+              telegram_id: null,
+              keybase_id: null,
+              validator_operator_address: null,
+            }
           }
-        }
-      />
+        />
+      </div>
       {loggedIn ? (
         avaliable ? (
           valid ? (

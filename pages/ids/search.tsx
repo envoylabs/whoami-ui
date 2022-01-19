@@ -64,14 +64,20 @@ const Search: NextPage = () => {
   }, [tokenName, contract])
 
   return (
-    <>
-      <h1 className="text-6xl font-bold mb-2">Find a name</h1>
-      <NameSearch query={searchQuery} setQuery={setSearchQuery} />
+    <div className="flex flex-col w-full justify-center py-6">
+      <div className="flex w-full justify-center">
+        <h1 className="text-6xl font-bold mb-2">Find a name</h1>
+      </div>
+      <div className="flex w-full justify-center">
+        <NameSearch query={searchQuery} setQuery={setSearchQuery} />
+      </div>
       {searchQuery !== '' ? (
         <>
           <div className="mt-6 mb-6 h-[700px]">
             {loading ? (
-              <Loader />
+              <div className="flex w-full justify-center">
+                <Loader />
+              </div>
             ) : (
               <>
                 <TokenSearchResult
@@ -82,8 +88,10 @@ const Search: NextPage = () => {
                   loggedIn={false}
                 />
                 {owner && (
-                  <div className="py-4">
-                    <CopyInput inputText={owner!} label={'Copy'} />
+                  <div className="flex w-full justify-center">
+                    <div className="py-4">
+                      <CopyInput inputText={owner!} label={'Copy'} />
+                    </div>
                   </div>
                 )}
               </>
@@ -91,7 +99,7 @@ const Search: NextPage = () => {
           </div>
         </>
       ) : null}
-    </>
+    </div>
   )
 }
 

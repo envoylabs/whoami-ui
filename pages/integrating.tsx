@@ -7,7 +7,7 @@ const Integrating: NextPage = () => {
 
   return (
     <>
-      <div className="text-left xl:w-1/2 p-6">
+      <div className="text-left w-full p-6">
         <h2 className="text-4xl font-bold py-6">Integrating</h2>
         <div className="flex flex-wrap items-center justify-center">
           <p className="w-full">Integrating with {siteTitle} is simple.</p>
