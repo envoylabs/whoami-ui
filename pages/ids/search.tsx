@@ -66,7 +66,7 @@ const Search: NextPage = () => {
   return (
     <div className="flex flex-col w-full justify-center py-12">
       <div className="flex w-full justify-center">
-        <h1 className="text-6xl font-bold mb-2">Find a name</h1>
+        <h1 className="text-6xl font-bold mb-2 pt-6">Find a name</h1>
       </div>
       <div className="flex w-full justify-center">
         <NameSearch query={searchQuery} setQuery={setSearchQuery} />
