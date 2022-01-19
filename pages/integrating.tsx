@@ -63,6 +63,9 @@ const Integrating: NextPage = () => {
           <p className="w-full">
             Otherwise, the first (latest) result will be returned from chain.
           </p>
+          <p className="w-full">
+            If no names exist, NotFound will be returned.
+          </p>
         </div>
 
         <h4 className="text-1xl font-bold py-4">Mapping Name &rarr; Address</h4>
@@ -72,15 +75,20 @@ const Integrating: NextPage = () => {
             This mapping is simpler, since {siteTitle} names are extended CW721
             NFTs.
           </p>
+          <p className="w-full">
+            AddressOf is a simplification of OwnerOf that returns contract
+            address and validator address, if set.
+          </p>
         </div>
 
         <div className="mockup-code py-4 pr-4 my-6 lg:w-2/3" data-prefix="">
           <pre className="text-left">
             <code>
               {`
-  OwnerOf {
+  AddressOf {
     token_id: String,
-    include_expired: Option<bool>,
+    contract_address: Option<String>,
+    validator_address: Option<String>,
   },`}
             </code>
           </pre>
@@ -91,8 +99,8 @@ const Integrating: NextPage = () => {
             but it is not that ergonomic.
           </p>
           <p className="w-full">
-            If you find this is so, let us know - as we may add a slimmed alias
-            for it in the next version of {siteTitle}.
+            This is why for most cases, you should prefer AddressOf when
+            querying {siteTitle}.
           </p>
         </div>
         <div className="flex flex-wrap items-center justify-center  h-24 border-t">
