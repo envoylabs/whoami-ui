@@ -81,10 +81,12 @@ const Tcs: NextPage = () => {
 
       <p className="p-2">
         DENS, and its authors are free of any liability regarding Tokens minted
-        using this App, and any use made of them, including accidental loss, transfer or theft by another user, either arising from technical reasons or fraud. Tokens minted on DENS, whether
-        CosmWasm or otherwise, their projects, their teams, their use of Tokens
-        (as well as anything related to Tokens) are in no way connected to DENS
-        or its authors. By using this service you understand you are doing so at your own risk.
+        using this App, and any use made of them, including accidental loss,
+        transfer or theft by another user, either arising from technical reasons
+        or fraud. Tokens minted on DENS, whether CosmWasm or otherwise, their
+        projects, their teams, their use of Tokens (as well as anything related
+        to Tokens) are in no way connected to DENS or its authors. By using this
+        service you understand you are doing so at your own risk.
       </p>
 
       <p className="p-2">

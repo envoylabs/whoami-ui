@@ -15,24 +15,24 @@ const Home: NextPage = () => {
       <p className="italic">Decentralized Name Service</p>
 
       <div className="w-full">
-      <PageLink
-        href="/tokens/register"
-        title="Register"
-        description="Register and configure a new name"
-        Icon={LibraryIcon}
-      />
-      <PageLink
-        href="/tokens/manage"
-        title="Manage"
-        description="Transfer, edit, or burn a name that you own"
-        Icon={PencilIcon}
-      />
-      <PageLink
-        href="/ids/search"
-        title="Explore"
-        description="Lookup addresses and explore registered names"
-        Icon={MapIcon}
-      />
+        <PageLink
+          href="/tokens/register"
+          title="Register"
+          description="Register and configure a new name"
+          Icon={LibraryIcon}
+        />
+        <PageLink
+          href="/tokens/manage"
+          title="Manage"
+          description="Transfer, edit, or burn a name that you own"
+          Icon={PencilIcon}
+        />
+        <PageLink
+          href="/ids/search"
+          title="Explore"
+          description="Lookup addresses and explore registered names"
+          Icon={MapIcon}
+        />
       </div>
     </>
   )

@@ -65,18 +65,18 @@ const Search: NextPage = () => {
 
   return (
     <div className="flex flex-col w-full justify-center py-6">
-    <div className="flex w-full justify-center">
-      <h1 className="text-6xl font-bold mb-2">Find a name</h1>
+      <div className="flex w-full justify-center">
+        <h1 className="text-6xl font-bold mb-2">Find a name</h1>
       </div>
       <div className="flex w-full justify-center">
-      <NameSearch query={searchQuery} setQuery={setSearchQuery} />
+        <NameSearch query={searchQuery} setQuery={setSearchQuery} />
       </div>
       {searchQuery !== '' ? (
         <>
           <div className="mt-6 mb-6 h-[700px]">
             {loading ? (
               <div className="flex w-full justify-center">
-              <Loader />
+                <Loader />
               </div>
             ) : (
               <>
@@ -89,9 +89,9 @@ const Search: NextPage = () => {
                 />
                 {owner && (
                   <div className="flex w-full justify-center">
-                  <div className="py-4">
-                    <CopyInput inputText={owner!} label={'Copy'} />
-                  </div>
+                    <div className="py-4">
+                      <CopyInput inputText={owner!} label={'Copy'} />
+                    </div>
                   </div>
                 )}
               </>

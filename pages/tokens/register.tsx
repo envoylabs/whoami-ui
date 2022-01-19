@@ -40,32 +40,32 @@ const Register: NextPage = () => {
 
   return (
     <WalletLoader>
-    <div className="flex flex-col w-full justify-center py-6">
-    <div className="flex w-full justify-center">
-      <h1 className="text-6xl font-bold mb-2">Find a name</h1>
-      </div>
-      <div className="flex w-full justify-center">
-      <NameSearch query={searchQuery} setQuery={setSearchQuery} />
-      </div>
-      {searchQuery !== '' ? (
-        <>
-          <div className="mt-6 mb-6 h-[700px]">
-            {loading ? (
-              <div className="flex w-full justify-center">
-              <Loader />
-              </div>
-            ) : (
-              <TokenSearchResult
-                name={searchQuery}
-                token={token}
-                avaliable={!token}
-                valid={searchQuery.length < 21 ? true : false}
-                loggedIn={true}
-              />
-            )}
-          </div>
-        </>
-      ) : null}
+      <div className="flex flex-col w-full justify-center py-6">
+        <div className="flex w-full justify-center">
+          <h1 className="text-6xl font-bold mb-2">Find a name</h1>
+        </div>
+        <div className="flex w-full justify-center">
+          <NameSearch query={searchQuery} setQuery={setSearchQuery} />
+        </div>
+        {searchQuery !== '' ? (
+          <>
+            <div className="mt-6 mb-6 h-[700px]">
+              {loading ? (
+                <div className="flex w-full justify-center">
+                  <Loader />
+                </div>
+              ) : (
+                <TokenSearchResult
+                  name={searchQuery}
+                  token={token}
+                  avaliable={!token}
+                  valid={searchQuery.length < 21 ? true : false}
+                  loggedIn={true}
+                />
+              )}
+            </div>
+          </>
+        ) : null}
       </div>
     </WalletLoader>
   )

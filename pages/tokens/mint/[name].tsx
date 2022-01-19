@@ -174,39 +174,39 @@ const Mint: NextPage = () => {
     <WalletLoader>
       {loading ? (
         <div className="flex w-full justify-center py-12">
-        <Loader />
+          <Loader />
         </div>
       ) : (
         <>
-        <div className="flex w-full justify-center">
-          <div className="py-4 w-96">
-            <Notice
-              message={`The mint cost for this token is ${humanMintCost} ${humanDenom}`}
-            />
-          </div>
+          <div className="flex w-full justify-center">
+            <div className="py-4 w-96">
+              <Notice
+                message={`The mint cost for this token is ${humanMintCost} ${humanDenom}`}
+              />
+            </div>
           </div>
 
           {error && (
             <div className="flex w-full justify-center">
-            <div className="py-4 w-96">
-              <Error
-                errorTitle={'Something went wrong!'}
-                errorMessage={error!}
-              />
-            </div>
+              <div className="py-4 w-96">
+                <Error
+                  errorTitle={'Something went wrong!'}
+                  errorMessage={error!}
+                />
+              </div>
             </div>
           )}
           {!R.isEmpty(errors) && (
             <div className="flex w-full justify-center">
-            <div className="py-4 w-96">
-              <Error
-                errorTitle={'Form error'}
-                errorMessage={`Please check these fields: ${R.join(
-                  ', ',
-                  getMintFormErrors(errors)
-                )}`}
-              />
-            </div>
+              <div className="py-4 w-96">
+                <Error
+                  errorTitle={'Form error'}
+                  errorMessage={`Please check these fields: ${R.join(
+                    ', ',
+                    getMintFormErrors(errors)
+                  )}`}
+                />
+              </div>
             </div>
           )}
           <div className="flex flex-wrap justify-center pt-6">
@@ -220,36 +220,36 @@ const Mint: NextPage = () => {
             </div>
 
             <div className="flex flex-col justify-center">
-            <div className="flex w-full justify-center">
-              <h4 className="text-2xl py-4">Profile data</h4>
+              <div className="flex w-full justify-center">
+                <h4 className="text-2xl py-4">Profile data</h4>
               </div>
               <div className="flex w-full justify-center">
-              <p>
-                Tip: to generate a PFP URL, <br /> use a service like{' '}
-                <a
-                  href="https://www.pinata.cloud/"
-                  className="pl-1 link link-primary link-hover"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Pinata
-                </a>
-                .
-              </p>
+                <p>
+                  Tip: to generate a PFP URL, <br /> use a service like{' '}
+                  <a
+                    href="https://www.pinata.cloud/"
+                    className="pl-1 link link-primary link-hover"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Pinata
+                  </a>
+                  .
+                </p>
               </div>
               <div className="flex w-full justify-center">
-              <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4">
-                <>{inputs}</>
+                <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4">
+                  <>{inputs}</>
 
-                <div className="py-4">
-                  <input
-                    type="submit"
-                    className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
-                    value="Create Username"
-                  />
-                </div>
-              </form>
-            </div>
+                  <div className="py-4">
+                    <input
+                      type="submit"
+                      className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl"
+                      value="Create Username"
+                    />
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </>

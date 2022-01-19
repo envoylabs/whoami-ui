@@ -175,53 +175,53 @@ const TokenUpdate: NextPage = () => {
     <WalletLoader>
       {loading ? (
         <div className="flex w-full justify-center py-12">
-        <Loader />
+          <Loader />
         </div>
       ) : (
         <>
           {error && (
             <div className="flex w-full justify-center">
-            <div className="py-4 w-96">
-              <Error
-                errorTitle={'Something went wrong!'}
-                errorMessage={error!}
-              />
-            </div>
+              <div className="py-4 w-96">
+                <Error
+                  errorTitle={'Something went wrong!'}
+                  errorMessage={error!}
+                />
+              </div>
             </div>
           )}
           {!R.isEmpty(errors) && (
             <div className="flex w-full justify-center">
-            <div className="py-4 w-96">
-              <Error
-                errorTitle={'Form error'}
-                errorMessage={`Please check these fields: ${R.join(
-                  ', ',
-                  getMintFormErrors(errors)
-                )}`}
-              />
-            </div>
+              <div className="py-4 w-96">
+                <Error
+                  errorTitle={'Form error'}
+                  errorMessage={`Please check these fields: ${R.join(
+                    ', ',
+                    getMintFormErrors(errors)
+                  )}`}
+                />
+              </div>
             </div>
           )}
           <div className="flex flex-col justify-center">
             <div className="flex w-full justify-center">
-          <h1 className="text-3xl font-bold">Update your profile</h1>
-</div>
-          <div className="flex w-full justify-center p-6">
-            <p>Update the data associated with your username.</p>
-          </div>
-<div className="flex w-full justify-center">
-          <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4">
-            <>{inputs}</>
-
-            <div className="py-4">
-              <input
-                type="submit"
-                className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
-                value="Update profile"
-              />
+              <h1 className="text-3xl font-bold">Update your profile</h1>
             </div>
-          </form>
-          </div>
+            <div className="flex w-full justify-center p-6">
+              <p>Update the data associated with your username.</p>
+            </div>
+            <div className="flex w-full justify-center">
+              <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4">
+                <>{inputs}</>
+
+                <div className="py-4">
+                  <input
+                    type="submit"
+                    className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
+                    value="Update profile"
+                  />
+                </div>
+              </form>
+            </div>
           </div>
         </>
       )}

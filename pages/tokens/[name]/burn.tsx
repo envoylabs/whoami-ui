@@ -63,28 +63,27 @@ const BurnToken: NextPage = () => {
     <WalletLoader>
       {loading ? (
         <div className="flex w-full justify-center py-12">
-        <Loader />
+          <Loader />
         </div>
       ) : (
         <>
           {error && (
             <div className="flex w-full justify-center">
-            <div className="py-4 w-96">
-              <Error
-                errorTitle={'Something went wrong!'}
-                errorMessage={error!}
-              />
-            </div>
+              <div className="py-4 w-96">
+                <Error
+                  errorTitle={'Something went wrong!'}
+                  errorMessage={error!}
+                />
+              </div>
             </div>
           )}
           <div className="flex flex-wrap justify-center pt-4">
-            
             {token ? (
               <div className="mr-3">
-              <div className="sticky top-5 mt-5">
-              <TokenCard name={tokenName} token={token as Metadata} />
+                <div className="sticky top-5 mt-5">
+                  <TokenCard name={tokenName} token={token as Metadata} />
+                </div>
               </div>
-            </div>
             ) : null}
 
             <div className="flex flex-col justify-center m-5">
