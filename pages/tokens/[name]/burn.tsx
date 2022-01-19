@@ -62,23 +62,32 @@ const BurnToken: NextPage = () => {
   return (
     <WalletLoader>
       {loading ? (
+        <div className="flex w-full justify-center py-12">
         <Loader />
+        </div>
       ) : (
         <>
           {error && (
-            <div className="py-4">
+            <div className="flex w-full justify-center">
+            <div className="py-4 w-96">
               <Error
                 errorTitle={'Something went wrong!'}
                 errorMessage={error!}
               />
             </div>
+            </div>
           )}
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap justify-center pt-4">
+            
             {token ? (
+              <div className="mr-3">
+              <div className="sticky top-5 mt-5">
               <TokenCard name={tokenName} token={token as Metadata} />
+              </div>
+            </div>
             ) : null}
 
-            <div className="items-center text-left m-5">
+            <div className="flex flex-col justify-center m-5">
               <h2 className="text-4xl font-bold">
                 <FireIcon className="h-9 w-9 inline mr-2 mb-1" />
                 Burn {tokenName}

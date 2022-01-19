@@ -174,19 +174,24 @@ const TokenUpdate: NextPage = () => {
   return (
     <WalletLoader>
       {loading ? (
+        <div className="flex w-full justify-center py-12">
         <Loader />
+        </div>
       ) : (
         <>
           {error && (
-            <div className="py-4">
+            <div className="flex w-full justify-center">
+            <div className="py-4 w-96">
               <Error
                 errorTitle={'Something went wrong!'}
                 errorMessage={error!}
               />
             </div>
+            </div>
           )}
           {!R.isEmpty(errors) && (
-            <div className="py-4">
+            <div className="flex w-full justify-center">
+            <div className="py-4 w-96">
               <Error
                 errorTitle={'Form error'}
                 errorMessage={`Please check these fields: ${R.join(
@@ -195,13 +200,16 @@ const TokenUpdate: NextPage = () => {
                 )}`}
               />
             </div>
+            </div>
           )}
+          <div className="flex flex-col justify-center">
+            <div className="flex w-full justify-center">
           <h1 className="text-3xl font-bold">Update your profile</h1>
-
-          <div className="p-6">
+</div>
+          <div className="flex w-full justify-center p-6">
             <p>Update the data associated with your username.</p>
           </div>
-
+<div className="flex w-full justify-center">
           <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4">
             <>{inputs}</>
 
@@ -213,6 +221,8 @@ const TokenUpdate: NextPage = () => {
               />
             </div>
           </form>
+          </div>
+          </div>
         </>
       )}
     </WalletLoader>

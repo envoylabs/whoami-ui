@@ -70,16 +70,18 @@ const ListUsernames: NextPage = () => {
   return (
     <>
       {!loading && alias ? (
-        <>
+        <div className="flex flex-col justify-center pt-6">
           <h1 className="text-3xl font-bold pt-16">
             Names for <code>{address}</code>
           </h1>
           {tokens !== undefined ? (
+            <div className="flex w-full justify-center">
             <ul>
               {tokens.map((token, key) => {
                 return (
+                  <div className="flex w-full justify-center">
                   <li
-                    className="card bordered border-secondary hover:border-primary p-6 m-8"
+                    className="card bordered border-secondary hover:border-primary py-4 px-8 mt-6"
                     key={key}
                   >
                     <Link href={`/ids/${token}`} passHref>
@@ -95,15 +97,19 @@ const ListUsernames: NextPage = () => {
                       </a>
                     </Link>
                   </li>
+                  </div>
                 )
               })}
             </ul>
+            </div>
           ) : (
             <p>No tokens</p>
           )}
-        </>
+        </div>
       ) : (
+      <div className="flex w-full justify-center py-12">
         <Loader />
+        </div>
       )}
     </>
   )

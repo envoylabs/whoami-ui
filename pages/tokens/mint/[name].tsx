@@ -173,25 +173,32 @@ const Mint: NextPage = () => {
   return (
     <WalletLoader>
       {loading ? (
+        <div className="flex w-full justify-center py-12">
         <Loader />
+        </div>
       ) : (
         <>
-          <div className="py-4">
+        <div className="flex w-full justify-center">
+          <div className="py-4 w-96">
             <Notice
               message={`The mint cost for this token is ${humanMintCost} ${humanDenom}`}
             />
           </div>
+          </div>
 
           {error && (
-            <div className="py-4">
+            <div className="flex w-full justify-center">
+            <div className="py-4 w-96">
               <Error
                 errorTitle={'Something went wrong!'}
                 errorMessage={error!}
               />
             </div>
+            </div>
           )}
           {!R.isEmpty(errors) && (
-            <div className="py-4">
+            <div className="flex w-full justify-center">
+            <div className="py-4 w-96">
               <Error
                 errorTitle={'Form error'}
                 errorMessage={`Please check these fields: ${R.join(
@@ -200,8 +207,9 @@ const Mint: NextPage = () => {
                 )}`}
               />
             </div>
+            </div>
           )}
-          <div className="flex flex-wrap pt-4">
+          <div className="flex flex-wrap justify-center pt-6">
             <div className="mr-3">
               <div className="sticky top-5 mt-5">
                 <TokenCard
@@ -211,8 +219,11 @@ const Mint: NextPage = () => {
               </div>
             </div>
 
-            <div>
+            <div className="flex flex-col justify-center">
+            <div className="flex w-full justify-center">
               <h4 className="text-2xl py-4">Profile data</h4>
+              </div>
+              <div className="flex w-full justify-center">
               <p>
                 Tip: to generate a PFP URL, <br /> use a service like{' '}
                 <a
@@ -225,6 +236,8 @@ const Mint: NextPage = () => {
                 </a>
                 .
               </p>
+              </div>
+              <div className="flex w-full justify-center">
               <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4">
                 <>{inputs}</>
 
@@ -236,6 +249,7 @@ const Mint: NextPage = () => {
                   />
                 </div>
               </form>
+            </div>
             </div>
           </div>
         </>

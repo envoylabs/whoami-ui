@@ -20,31 +20,38 @@ export default function TokenSearchResult({
   const normalizedName = R.toLower(name)
 
   return (
-    <div>
+    <div className="w-full">
       {avaliable ? (
         valid ? (
-          <div className="alert alert-success mb-2">
+          <div className="flex w-full justify-center">
+          <div className="alert alert-success mb-2 w-96">
             <div className="flex-1">
               <LockOpenIcon className="h-6 w-6 inline mr-2" />
               <label>available!</label>
             </div>
           </div>
+          </div>
         ) : (
-          <div className="alert alert-dark mb-3">
+        <div className="flex w-full justify-center">
+          <div className="alert alert-dark mb-3 w-96">
             <div className="flex-1">
               <LockClosedIcon className="h-6 w-6 inline mr-2" />
               <label>too long</label>
             </div>
           </div>
+          </div>
         )
       ) : (
-        <div className="alert alert-info mb-3">
+      <div className="flex w-full justify-center">
+        <div className="alert alert-info mb-3 w-96">
           <div className="flex-1">
             <LockClosedIcon className="h-6 w-6 inline mr-2" />
             <label>minted</label>
           </div>
         </div>
+        </div>
       )}
+      <div className="flex w-full justify-center">
       <TokenCard
         name={normalizedName}
         token={
@@ -63,6 +70,7 @@ export default function TokenSearchResult({
           }
         }
       />
+      </div>
       {loggedIn ? (
         avaliable ? (
           valid ? (
