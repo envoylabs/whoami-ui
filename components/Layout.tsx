@@ -2,9 +2,12 @@ import { ReactNode } from 'react'
 import Head from 'next/head'
 import Nav from './Nav'
 import Link from 'next/link'
+import { Notice } from 'components/Notice'
 
 export default function Layout({ children }: { children: ReactNode }) {
   const siteTitle = process.env.NEXT_PUBLIC_SITE_TITLE
+  const enabled = process.env.NEXT_PUBLIC_UI_ENABLED
+  const uiEnabled = enabled === 'true'
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-base-100 text-base-content">
       <Head>
@@ -18,7 +21,15 @@ export default function Layout({ children }: { children: ReactNode }) {
         className="flex flex-col items-center justify-center w-full flex-1 p-2 md:px-20 text-center"
         style={{ backgroundImage: "url('/dens.svg')" }}
       >
-        {children}
+        {uiEnabled ? (
+          children
+        ) : (
+          <div className="py-4">
+            <Notice
+              message={`The site is currently down for maintenance. Please check back later.`}
+            />
+          </div>
+        )}
       </main>
       <footer className="flex flex-wrap items-center justify-center md:w-1/2 h-24 border-t">
         <div className="md:w-full items-center justify-center text-center pt-4">
