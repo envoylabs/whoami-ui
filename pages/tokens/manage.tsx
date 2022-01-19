@@ -26,11 +26,8 @@ const Manage: NextPage = () => {
             <ul>
               {tokens.map((token, key) => {
                 return (
-                  <div className="flex w-full justify-center">
-                    <li
-                      className="card bordered border-secondary hover:border-primary py-4 px-8 mt-6"
-                      key={key}
-                    >
+                  <div className="flex w-full justify-center" key={key}>
+                    <li className="card bordered border-secondary hover:border-primary py-4 px-8 mt-6">
                       <Link href={`/tokens/${token}`} passHref>
                         <a>
                           <div className="card-title">
