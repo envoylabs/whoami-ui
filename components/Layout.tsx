@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const enabled = process.env.NEXT_PUBLIC_UI_ENABLED
   const uiEnabled = enabled === 'true'
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-base-100 text-base-content">
+    <div className="flex flex-col min-h-screen bg-base-100 text-base-content">
       <Head>
         <title>{siteTitle}</title>
         <meta name="description" content="The Decentralized Name Service" />
@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <Nav />
       <main
-        className="flex flex-col items-center justify-center w-full flex-1 p-2 md:px-20 text-center"
+        className="flex flex-col w-full flex-1 p-2 md:px-20 text-center"
         style={{ backgroundImage: "url('/dens.svg')" }}
       >
         {uiEnabled ? (
@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         )}
       </main>
-      <footer className="flex flex-wrap items-center justify-center md:w-1/2 h-24 border-t">
+      <footer className="flex flex-wrap items-center justify-center w-full h-24 border-t">
         <div className="md:w-full items-center justify-center text-center pt-4">
           Powered by{' '}
           <a

@@ -82,7 +82,7 @@ const TokenView: NextPage = () => {
             </div>
           )}
           <NameCard name={tokenName} token={token as Metadata} />
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap justify-center w-full">
             <div className="py-4">
               <CopyInput
                 inputText={`${getHost()}/ids/${tokenName}`}
@@ -90,7 +90,7 @@ const TokenView: NextPage = () => {
               />
             </div>
           </div>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap justify-center">
             <div className="p-1">
               <Link href={`/tokens/manage`} passHref>
                 <a className="btn btn-outline mt-6">

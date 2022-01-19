@@ -32,7 +32,7 @@ export function TokenCard({ name, token }: { name: string; token: Metadata }) {
 
       <div className="card-body break-words">
         <h2 className="card-title text-4xl font-bold">{name}</h2>
-        {token.public_bio ? <p>{token.public_bio}</p> : null}
+        {token.public_name ? <p>{token.public_name}</p> : null}
       </div>
     </div>
   )
@@ -43,11 +43,11 @@ export function NameCard({ name, token }: { name: string; token: Metadata }) {
     return null
   }
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap py-6 justify-center">
       <div className="mr-3">
         <TokenCard name={name} token={token} />
       </div>
-      <div className="items-center text-left m-5">
+      <div className="items-center text-left m-5 md:w-1/2">
         <ItemDisplay name="Name" contents={name} />
         {token.email ? (
           <ItemDisplay name="Email" contents={token.email} />

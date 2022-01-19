@@ -9,11 +9,12 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <h1 className="text-6xl font-bold">
+      <h1 className="text-6xl font-bold py-6">
         {process.env.NEXT_PUBLIC_SITE_TITLE}
       </h1>
       <p className="italic">Decentralized Name Service</p>
 
+      <div className="w-full">
       <PageLink
         href="/tokens/register"
         title="Register"
@@ -32,6 +33,7 @@ const Home: NextPage = () => {
         description="Lookup addresses and explore registered names"
         Icon={MapIcon}
       />
+      </div>
     </>
   )
 }
