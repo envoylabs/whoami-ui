@@ -20,6 +20,7 @@ export function useTokenList() {
         let tokenList = await signingClient.queryContractSmart(contract, {
           tokens: {
             owner: walletAddress,
+            limit: 30,
           },
         })
         setTokens(tokenList.tokens)
