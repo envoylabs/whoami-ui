@@ -47,7 +47,7 @@ export function NameCard({ name, token }: { name: string; token: Metadata }) {
       <div className="mr-3">
         <TokenCard name={name} token={token} />
       </div>
-      <div className="items-center text-left m-5 md:w-1/2">
+      <div className="items-center text-left m-5 w-full md:w-1/2">
         <ItemDisplay name="Name" contents={name} />
         {token.email ? (
           <ItemDisplay name="Email" contents={token.email} />
