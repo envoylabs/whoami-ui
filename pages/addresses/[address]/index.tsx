@@ -54,6 +54,7 @@ const ListUsernames: NextPage = () => {
         let tokenList = await client.queryContractSmart(contract, {
           tokens: {
             owner: address,
+            limit: 30,
           },
         })
         setTokens(tokenList.tokens)
