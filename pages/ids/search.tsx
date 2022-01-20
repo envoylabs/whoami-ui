@@ -76,7 +76,7 @@ const Search: NextPage = () => {
         </div>
         {searchQuery !== '' ? (
           <>
-            <div className="mt-6 mb-6 h-[700px]">
+            <div className="mt-6 mb-6 min-h-[700px]">
               {loading ? (
                 <div className="flex w-full justify-center">
                   <Loader />
