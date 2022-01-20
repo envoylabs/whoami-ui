@@ -6,6 +6,7 @@ import { Metadata } from 'util/types/messages'
 import TokenSearchResult from 'components/TokenSearchResult'
 import { CopyInput } from 'components/CopyInput'
 import Loader from 'components/Loader'
+import { Send } from 'components/Send'
 
 // TODO - make this functionally distinct from register
 const Search: NextPage = () => {
@@ -79,7 +80,7 @@ const Search: NextPage = () => {
                 <Loader />
               </div>
             ) : (
-              <>
+              <div className="flex flex-wrap w-full justify-center">
                 <TokenSearchResult
                   name={searchQuery}
                   token={token}
@@ -88,13 +89,13 @@ const Search: NextPage = () => {
                   loggedIn={false}
                 />
                 {owner && (
-                  <div className="flex w-full justify-center">
+                  <div className="flex w-full lg:w-1/2 justify-center py-6">
                     <div className="py-4">
-                      <CopyInput inputText={owner!} label={'Copy'} />
+                      <Send address={owner!} />
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             )}
           </div>
         </>

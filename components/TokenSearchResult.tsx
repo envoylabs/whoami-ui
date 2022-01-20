@@ -20,7 +20,7 @@ export default function TokenSearchResult({
   const normalizedName = R.toLower(name)
 
   return (
-    <div className="w-full">
+    <div className="w-full lg:w-1/2">
       {avaliable ? (
         valid ? (
           <div className="flex w-full justify-center">
