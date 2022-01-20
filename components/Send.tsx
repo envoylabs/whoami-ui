@@ -123,7 +123,6 @@ export function Send({ address, name }: { address: string; name: string }) {
                 type="number"
                 id="send-amount"
                 className="input input-bordered focus:input-primary input-lg w-full pr-24 text-center font-mono text-lg"
-                placeholder="Amount..."
                 step="0.1"
                 placeholder="0.001"
                 onChange={(event) => setSendAmount(event.target.value)}
