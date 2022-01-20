@@ -24,7 +24,7 @@ export function Send({ address, name }: { address: string; name: string }) {
   const [loadedAt, setLoadedAt] = useState(new Date())
   const [loading, setLoading] = useState(false)
   const [recipientAddress, setRecipientAddress] = useState(address)
-  const [sendAmount, setSendAmount] = useState('')
+  const [sendAmount, setSendAmount] = useState('0.001')
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
   const [message, setMessage] = useState(defaultMemo)
@@ -75,11 +75,11 @@ export function Send({ address, name }: { address: string; name: string }) {
 
         const message = `Success! Sent ${sendAmount}  ${convertFromMicroDenom(
           PUBLIC_STAKING_DENOM
-        )} and message to ${name}.`
+        )} and memo message to ${name}.`
 
         setLoadedAt(new Date())
         setLoading(false)
-        setSendAmount('')
+        setSendAmount('0.001') // back to default
         setSuccess(message)
       })
       .catch((error) => {
@@ -124,7 +124,7 @@ export function Send({ address, name }: { address: string; name: string }) {
                 id="send-amount"
                 className="input input-bordered focus:input-primary input-lg w-full pr-24 text-center font-mono text-lg"
                 step="0.1"
-                placeholder="0.001"
+                placeholder={`${sendAmount}`}
                 onChange={(event) => setSendAmount(event.target.value)}
                 value={sendAmount}
               />
