@@ -6,6 +6,7 @@ import { Metadata } from 'util/types/messages'
 import TokenSearchResult from 'components/TokenSearchResult'
 import { CopyInput } from 'components/CopyInput'
 import Loader from 'components/Loader'
+import WalletLoader from 'components/WalletLoader'
 import { Send } from 'components/Send'
 
 // TODO - make this functionally distinct from register
@@ -65,42 +66,44 @@ const Search: NextPage = () => {
   }, [tokenName, contract])
 
   return (
-    <div className="flex flex-col w-full justify-center py-12">
-      <div className="flex w-full justify-center">
-        <h1 className="text-6xl font-bold mb-2 pt-6">Find a name</h1>
-      </div>
-      <div className="flex w-full justify-center">
-        <NameSearch query={searchQuery} setQuery={setSearchQuery} />
-      </div>
-      {searchQuery !== '' ? (
-        <>
-          <div className="mt-6 mb-6 h-[700px]">
-            {loading ? (
-              <div className="flex w-full justify-center">
-                <Loader />
-              </div>
-            ) : (
-              <div className="flex flex-wrap w-full justify-center">
-                <TokenSearchResult
-                  name={searchQuery}
-                  token={token}
-                  avaliable={!token}
-                  valid={searchQuery.length < 21 ? true : false}
-                  loggedIn={false}
-                />
-                {owner && (
-                  <div className="flex w-full lg:w-1/2 justify-center py-6">
-                    <div className="py-4">
-                      <Send address={owner!} />
+    <WalletLoader>
+      <div className="flex flex-col w-full justify-center py-12">
+        <div className="flex w-full justify-center">
+          <h1 className="text-6xl font-bold mb-2 pt-6">Find a name</h1>
+        </div>
+        <div className="flex w-full justify-center">
+          <NameSearch query={searchQuery} setQuery={setSearchQuery} />
+        </div>
+        {searchQuery !== '' ? (
+          <>
+            <div className="mt-6 mb-6 h-[700px]">
+              {loading ? (
+                <div className="flex w-full justify-center">
+                  <Loader />
+                </div>
+              ) : (
+                <div className="flex flex-wrap w-full justify-center">
+                  <TokenSearchResult
+                    name={searchQuery}
+                    token={token}
+                    avaliable={!token}
+                    valid={searchQuery.length < 21 ? true : false}
+                    loggedIn={false}
+                  />
+                  {owner && (
+                    <div className="flex w-full lg:w-1/2 justify-center py-6">
+                      <div className="py-4">
+                        <Send address={owner!} name={tokenName!} />
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </>
-      ) : null}
-    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        ) : null}
+      </div>
+    </WalletLoader>
   )
 }
 
