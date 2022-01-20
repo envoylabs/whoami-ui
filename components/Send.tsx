@@ -13,6 +13,7 @@ import { Error } from 'components/Error'
 import { Notice } from 'components/Notice'
 import { defaultExecuteFee } from 'util/fee'
 import Loader from 'components/Loader'
+import { defaultMemo } from 'util/memo'
 
 const PUBLIC_CHAIN_NAME = process.env.NEXT_PUBLIC_CHAIN_NAME
 const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'ujuno'
@@ -26,6 +27,7 @@ export function Send({ address, name }: { address: string; name: string }) {
   const [sendAmount, setSendAmount] = useState('')
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
+  const [message, setMessage] = useState(defaultMemo)
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
@@ -61,13 +63,19 @@ export function Send({ address, name }: { address: string; name: string }) {
     ]
 
     signingClient
-      ?.sendTokens(walletAddress, recipientAddress, amount, defaultExecuteFee)
+      ?.sendTokens(
+        walletAddress,
+        recipientAddress,
+        amount,
+        defaultExecuteFee,
+        message
+      )
       .then((resp) => {
         console.log('resp', resp)
 
         const message = `Success! Sent ${sendAmount}  ${convertFromMicroDenom(
           PUBLIC_STAKING_DENOM
-        )} to ${name}.`
+        )} and message to ${name}.`
 
         setLoadedAt(new Date())
         setLoading(false)
@@ -99,14 +107,24 @@ export function Send({ address, name }: { address: string; name: string }) {
               value={recipientAddress}
             />
           </div>
+          <div className="flex w-full max-w-xl  mt-4">
+            <input
+              type="text"
+              id="message"
+              className="input input-bordered focus:input-primary input-lg flex-grow font-mono text-center text-lg"
+              placeholder={`${message}`}
+              onChange={(event) => setMessage(event.target.value)}
+              value={message}
+            />
+          </div>
           <div className="flex flex-col md:flex-row mt-4 text-2xl w-full max-w-xl justify-between">
             <div className="relative shadow-sm md:mr-2">
               <input
                 type="number"
                 id="send-amount"
                 className="input input-bordered focus:input-primary input-lg w-full pr-24 text-center font-mono text-lg"
-                placeholder="Amount..."
                 step="0.1"
+                placeholder="0.001"
                 onChange={(event) => setSendAmount(event.target.value)}
                 value={sendAmount}
               />
