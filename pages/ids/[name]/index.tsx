@@ -72,7 +72,7 @@ const TokenView: NextPage = () => {
   return (
     <>
       {token ? (
-        <>
+        <div className="py-16">
           <NameCard name={tokenName} token={token as Metadata} />
           {owner && (
             <div className="flex flex-wrap justify-center w-full">
@@ -90,7 +90,7 @@ const TokenView: NextPage = () => {
               </Link>
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <h1 className="text-4xl font-bold">Not found</h1>
       )}
