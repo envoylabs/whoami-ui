@@ -44,10 +44,10 @@ export function NameCard({ name, token }: { name: string; token: Metadata }) {
   }
   return (
     <div className="flex flex-wrap py-6 justify-center">
-      <div className="mr-3">
+      <div className="flex justify-center md:w-1/2">
         <TokenCard name={name} token={token} />
       </div>
-      <div className="items-center text-left m-5 w-full md:w-1/2">
+      <div className="flex flex-col items-left text-left w-full md:w-1/2 pl-4 pt-4">
         <ItemDisplay name="Name" contents={name} />
         {token.email ? (
           <ItemDisplay name="Email" contents={token.email} />
