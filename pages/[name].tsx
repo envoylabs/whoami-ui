@@ -17,10 +17,18 @@ import { useTokenList } from 'hooks/tokens'
 const TokenView: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
-  const tokenName = router.query.name as string
+  const name = router.query.name as string
+  const [tokenName, setTokenName] = useState()
 
   const [token, setToken] = useState<Metadata>()
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!name) return
+
+    const amendedName = name.replace(/^dens::/i, '')
+    setTokenName(amendedName)
+  }, [name])
 
   useEffect(() => {
     if (!tokenName) return
