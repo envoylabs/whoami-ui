@@ -1,7 +1,6 @@
 import { useState, useEffect, MouseEvent } from 'react'
 import type { NextPage } from 'next'
 import { StdFee, Coin } from '@cosmjs/amino'
-
 import WalletLoader from 'components/WalletLoader'
 import { useSigningClient } from 'contexts/cosmwasm'
 import {
@@ -14,6 +13,7 @@ import { Notice } from 'components/Notice'
 import { defaultExecuteFee } from 'util/fee'
 import Loader from 'components/Loader'
 import { defaultMemo } from 'util/memo'
+import * as R from 'ramda'
 
 const PUBLIC_CHAIN_NAME = process.env.NEXT_PUBLIC_CHAIN_NAME
 const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'ujuno'
@@ -44,9 +44,9 @@ export function Send({ address, name }: { address: string; name: string }) {
           `${convertMicroDenomToDenom(amount)} ${convertFromMicroDenom(denom)}`
         )
       })
-      .catch((error) => {
-        setError(`Error! ${error.message}`)
-        console.log('Error signingClient.getBalance(): ', error)
+      .catch((err) => {
+        setError(`Error! ${err.message}`)
+        console.log('Error signingClient.getBalance(): ', err)
       })
   }, [signingClient, walletAddress, loadedAt])
 
