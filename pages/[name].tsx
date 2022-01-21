@@ -18,7 +18,7 @@ const TokenView: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
   const name = router.query.name as string
-  const [tokenName, setTokenName] = useState()
+  const [tokenName, setTokenName] = useState<string | undefined>()
 
   const [token, setToken] = useState<Metadata>()
   const [loading, setLoading] = useState(false)
