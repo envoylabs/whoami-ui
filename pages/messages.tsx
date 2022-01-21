@@ -113,8 +113,8 @@ const Messages: NextPage = () => {
 
   return (
     <WalletLoader>
-      <div className="flex flex-col justify-center pt-6">
-        <h2 className="text-4xl pt-16">
+      <div className="flex flex-col justify-center p-6 pb-16">
+        <h2 className="text-4xl p-16">
           Messages for {alias ? alias : walletAddress}
         </h2>
         {!R.isEmpty(messages) ? (
@@ -144,7 +144,9 @@ const Messages: NextPage = () => {
             </ul>
           </div>
         ) : (
-          <p>No messages</p>
+          <div className="flex flex-col justify-center pt-6">
+            <p>No messages</p>
+          </div>
         )}
       </div>
     </WalletLoader>
