@@ -79,9 +79,9 @@ const TokenView: NextPage = () => {
 
   return (
     <>
-      {token ? (
+      {token && tokenName ? (
         <>
-          <NameCard name={tokenName} token={token as Metadata} />
+          <NameCard name={tokenName!} token={token as Metadata} />
           {owner && (
             <div className="flex flex-wrap justify-center w-full">
               <div className="py-4">
