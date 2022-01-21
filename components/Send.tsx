@@ -24,10 +24,10 @@ export function Send({ address, name }: { address: string; name: string }) {
   const [loadedAt, setLoadedAt] = useState(new Date())
   const [loading, setLoading] = useState(false)
   const [recipientAddress, setRecipientAddress] = useState(address)
-  const [sendAmount, setSendAmount] = useState('0.001')
+  const [sendAmount, setSendAmount] = useState('100')
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
-  const [message, setMessage] = useState(defaultMemo)
+  const [memo, setMemo] = useState(defaultMemo)
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
@@ -50,44 +50,43 @@ export function Send({ address, name }: { address: string; name: string }) {
       })
   }, [signingClient, walletAddress, loadedAt])
 
-  const handleSend = (event: MouseEvent<HTMLElement>) => {
+  const handleSend = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault()
+    if (!signingClient) {
+      return
+    }
+
     setError('')
     setSuccess('')
     setLoading(true)
     const amount: Coin[] = [
       {
-        amount: convertDenomToMicroDenom(sendAmount),
+        amount: sendAmount,
         denom: PUBLIC_STAKING_DENOM,
       },
     ]
 
-    signingClient
-      ?.sendTokens(
+    try {
+      let res = await signingClient.sendTokens(
         walletAddress,
         recipientAddress,
         amount,
         defaultExecuteFee,
-        message
+        memo
       )
-      .then((resp) => {
-        console.log('resp', resp)
 
-        const message = `Success! Sent ${sendAmount}  ${convertFromMicroDenom(
-          PUBLIC_STAKING_DENOM
-        )} and memo message to ${name}.`
+      const message = `Success! Sent ${sendAmount} ${PUBLIC_STAKING_DENOM} and memo message to ${name}.`
 
-        setLoadedAt(new Date())
-        setLoading(false)
-        setSendAmount('0.001') // back to default
-        setSuccess(message)
-      })
-      .catch((error) => {
-        setLoading(false)
-        setError(`Error! ${error.message}`)
-        console.log('Error signingClient.sendTokens(): ', error)
-      })
+      setLoadedAt(new Date())
+      setLoading(false)
+      setSendAmount('100') // back to default
+      setSuccess(message)
+    } catch (err) {
+      setLoading(false)
+      setError(`Error! ${err.message}`)
+    }
   }
+
   return (
     <>
       {loading ? (
@@ -110,11 +109,11 @@ export function Send({ address, name }: { address: string; name: string }) {
           <div className="flex w-full max-w-xl  mt-4">
             <input
               type="text"
-              id="message"
+              id="memo"
               className="input input-bordered focus:input-primary input-lg flex-grow font-mono text-center text-lg"
-              placeholder={`${message}`}
-              onChange={(event) => setMessage(event.target.value)}
-              value={message}
+              placeholder={`${memo}`}
+              onChange={(event) => setMemo(event.target.value)}
+              value={memo}
             />
           </div>
           <div className="flex flex-col md:flex-row mt-4 text-2xl w-full max-w-xl justify-between">
@@ -123,13 +122,13 @@ export function Send({ address, name }: { address: string; name: string }) {
                 type="number"
                 id="send-amount"
                 className="input input-bordered focus:input-primary input-lg w-full pr-24 text-center font-mono text-lg"
-                step="0.1"
+                step="100"
                 placeholder={`${sendAmount}`}
                 onChange={(event) => setSendAmount(event.target.value)}
                 value={sendAmount}
               />
               <span className="absolute top-0 right-0 bottom-0 px-4 py-5 bg-secondary text-base-100 text-sm rounded">
-                {convertFromMicroDenom(PUBLIC_STAKING_DENOM)}
+                {PUBLIC_STAKING_DENOM}
               </span>
             </div>
             <button
