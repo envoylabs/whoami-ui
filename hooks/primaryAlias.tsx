@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 export function usePrimaryAlias() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const [alias, setAlias] = useState<string>()
+  const [alias, setAlias] = useState<string | undefined>()
   const [loadingAlias, setLoading] = useState(false)
 
   const { walletAddress, signingClient } = useSigningClient()
@@ -26,7 +26,7 @@ export function usePrimaryAlias() {
         setLoading(false)
       } catch (e) {
         console.error(e.message)
-        setAlias()
+        setAlias(undefined)
         return
       }
     }

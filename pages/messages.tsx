@@ -14,11 +14,17 @@ interface Message {
   height: number
 }
 
-const addressKey: unique symbol = Symbol()
+const address: unique symbol = Symbol()
 
 interface Mapping {
-  [addressKey]: string
+  [address]: string
 }
+
+interface EmptyMap {
+[index: string]: never;
+}
+
+type MappingOrEmpty = (Mapping | EmptyMap);
 
 const Messages: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
@@ -86,11 +92,11 @@ const Messages: NextPage = () => {
       return
     }
 
-    const getAliases = async (messages) => {
+    const getAliases = async (messages: (Message | undefined)[]) => {
       try {
         let promises = R.map(async (msg) => {
           try {
-            let address = msg.sender
+            let address = msg!.sender
 
             let aliasResponse = await signingClient.queryContractSmart(
               contract,
@@ -108,7 +114,7 @@ const Messages: NextPage = () => {
         }, messages)
         Promise.all(promises).then((res: any) => {
           const newMapping = R.reduce(
-            (acc, i) => {
+            (acc: any, i: string[]) => {
               if (i[1]) {
                 acc[i[0]] = i[1]
                 return acc
@@ -128,7 +134,7 @@ const Messages: NextPage = () => {
     getAliases(messages)
   }, [signingClient, walletAddress, loadedAt])
 
-  const getAliasOrAddr = (address) => mapping[address] || address
+  // const getAliasOrAddr = (address: any): any => mapping[address] || address
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
@@ -136,8 +142,9 @@ const Messages: NextPage = () => {
     }
 
     const msgsWithAliases = R.map((msg) => {
-      const sender = getAliasOrAddr(msg.sender)
-      const newMsg = R.mergeRight(msg, { sender: sender })
+      const address = msg!.sender as string
+      const sender = mapping[address] || address
+      const newMsg = R.mergeRight(msg!, { sender: sender })
       return newMsg
     }, messages)
 
