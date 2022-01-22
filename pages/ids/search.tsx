@@ -17,6 +17,7 @@ const Search: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [tokenName, setTokenName] = useState<string | undefined>()
   const [owner, setOwner] = useState<string | undefined>()
+  const [showSend, setShowSend] = useState(false)
 
   useEffect(() => {
     const doLoad = async (name: string) => {
@@ -65,49 +66,72 @@ const Search: NextPage = () => {
     getOwner()
   }, [tokenName, contract])
 
+  const handleShowSend = () => {
+    if (showSend === false) {
+      setShowSend(true)
+    } else {
+      setShowSend(false)
+    }
+  }
+
   return (
-    <WalletLoader>
-      <div className="flex flex-col w-full justify-center py-12">
-        <div className="flex w-full justify-center">
-          <h1 className="text-6xl font-bold mb-2 pt-6">Find a name</h1>
-        </div>
-        <div className="flex w-full justify-center">
-          <NameSearch query={searchQuery} setQuery={setSearchQuery} />
-        </div>
-        {searchQuery !== '' ? (
-          <>
-            <div className="mt-6 mb-6 min-h-[700px]">
-              {loading ? (
-                <div className="flex w-full justify-center">
-                  <Loader />
-                </div>
-              ) : (
-                <div className="flex flex-wrap w-full justify-center">
-                  <TokenSearchResult
-                    name={searchQuery}
-                    token={token}
-                    avaliable={!token}
-                    valid={searchQuery.length < 21 ? true : false}
-                    loggedIn={false}
-                  />
-                  {owner && (
-                    <div className="flex w-full lg:w-1/2 justify-center py-6">
-                      <div className="py-4">
-                        <Send
-                          address={owner!}
-                          name={tokenName!}
-                          showAddress={false}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </>
-        ) : null}
+    <div className="flex flex-col w-full justify-center py-12">
+      <div className="flex w-full justify-center">
+        <h1 className="text-6xl font-bold mb-2 pt-6">Find a name</h1>
       </div>
-    </WalletLoader>
+      <div className="flex w-full justify-center">
+        <NameSearch query={searchQuery} setQuery={setSearchQuery} />
+      </div>
+      {searchQuery !== '' ? (
+        <>
+          <div className="mt-6 mb-6 min-h-[700px]">
+            {loading ? (
+              <div className="flex w-full justify-center">
+                <Loader />
+              </div>
+            ) : (
+              <div className="flex flex-wrap w-full justify-center">
+                <TokenSearchResult
+                  name={searchQuery}
+                  token={token}
+                  avaliable={!token}
+                  valid={searchQuery.length < 21 ? true : false}
+                  loggedIn={false}
+                />
+                {owner && (
+                  <>
+                    {showSend ? (
+                      <WalletLoader>
+                        <div className="flex w-full lg:w-1/2 justify-center py-6">
+                          <div className="py-4">
+                            <Send
+                              address={owner!}
+                              name={tokenName!}
+                              showAddress={false}
+                            />
+                          </div>
+                        </div>
+                      </WalletLoader>
+                    ) : (
+                      <div className="flex w-full justify-center py-6">
+                        <div>
+                          <button
+                            className="btn btn-primary hover:text-base-100"
+                            onClick={handleShowSend}
+                          >
+                            Send Funds/Message
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </>
+      ) : null}
+    </div>
   )
 }
 
