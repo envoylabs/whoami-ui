@@ -26,6 +26,7 @@ export function usePrimaryAlias() {
         setLoading(false)
       } catch (e) {
         console.error(e.message)
+        setAlias()
         return
       }
     }

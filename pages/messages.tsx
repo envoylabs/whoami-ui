@@ -70,46 +70,51 @@ const Messages: NextPage = () => {
         )
 
         setMessages(msgs)
+        setLoadedAt(new Date())
       })
       .catch((err) => {
         console.log('Error signingClient.searchTx(): ', err)
       })
+  }, [signingClient, walletAddress])
+
+  useEffect(() => {
+    if (!signingClient || walletAddress.length === 0) {
+      return
+    }
+
+    const getAliases = async (messages) => {
+      try {
+        let promises = R.map(async (msg) => {
+          try {
+            let address = msg.sender
+
+            let aliasResponse = await signingClient.queryContractSmart(
+              contract,
+              {
+                primary_alias: {
+                  address: address,
+                },
+              }
+            )
+
+            const newMapping = {}
+            newMapping[address] = aliasResponse.username
+            setMapping(R.mergeRight(mapping, newMapping))
+          } catch (e) {
+            console.error(e.message)
+          }
+        }, messages)
+        Promise.all(promises)
+      } catch (e) {
+        console.error(e.message)
+      }
+    }
+
+    getAliases(messages)
+    //console.log(mapping)
   }, [signingClient, walletAddress, loadedAt])
 
-  // useEffect(() => {
-  //   if (!signingClient || walletAddress.length === 0) {
-  //     return
-  //   }
-
-  //   const getAliases = async (messages) => {
-  //     try {
-  //       let promises = R.map(async (msg) => {
-  //         try {
-  //           let address = msg.sender
-
-  //           let aliasResponse = await signingClient.queryContractSmart(
-  //             contract,
-  //             {
-  //               primary_alias: {
-  //                 address: address,
-  //               },
-  //             }
-  //           )
-
-  //           const newMapping = (mapping[address] = aliasResponse.username)
-  //           setMapping(newMapping)
-  //         } catch (e) {
-  //           console.error(e.message)
-  //         }
-  //       }, messages)
-  //       Promise.all(promises)
-  //     } catch (e) {
-  //       console.error(e.message)
-  //     }
-  //   }
-
-  //   getAliases(messages)
-  // }, [signingClient, walletAddress, messages])
+  const getAliasOrAddr = (address) => mapping[address] || address
 
   return (
     <WalletLoader>
@@ -122,19 +127,23 @@ const Messages: NextPage = () => {
             <ul>
               {messages.map((msg, key) => {
                 if (!R.isEmpty(msg)) {
-                  //const aliasOrAddr = mapping[msg.sender] || msg.sender
                   return (
                     <div
-                      className="flex w-full justify-center pt-6 text-left"
+                      className="flex flex-wrap w-full justify-center py-4 text-left background-100"
                       key={key}
                     >
-                      <div className="flex justify-center w-full">
-                        <p>Sender: {msg!.sender}</p>
+                      <div className="flex justify-center w-2/3 py-2">
+                        <p className="font-semibold">
+                          Sender: {getAliasOrAddr(msg!.sender)}
+                        </p>
                       </div>
-                      <div className="flex justify-center w-full">
-                        <p> At height {msg!.height}</p>
+                      <div className="flex justify-center w-1/3 py-2">
+                        <p className="font-semibold">
+                          {' '}
+                          At height {msg!.height}
+                        </p>
                       </div>
-                      <div className="flex justify-center w-full">
+                      <div className="flex justify-center w-full border-t border-b py-2">
                         <p>{msg!.memo}</p>
                       </div>
                     </div>
