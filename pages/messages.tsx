@@ -25,8 +25,12 @@ const Messages: NextPage = () => {
   const { alias, loadingAlias } = usePrimaryAlias()
   const { walletAddress, signingClient } = useSigningClient()
   const [loadedAt, setLoadedAt] = useState(new Date())
+  const [mappingLoadedAt, setMappingLoadedAt] = useState(new Date())
   const [messages, setMessages] = useState<(Message | undefined)[]>([])
   const [mapping, setMapping] = useState({})
+  const [computedMessages, setComputedMessages] = useState<
+    (Message | undefined)[]
+  >([])
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
@@ -97,24 +101,48 @@ const Messages: NextPage = () => {
               }
             )
 
-            const newMapping = {}
-            newMapping[address] = aliasResponse.username
-            setMapping(R.mergeRight(mapping, newMapping))
+            return [address, aliasResponse.username]
           } catch (e) {
             console.error(e.message)
           }
         }, messages)
-        Promise.all(promises)
+        Promise.all(promises).then((res: any) => {
+          const newMapping = R.reduce(
+            (acc, i) => {
+              if (i[1]) {
+                acc[i[0]] = i[1]
+                return acc
+              }
+            },
+            {},
+            res
+          )
+          setMapping(newMapping)
+          setMappingLoadedAt(new Date())
+        })
       } catch (e) {
         console.error(e.message)
       }
     }
 
     getAliases(messages)
-    //console.log(mapping)
   }, [signingClient, walletAddress, loadedAt])
 
   const getAliasOrAddr = (address) => mapping[address] || address
+
+  useEffect(() => {
+    if (!signingClient || walletAddress.length === 0) {
+      return
+    }
+
+    const msgsWithAliases = R.map((msg) => {
+      const sender = getAliasOrAddr(msg.sender)
+      const newMsg = R.mergeRight(msg, { sender: sender })
+      return newMsg
+    }, messages)
+
+    setComputedMessages(msgsWithAliases)
+  }, [signingClient, walletAddress, mappingLoadedAt])
 
   return (
     <WalletLoader>
@@ -122,10 +150,10 @@ const Messages: NextPage = () => {
         <h2 className="text-4xl p-16">
           Messages for {alias ? alias : walletAddress}
         </h2>
-        {!R.isEmpty(messages) ? (
+        {!R.isEmpty(computedMessages) ? (
           <div className="flex w-full justify-center">
             <ul>
-              {messages.map((msg, key) => {
+              {computedMessages.map((msg, key) => {
                 if (!R.isEmpty(msg)) {
                   return (
                     <div
@@ -133,9 +161,7 @@ const Messages: NextPage = () => {
                       key={key}
                     >
                       <div className="flex justify-center w-2/3 py-2">
-                        <p className="font-semibold">
-                          Sender: {getAliasOrAddr(msg!.sender)}
-                        </p>
+                        <p className="font-semibold">Sender: {msg!.sender}</p>
                       </div>
                       <div className="flex justify-center w-1/3 py-2">
                         <p className="font-semibold">
