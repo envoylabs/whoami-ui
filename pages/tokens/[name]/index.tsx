@@ -85,7 +85,7 @@ const TokenView: NextPage = () => {
           <div className="flex flex-wrap justify-center w-full">
             <div className="py-4">
               <CopyInput
-                inputText={`${getHost()}/ids/${tokenName}`}
+                inputText={`https://${getHost()}/dens::${tokenName}`}
                 label={'Copy'}
               />
             </div>
