@@ -92,7 +92,7 @@ const TokenView: NextPage = () => {
     <>
       {token ? (
         <div className="py-16">
-          <NameCard name={tokenName} token={token as Metadata} />
+          <NameCard name={tokenName!} token={token as Metadata} />
           {showSend && (
             <WalletLoader>
               <div className="flex w-full justify-center py-6">
