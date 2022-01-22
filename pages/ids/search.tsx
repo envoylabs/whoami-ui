@@ -93,7 +93,11 @@ const Search: NextPage = () => {
                   {owner && (
                     <div className="flex w-full lg:w-1/2 justify-center py-6">
                       <div className="py-4">
-                        <Send address={owner!} name={tokenName!} />
+                        <Send
+                          address={owner!}
+                          name={tokenName!}
+                          showAddress={false}
+                        />
                       </div>
                     </div>
                   )}

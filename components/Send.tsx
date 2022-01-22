@@ -18,7 +18,15 @@ import * as R from 'ramda'
 const PUBLIC_CHAIN_NAME = process.env.NEXT_PUBLIC_CHAIN_NAME
 const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || 'ujuno'
 
-export function Send({ address, name }: { address: string; name: string }) {
+export function Send({
+  address,
+  name,
+  showAddress = true,
+}: {
+  address: string
+  name: string
+  showAddress: boolean
+}) {
   const { walletAddress, signingClient } = useSigningClient()
   const [balance, setBalance] = useState('')
   const [loadedAt, setLoadedAt] = useState(new Date())
@@ -100,7 +108,9 @@ export function Send({ address, name }: { address: string; name: string }) {
             <input
               type="text"
               id="recipient-address"
-              className="input input-bordered focus:input-primary input-lg flex-grow font-mono text-center text-lg"
+              className={`input input-bordered focus:input-primary input-lg flex-grow font-mono text-center text-lg ${
+                !showAddress && 'hidden'
+              }`}
               placeholder={`${address}`}
               onChange={(event) => setRecipientAddress(event.target.value)}
               value={recipientAddress}
