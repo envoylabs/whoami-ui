@@ -13,6 +13,8 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { Metadata } from 'util/types/messages'
 import { useTokenList } from 'hooks/tokens'
+import WalletLoader from 'components/WalletLoader'
+import { Send } from 'components/Send'
 
 const TokenView: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
@@ -22,6 +24,7 @@ const TokenView: NextPage = () => {
 
   const [token, setToken] = useState<Metadata>()
   const [loading, setLoading] = useState(false)
+  const [showSend, setShowSend] = useState(false)
 
   useEffect(() => {
     if (!name) return
@@ -77,12 +80,33 @@ const TokenView: NextPage = () => {
     getOwner()
   }, [tokenName, contract])
 
+  const handleShowSend = () => {
+    if (showSend === false) {
+      setShowSend(true)
+    } else {
+      setShowSend(false)
+    }
+  }
+
   return (
     <>
-      {token && tokenName ? (
+      {token ? (
         <div className="py-16">
-          <NameCard name={tokenName!} token={token as Metadata} />
-          {owner && (
+          <NameCard name={tokenName} token={token as Metadata} />
+          {showSend && (
+            <WalletLoader>
+              <div className="flex w-full justify-center py-6">
+                <div className="py-4">
+                  <Send
+                    address={owner!}
+                    name={tokenName!}
+                    showAddress={false}
+                  />
+                </div>
+              </div>
+            </WalletLoader>
+          )}
+          {owner && !showSend && (
             <div className="flex flex-wrap justify-center w-full">
               <div className="py-4">
                 <CopyInput inputText={owner!} label={'Copy'} />
@@ -97,6 +121,16 @@ const TokenView: NextPage = () => {
                 </a>
               </Link>
             </div>
+            {!showSend && (
+              <div className="p-1">
+                <button
+                  className="btn btn-primary hover:text-base-100 mt-6"
+                  onClick={handleShowSend}
+                >
+                  Send Funds
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ) : (
