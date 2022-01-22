@@ -17,14 +17,14 @@ interface Message {
 const address: unique symbol = Symbol()
 
 interface Mapping {
-  [address]: string
+  [address: string]: string
 }
 
 interface EmptyMap {
-[index: string]: never;
+  [index: string]: never
 }
 
-type MappingOrEmpty = (Mapping | EmptyMap);
+type MappingOrEmpty = Mapping | EmptyMap
 
 const Messages: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
@@ -33,7 +33,7 @@ const Messages: NextPage = () => {
   const [loadedAt, setLoadedAt] = useState(new Date())
   const [mappingLoadedAt, setMappingLoadedAt] = useState(new Date())
   const [messages, setMessages] = useState<(Message | undefined)[]>([])
-  const [mapping, setMapping] = useState({})
+  const [mapping, setMapping] = useState<MappingOrEmpty>({})
   const [computedMessages, setComputedMessages] = useState<
     (Message | undefined)[]
   >([])
@@ -132,9 +132,7 @@ const Messages: NextPage = () => {
     }
 
     getAliases(messages)
-  }, [signingClient, walletAddress, loadedAt])
-
-  // const getAliasOrAddr = (address: any): any => mapping[address] || address
+  }, [signingClient, walletAddress, loadedAt, contract, messages])
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
@@ -149,7 +147,7 @@ const Messages: NextPage = () => {
     }, messages)
 
     setComputedMessages(msgsWithAliases)
-  }, [signingClient, walletAddress, mappingLoadedAt])
+  }, [signingClient, walletAddress, mappingLoadedAt, mapping, messages])
 
   return (
     <WalletLoader>
