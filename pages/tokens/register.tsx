@@ -55,13 +55,15 @@ const Register: NextPage = () => {
                   <Loader />
                 </div>
               ) : (
-                <TokenSearchResult
-                  name={searchQuery}
-                  token={token}
-                  avaliable={!token}
-                  valid={searchQuery.length < 21 ? true : false}
-                  loggedIn={true}
-                />
+                <div className="flex flex-wrap w-full justify-center">
+                  <TokenSearchResult
+                    name={searchQuery}
+                    token={token}
+                    avaliable={!token}
+                    valid={searchQuery.length < 21 ? true : false}
+                    loggedIn={true}
+                  />
+                </div>
               )}
             </div>
           </>

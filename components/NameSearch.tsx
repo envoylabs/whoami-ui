@@ -7,8 +7,10 @@ export default function NameSearch({
   query: string
   setQuery: Function
 }) {
-  const normalize = (inputString: string) =>
-    R.replace(/[^a-z0-9\-\_]/g, '', inputString)
+  const normalize = (inputString: string) => {
+    const invalidChrsRemoved = R.replace(/[^a-z0-9\-\_]/g, '', inputString)
+    return R.replace(/[_\-]{2,}/g, '', invalidChrsRemoved)
+  }
 
   return (
     <div className="form-control w-96">
