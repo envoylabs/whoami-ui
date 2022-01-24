@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
+import { Notice } from 'components/Notice'
 import { useTokenList } from 'hooks/tokens'
 import { decodeTxRaw } from '@cosmjs/proto-signing'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
@@ -151,10 +152,19 @@ const Messages: NextPage = () => {
 
   return (
     <WalletLoader>
-      <div className="flex flex-col justify-center p-6 pb-16">
-        <h2 className="text-4xl p-16">
+      <div className="flex flex-col justify-center p-6">
+        <h2 className="text-4xl pt-16 pb-8">
           Messages for {alias ? alias : walletAddress}
         </h2>
+        <div className="flex w-full justify-center pb-4">
+          <div className="w-96">
+            <Notice
+              message={
+                'This is a list of all received txs that contain a memo. It is an experimental feature, and may not work in all cases.'
+              }
+            />
+          </div>
+        </div>
         {!R.isEmpty(computedMessages) ? (
           <div className="flex w-full justify-center">
             <ul>
