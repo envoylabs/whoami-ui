@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint && prettier --check .",
-    "prettier:write": "prettier --write ."
+    "prettier:write": "prettier --write .",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@cosmjs/cosmwasm-stargate": "^0.27.0-rc2",
@@ -28,6 +29,7 @@
     "@types/ramda": "^0.27.60",
     "@types/react": "17.0.19",
     "autoprefixer": "^10.3.3",
+    "cypress": "^9.3.1",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.0",
     "postcss": "^8.3.6",
