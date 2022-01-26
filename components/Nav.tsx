@@ -11,9 +11,7 @@ import { getNonSigningClient } from 'hooks/cosmwasm'
 function Nav() {
   const router = useRouter()
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-  // const [alias, setAlias] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
-  const [dirty, setDirty] = useState(false)
 
   const walletAddress = useStore((state) => state.walletAddress)
   const alias = useStore((state) => state.primaryAlias)
@@ -29,12 +27,6 @@ function Nav() {
 
     initNonSigningClient()
   }, [setNonSigningClient])
-
-  useEffect(() => {
-    if (router.query.tokensAltered) {
-      setDirty(true)
-    }
-  }, [router.query.tokensAltered])
 
   const { connectWallet, disconnect, signingClient } = useSigningClient()
   const handleConnect = () => {
@@ -75,7 +67,6 @@ function Nav() {
         })
         setAlias(aliasResponse.username)
         setLoading(false)
-        setDirty(false)
       } catch (e) {
         setLoading(false)
         setAlias(null)
@@ -85,7 +76,7 @@ function Nav() {
     }
 
     getAlias()
-  }, [alias, walletAddress, contract, signingClient, dirty, setAlias])
+  }, [alias, walletAddress, contract, signingClient, setAlias])
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 
