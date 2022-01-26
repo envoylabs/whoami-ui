@@ -19,7 +19,7 @@ const BurnToken: NextPage = () => {
   const { handleSubmit } = useForm()
   const { signingClient, walletAddress } = useSigningClient()
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-  const { token } = useToken(tokenName, walletAddress)
+  const { token } = useToken(tokenName)
   const [error, setError] = useState()
   const [loading, setLoading] = useState(false)
 
@@ -28,7 +28,7 @@ const BurnToken: NextPage = () => {
   }
 
   const onSubmit = async () => {
-    if (!signingClient) {
+    if (!signingClient || !walletAddress) {
       return
     }
 
@@ -41,7 +41,7 @@ const BurnToken: NextPage = () => {
     }
     try {
       let updatedToken = await signingClient.execute(
-        walletAddress,
+        walletAddress!,
         contractAddress,
         msg,
         defaultExecuteFee,

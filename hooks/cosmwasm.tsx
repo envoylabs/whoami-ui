@@ -5,9 +5,10 @@ import {
   SigningCosmWasmClient,
   CosmWasmClient,
 } from '@cosmjs/cosmwasm-stargate'
+import { OptionString } from 'util/types/base'
 
 export interface ISigningCosmWasmClientContext {
-  walletAddress: string
+  walletAddress: OptionString
   signingClient: SigningCosmWasmClient | null
   loading: boolean
   error: any
@@ -53,6 +54,8 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
 
       // get user address
       const [{ address }] = await offlineSigner.getAccounts()
+
+      // this will definitely be set to string
       setStoreWalletAddress(address)
 
       setLoading(false)

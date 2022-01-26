@@ -81,7 +81,7 @@ const Mint: NextPage = () => {
   const humanDenom = R.toUpper(convertDenomToHumanReadableDenom(denom))
 
   const onSubmit = async (data: FormValues) => {
-    if (!signingClient) {
+    if (!signingClient || !walletAddress) {
       return
     }
 
@@ -127,10 +127,8 @@ const Mint: NextPage = () => {
     }
 
     try {
-      // const mintCost = getMintCost(token_id)
-
       let mintedToken = await signingClient.execute(
-        walletAddress,
+        walletAddress!,
         contractAddress,
         msg,
         defaultMintFee,

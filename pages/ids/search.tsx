@@ -23,17 +23,25 @@ const Search: NextPage = () => {
   const client = useStore((state) => state.nonSigningClient)
 
   useEffect(() => {
+    if (!client) return
+
     const doLoad = async (name: string) => {
       setLoading(true)
       try {
         // If this query fails it means that the token does not exist.
-        const token = await client.queryContractSmart(contract, {
+        const token = await client!.queryContractSmart(contract, {
           nft_info: {
             token_id: name,
           },
         })
-        setToken(token.extension)
-        setTokenName(name)
+
+        if (token) {
+          setToken(token.extension)
+          setTokenName(name)
+        } else {
+          setToken(undefined)
+          setOwner(undefined)
+        }
       } catch (e) {
         setToken(undefined)
         setOwner(undefined)
@@ -45,12 +53,12 @@ const Search: NextPage = () => {
   }, [searchQuery, contract])
 
   useEffect(() => {
-    if (!tokenName) return
+    if (!tokenName || !client) return
 
     const getOwner = async () => {
       setLoading(true)
       try {
-        let owner = await client.queryContractSmart(contract, {
+        let owner = await client!.queryContractSmart(contract, {
           owner_of: {
             token_id: tokenName,
           },

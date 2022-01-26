@@ -21,9 +21,13 @@ function Nav() {
   const setNonSigningClient = useStore((state) => state.setNonSigningClient)
 
   // on first load, init the non signing client
-  useEffect(async () => {
-    const nonSigningClient = await getNonSigningClient()
-    setNonSigningClient(nonSigningClient)
+  useEffect(() => {
+    const initNonSigningClient = async () => {
+      const nonSigningClient = await getNonSigningClient()
+      setNonSigningClient(nonSigningClient)
+    }
+
+    initNonSigningClient()
   }, [])
 
   useEffect(() => {
@@ -34,17 +38,17 @@ function Nav() {
 
   const { connectWallet, disconnect, signingClient } = useSigningClient()
   const handleConnect = () => {
-    if (walletAddress.length === 0) {
+    if (!walletAddress || walletAddress.length === 0) {
       connectWallet()
     } else {
       disconnect()
-      setAlias(undefined)
+      setAlias(null)
     }
   }
 
   const reconnect = useCallback(() => {
     disconnect()
-    setAlias(undefined)
+    setAlias(null)
     connectWallet()
   }, [disconnect, connectWallet])
 
@@ -74,7 +78,7 @@ function Nav() {
         setDirty(false)
       } catch (e) {
         setLoading(false)
-        setAlias(undefined)
+        setAlias(null)
         // console.log(e)
         return
       }

@@ -6,7 +6,7 @@ export function useTokenList() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
   const setStoreTokens = useStore((state) => state.setTokenIds)
-  const tokens = useStore((state) => state.tokens)
+  const tokens: string[] = useStore((state) => state.tokenIds)
 
   //const [tokens, setTokens] = useState<Array<string>>([])
   const [loadingTokens, setLoading] = useState(false)

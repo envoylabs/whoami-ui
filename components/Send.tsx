@@ -38,7 +38,7 @@ export function Send({
   const [memo, setMemo] = useState(defaultMemo)
 
   useEffect(() => {
-    if (!signingClient || walletAddress.length === 0) {
+    if (!signingClient || !walletAddress || walletAddress.length === 0) {
       return
     }
     setError('')
@@ -76,7 +76,7 @@ export function Send({
 
     try {
       let res = await signingClient.sendTokens(
-        walletAddress,
+        walletAddress!,
         recipientAddress,
         amount,
         defaultExecuteFee,
