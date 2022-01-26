@@ -40,48 +40,47 @@ const useStore = create<
   StoreApiWithPersist<State>
 >(
   devtools(
-    persist(
-      (set) =>
-        ({
-          signingClient: null,
-          setSigningClient: (client: SCWClientOrNull) =>
-            set((state) => ({ signingClient: client })),
+    // persist(
+    (set) =>
+      ({
+        signingClient: null,
+        setSigningClient: (client: SCWClientOrNull) =>
+          set((state) => ({ signingClient: client })),
 
-          nonSigningClient: null,
-          setNonSigningClient: (client: CWClientOrNull) =>
-            set((state) => ({ nonSigningClient: client })),
+        nonSigningClient: null,
+        setNonSigningClient: (client: CWClientOrNull) =>
+          set((state) => ({ nonSigningClient: client })),
 
-          primaryAlias: null,
-          setPrimaryAlias: (alias: OptionString) =>
-            set((state) => ({ primaryAlias: alias })),
+        primaryAlias: null,
+        setPrimaryAlias: (alias: OptionString) =>
+          set((state) => ({ primaryAlias: alias })),
 
-          walletAddress: null,
-          setWalletAddress: (address: OptionString) =>
-            set((state) => ({ walletAddress: address })),
+        walletAddress: null,
+        setWalletAddress: (address: OptionString) =>
+          set((state) => ({ walletAddress: address })),
 
-          token: null,
-          setToken: (token: Metadata | null) =>
-            set((state) => ({ token: token })),
+        token: null,
+        setToken: (token: Metadata | null) =>
+          set((state) => ({ token: token })),
 
-          tokenIds: [],
-          appendTokenId: (tokenId: string) =>
-            set((state) => ({ tokenIds: R.append(tokenId, state.tokenIds) })),
+        tokenIds: [],
+        appendTokenId: (tokenId: string) =>
+          set((state) => ({ tokenIds: R.append(tokenId, state.tokenIds) })),
 
-          setTokenIds: (tokenIds: string[]) =>
-            set((state) => ({ tokenIds: tokenIds })),
+        setTokenIds: (tokenIds: string[]) =>
+          set((state) => ({ tokenIds: tokenIds })),
 
-          tokens: [],
-          appendToken: (token: Metadata) =>
-            set((state) => ({ tokens: R.append(token, state.tokens) })),
+        tokens: [],
+        appendToken: (token: Metadata) =>
+          set((state) => ({ tokens: R.append(token, state.tokens) })),
 
-          setTokens: (tokens: Metadata[]) =>
-            set((state) => ({ tokens: tokens })),
-        } as State),
-      {
-        name: 'dens-storage',
-        getStorage: () => localStorage,
-      }
-    )
+        setTokens: (tokens: Metadata[]) => set((state) => ({ tokens: tokens })),
+      } as State) //,
+    //   {
+    //     name: 'dens-storage',
+    //     getStorage: () => localStorage,
+    //   }
+    // )
   )
 )
 
