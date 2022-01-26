@@ -1,6 +1,5 @@
-import create from 'zustand'
-import { persist } from 'zustand/middleware'
-import { devtools } from 'zustand/middleware'
+import create, { GetState, SetState } from 'zustand'
+import { persist, StoreApiWithPersist, devtools } from 'zustand/middleware'
 import {
   SigningCosmWasmClient,
   CosmWasmClient,
@@ -33,7 +32,12 @@ interface State {
   setTokens: (ts: Metadata[]) => void
 }
 
-const useStore = create<State>(
+const useStore = create<
+  State,
+  SetState<State>,
+  GetState<State>,
+  StoreApiWithPersist<State>
+>(
   devtools(
     persist(
       (set) => ({
