@@ -2,6 +2,7 @@ import { ReactNode, useState, useEffect } from 'react'
 import { useSigningClient } from 'contexts/cosmwasm'
 import Loader from './Loader'
 import { isKeplrInstalled } from 'services/keplr'
+import { useStore } from 'store/base'
 
 function WalletLoader({
   children,
@@ -10,12 +11,10 @@ function WalletLoader({
   children: ReactNode
   loading?: boolean
 }) {
-  const {
-    walletAddress,
-    loading: clientLoading,
-    error,
-    connectWallet,
-  } = useSigningClient()
+  const { loading: clientLoading, error, connectWallet } = useSigningClient()
+
+  const walletAddress = useStore((state) => state.walletAddress)
+  const signingClient = useStore((state) => state.signingClient)
 
   const [keplrInstalled, setKeplrInstalled] = useState<boolean | undefined>()
 
@@ -31,7 +30,7 @@ function WalletLoader({
     )
   }
 
-  if (walletAddress === '') {
+  if (!signingClient) {
     const actionText = keplrInstalled ? (
       <>
         <p>Please connect your Keplr wallet to continue</p>

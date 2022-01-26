@@ -5,13 +5,26 @@ import ThemeToggle from 'components/ThemeToggle'
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { InboxInIcon } from '@heroicons/react/solid'
+import { useStore } from 'store/base'
+import { getNonSigningClient } from 'hooks/cosmwasm'
 
 function Nav() {
   const router = useRouter()
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-  const [alias, setAlias] = useState<string | undefined>()
+  // const [alias, setAlias] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
   const [dirty, setDirty] = useState(false)
+
+  const walletAddress = useStore((state) => state.walletAddress)
+  const alias = useStore((state) => state.primaryAlias)
+  const setAlias = useStore((state) => state.setPrimaryAlias)
+  const setNonSigningClient = useStore((state) => state.setNonSigningClient)
+
+  // on first load, init the non signing client
+  useEffect(async () => {
+    const nonSigningClient = await getNonSigningClient()
+    setNonSigningClient(nonSigningClient)
+  }, [])
 
   useEffect(() => {
     if (router.query.tokensAltered) {
@@ -19,8 +32,7 @@ function Nav() {
     }
   }, [router.query.tokensAltered])
 
-  const { walletAddress, connectWallet, disconnect, signingClient } =
-    useSigningClient()
+  const { connectWallet, disconnect, signingClient } = useSigningClient()
   const handleConnect = () => {
     if (walletAddress.length === 0) {
       connectWallet()

@@ -3,6 +3,7 @@ import InputField from 'components/InputField'
 import { useForm, RegisterOptions, FieldError } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useStore } from 'store/base'
 import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
 import WalletLoader from 'components/WalletLoader'
@@ -56,6 +57,8 @@ const Mint: NextPage = () => {
   const [token, setToken] = useState(defaults)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
+
+  const appendTokenId = useStore((state) => state.appendTokenId)
 
   const {
     register,
@@ -137,10 +140,8 @@ const Mint: NextPage = () => {
       if (mintedToken) {
         router.push({
           pathname: `/tokens/${token_id}`,
-          query: {
-            tokensAltered: true,
-          },
         })
+        appendTokenId(token_id)
         // setLoading(false)
       }
     } catch (e) {

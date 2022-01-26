@@ -1,13 +1,18 @@
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useEffect, useState } from 'react'
+import { useStore } from 'store/base'
 
 export function usePrimaryAlias() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const [alias, setAlias] = useState<string | undefined>()
+  const setPrimaryAlias = useStore((state) => state.setPrimaryAlias)
+  const alias = useStore((state) => state.primaryAlias)
+
+  //const [alias, setAlias] = useState<string | undefined>()
   const [loadingAlias, setLoading] = useState(false)
 
-  const { walletAddress, signingClient } = useSigningClient()
+  const { signingClient } = useSigningClient()
+  const walletAddress = useStore((state) => state.walletAddress)
 
   useEffect(() => {
     if (!signingClient || !walletAddress) {
@@ -22,17 +27,19 @@ export function usePrimaryAlias() {
             address: walletAddress,
           },
         })
-        setAlias(aliasResponse.username)
+        //setAlias(aliasResponse.username)
+        setPrimaryAlias(aliasResponse.username)
         setLoading(false)
       } catch (e) {
         console.error(e.message)
-        setAlias(undefined)
+        //setAlias(undefined)
+        setPrimaryAlias(null)
         return
       }
     }
 
     getAlias()
-  }, [alias, walletAddress])
+  }, [walletAddress])
 
   return { alias, loadingAlias }
 }

@@ -8,6 +8,7 @@ import { CopyInput } from 'components/CopyInput'
 import Loader from 'components/Loader'
 import WalletLoader from 'components/WalletLoader'
 import { Send } from 'components/Send'
+import { useStore } from 'store/base'
 
 // TODO - make this functionally distinct from register
 const Search: NextPage = () => {
@@ -19,11 +20,12 @@ const Search: NextPage = () => {
   const [owner, setOwner] = useState<string | undefined>()
   const [showSend, setShowSend] = useState(false)
 
+  const client = useStore((state) => state.nonSigningClient)
+
   useEffect(() => {
     const doLoad = async (name: string) => {
       setLoading(true)
       try {
-        const client = await getNonSigningClient()
         // If this query fails it means that the token does not exist.
         const token = await client.queryContractSmart(contract, {
           nft_info: {
@@ -48,7 +50,6 @@ const Search: NextPage = () => {
     const getOwner = async () => {
       setLoading(true)
       try {
-        const client = await getNonSigningClient()
         let owner = await client.queryContractSmart(contract, {
           owner_of: {
             token_id: tokenName,
