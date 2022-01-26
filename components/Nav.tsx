@@ -28,7 +28,7 @@ function Nav() {
     }
 
     initNonSigningClient()
-  }, [])
+  }, [setNonSigningClient])
 
   useEffect(() => {
     if (router.query.tokensAltered) {
@@ -50,7 +50,7 @@ function Nav() {
     disconnect()
     setAlias(null)
     connectWallet()
-  }, [disconnect, connectWallet])
+  }, [disconnect, connectWallet, setAlias])
 
   useEffect(() => {
     window.addEventListener('keplr_keystorechange', reconnect)
@@ -85,7 +85,7 @@ function Nav() {
     }
 
     getAlias()
-  }, [alias, walletAddress, contract, signingClient, dirty])
+  }, [alias, walletAddress, contract, signingClient, dirty, setAlias])
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 

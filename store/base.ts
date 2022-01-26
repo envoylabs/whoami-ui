@@ -6,6 +6,7 @@ import {
 } from '@cosmjs/cosmwasm-stargate'
 import { Metadata } from 'util/types/messages'
 import { OptionString } from 'util/types/base'
+import * as R from 'ramda'
 
 type SCWClientOrNull = SigningCosmWasmClient | null
 type CWClientOrNull = CosmWasmClient | null
@@ -18,7 +19,7 @@ interface State {
   walletAddress: OptionString
   token: Metadata | null
   tokenIds: string[]
-  tokens: [Metadata[]]
+  tokens: Metadata[]
 
   // functions
   setSigningClient: (c: SCWClientOrNull) => void
@@ -40,29 +41,42 @@ const useStore = create<
 >(
   devtools(
     persist(
-      (set) => ({
-        signingClient: null,
-        setSigningClient: (client) =>
-          set((state) => ({ signingClient: client })),
-        nonSigningClient: null,
-        setNonSigningClient: (client) =>
-          set((state) => ({ nonSigningClient: client })),
-        primaryAlias: null,
-        setPrimaryAlias: (alias) => set((state) => ({ primaryAlias: alias })),
-        walletAddress: null,
-        setWalletAddress: (address) =>
-          set((state) => ({ walletAddress: address })),
-        token: null,
-        setToken: (token) => set((state) => ({ token: token })),
-        tokenIds: [],
-        appendTokenId: (token) =>
-          set((state) => ({ tokens: tokens.push(token) })),
-        setTokenIds: (tokens) => set((state) => ({ tokens: tokens })),
-        tokens: [],
-        appendToken: (token) =>
-          set((state) => ({ tokens: tokens.push(token) })),
-        setTokens: (tokens) => set((state) => ({ tokens: tokens })),
-      }),
+      (set) =>
+        ({
+          signingClient: null,
+          setSigningClient: (client: SCWClientOrNull) =>
+            set((state) => ({ signingClient: client })),
+
+          nonSigningClient: null,
+          setNonSigningClient: (client: CWClientOrNull) =>
+            set((state) => ({ nonSigningClient: client })),
+
+          primaryAlias: null,
+          setPrimaryAlias: (alias: OptionString) =>
+            set((state) => ({ primaryAlias: alias })),
+
+          walletAddress: null,
+          setWalletAddress: (address: OptionString) =>
+            set((state) => ({ walletAddress: address })),
+
+          token: null,
+          setToken: (token: Metadata | null) =>
+            set((state) => ({ token: token })),
+
+          tokenIds: [],
+          appendTokenId: (tokenId: string) =>
+            set((state) => ({ tokenIds: R.append(tokenId, state.tokenIds) })),
+
+          setTokenIds: (tokenIds: string[]) =>
+            set((state) => ({ tokenIds: tokenIds })),
+
+          tokens: [],
+          appendToken: (token: Metadata) =>
+            set((state) => ({ tokens: R.append(token, state.tokens) })),
+
+          setTokens: (tokens: Metadata[]) =>
+            set((state) => ({ tokens: tokens })),
+        } as State),
       {
         name: 'dens-storage',
         getStorage: () => localStorage,
@@ -71,4 +85,4 @@ const useStore = create<
   )
 )
 
-export { useStore, State }
+export { useStore }

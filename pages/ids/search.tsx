@@ -50,7 +50,7 @@ const Search: NextPage = () => {
       setLoading(false)
     }
     doLoad(searchQuery)
-  }, [searchQuery, contract])
+  }, [searchQuery, contract, client])
 
   useEffect(() => {
     if (!tokenName || !client) return
@@ -73,7 +73,7 @@ const Search: NextPage = () => {
     }
 
     getOwner()
-  }, [tokenName, contract])
+  }, [tokenName, contract, client])
 
   const handleShowSend = () => {
     if (showSend === false) {

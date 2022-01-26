@@ -95,7 +95,7 @@ const TokenUpdate: NextPage = () => {
     }
 
     getToken()
-  }, [tokenName, contractAddress, signingClient, reset])
+  }, [tokenName, contractAddress, signingClient, reset, walletAddress])
 
   const onSubmit = async (data: FormValues) => {
     if (!signingClient || !walletAddress) {
