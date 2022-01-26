@@ -14,13 +14,16 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { Metadata } from 'util/types/messages'
 import { useTokenList } from 'hooks/tokens'
+import { useStore } from 'store/base'
+import * as R from 'ramda'
 
 const TokenView: NextPage = () => {
-  const { walletAddress, signingClient } = useSigningClient()
+  const { signingClient } = useSigningClient()
+  const walletAddress = useStore((state) => state.walletAddress)
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
   const tokenName = router.query.name as string
-  const { token } = useToken(tokenName, walletAddress)
+  const { token } = useToken(tokenName)
   const { tokens } = useTokenList()
   const { alias, loadingAlias } = usePrimaryAlias()
   const [error, setError] = useState()
@@ -37,7 +40,7 @@ const TokenView: NextPage = () => {
   }
 
   const onSubmit = async () => {
-    if (!signingClient) {
+    if (!signingClient || !walletAddress) {
       return
     }
 
@@ -49,7 +52,7 @@ const TokenView: NextPage = () => {
 
     try {
       let updatedToken = await signingClient.execute(
-        walletAddress,
+        walletAddress!,
         contractAddress,
         msg,
         defaultExecuteFee,
@@ -102,7 +105,7 @@ const TokenView: NextPage = () => {
             {(alias as string) !== tokenName &&
             '' !== tokenName &&
             signingClient &&
-            tokens.includes(tokenName) ? (
+            R.includes(tokenName, tokens) ? (
               <div className="p-1">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <input
@@ -114,7 +117,7 @@ const TokenView: NextPage = () => {
               </div>
             ) : null}
 
-            {tokenName && tokens && tokens.includes(tokenName) ? (
+            {tokenName && tokens && R.includes(tokenName, tokens) ? (
               <>
                 <div className="p-1">
                   <Link href={`/tokens/${tokenName}/update`} passHref>

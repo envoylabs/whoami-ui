@@ -1,13 +1,18 @@
 import { useSigningClient } from 'contexts/cosmwasm'
 import { useEffect, useState } from 'react'
+import { useStore } from 'store/base'
 
 export function useTokenList() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const [tokens, setTokens] = useState<Array<string>>([])
+  const setStoreTokens = useStore((state) => state.setTokenIds)
+  const tokens: string[] = useStore((state) => state.tokenIds)
+
+  //const [tokens, setTokens] = useState<Array<string>>([])
   const [loadingTokens, setLoading] = useState(false)
 
-  const { walletAddress, signingClient } = useSigningClient()
+  const { signingClient } = useSigningClient()
+  const walletAddress = useStore((state) => state.walletAddress)
 
   useEffect(() => {
     if (!signingClient || !walletAddress) {
@@ -23,9 +28,11 @@ export function useTokenList() {
             limit: 30,
           },
         })
-        setTokens(tokenList.tokens)
+        //setTokens(tokenList.tokens)
+        setStoreTokens(tokenList.tokens)
         setLoading(false)
       } catch (e) {
+        setStoreTokens([])
         console.log(e)
       }
     }

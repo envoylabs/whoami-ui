@@ -3,6 +3,7 @@ import InputField from 'components/InputField'
 import { useForm, RegisterOptions, FieldError } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useStore } from 'store/base'
 import { OptionString } from 'util/types/base'
 import { Metadata } from 'util/types/messages'
 import WalletLoader from 'components/WalletLoader'
@@ -57,6 +58,8 @@ const Mint: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
 
+  const appendTokenId = useStore((state) => state.appendTokenId)
+
   const {
     register,
     handleSubmit,
@@ -78,7 +81,7 @@ const Mint: NextPage = () => {
   const humanDenom = R.toUpper(convertDenomToHumanReadableDenom(denom))
 
   const onSubmit = async (data: FormValues) => {
-    if (!signingClient) {
+    if (!signingClient || !walletAddress) {
       return
     }
 
@@ -124,10 +127,8 @@ const Mint: NextPage = () => {
     }
 
     try {
-      // const mintCost = getMintCost(token_id)
-
       let mintedToken = await signingClient.execute(
-        walletAddress,
+        walletAddress!,
         contractAddress,
         msg,
         defaultMintFee,
@@ -137,10 +138,8 @@ const Mint: NextPage = () => {
       if (mintedToken) {
         router.push({
           pathname: `/tokens/${token_id}`,
-          query: {
-            tokensAltered: true,
-          },
         })
+        appendTokenId(token_id)
         // setLoading(false)
       }
     } catch (e) {

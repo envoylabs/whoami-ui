@@ -5,36 +5,44 @@ import ThemeToggle from 'components/ThemeToggle'
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/dist/client/router'
 import { InboxInIcon } from '@heroicons/react/solid'
+import { useStore } from 'store/base'
+import { getNonSigningClient } from 'hooks/cosmwasm'
 
 function Nav() {
   const router = useRouter()
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-  const [alias, setAlias] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
-  const [dirty, setDirty] = useState(false)
 
+  const walletAddress = useStore((state) => state.walletAddress)
+  const alias = useStore((state) => state.primaryAlias)
+  const setAlias = useStore((state) => state.setPrimaryAlias)
+  const setNonSigningClient = useStore((state) => state.setNonSigningClient)
+
+  // on first load, init the non signing client
   useEffect(() => {
-    if (router.query.tokensAltered) {
-      setDirty(true)
+    const initNonSigningClient = async () => {
+      const nonSigningClient = await getNonSigningClient()
+      setNonSigningClient(nonSigningClient)
     }
-  }, [router.query.tokensAltered])
 
-  const { walletAddress, connectWallet, disconnect, signingClient } =
-    useSigningClient()
+    initNonSigningClient()
+  }, [setNonSigningClient])
+
+  const { connectWallet, disconnect, signingClient } = useSigningClient()
   const handleConnect = () => {
-    if (walletAddress.length === 0) {
+    if (!walletAddress || walletAddress.length === 0) {
       connectWallet()
     } else {
       disconnect()
-      setAlias(undefined)
+      setAlias(null)
     }
   }
 
   const reconnect = useCallback(() => {
     disconnect()
-    setAlias(undefined)
+    setAlias(null)
     connectWallet()
-  }, [disconnect, connectWallet])
+  }, [disconnect, connectWallet, setAlias])
 
   useEffect(() => {
     window.addEventListener('keplr_keystorechange', reconnect)
@@ -59,17 +67,16 @@ function Nav() {
         })
         setAlias(aliasResponse.username)
         setLoading(false)
-        setDirty(false)
       } catch (e) {
         setLoading(false)
-        setAlias(undefined)
+        setAlias(null)
         // console.log(e)
         return
       }
     }
 
     getAlias()
-  }, [alias, walletAddress, contract, signingClient, dirty])
+  }, [alias, walletAddress, contract, signingClient, setAlias])
 
   const PUBLIC_SITE_ICON_URL = process.env.NEXT_PUBLIC_SITE_ICON_URL || ''
 

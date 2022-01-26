@@ -40,7 +40,7 @@ const Messages: NextPage = () => {
   >([])
 
   useEffect(() => {
-    if (!signingClient || walletAddress.length === 0) {
+    if (!signingClient || !walletAddress || walletAddress.length === 0) {
       return
     }
 
@@ -89,7 +89,7 @@ const Messages: NextPage = () => {
   }, [signingClient, walletAddress])
 
   useEffect(() => {
-    if (!signingClient || walletAddress.length === 0) {
+    if (!signingClient || !walletAddress || walletAddress.length === 0) {
       return
     }
 
@@ -136,7 +136,7 @@ const Messages: NextPage = () => {
   }, [signingClient, walletAddress, loadedAt, contract, messages])
 
   useEffect(() => {
-    if (!signingClient || walletAddress.length === 0) {
+    if (!signingClient || !walletAddress || walletAddress.length === 0) {
       return
     }
 

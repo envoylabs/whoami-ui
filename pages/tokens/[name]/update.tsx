@@ -57,7 +57,7 @@ const TokenUpdate: NextPage = () => {
   } = useForm<FormValues>()
 
   useEffect(() => {
-    if (!tokenName || !signingClient) {
+    if (!tokenName || !signingClient || !walletAddress) {
       return
     }
 
@@ -95,10 +95,10 @@ const TokenUpdate: NextPage = () => {
     }
 
     getToken()
-  }, [tokenName, contractAddress, signingClient, reset])
+  }, [tokenName, contractAddress, signingClient, reset, walletAddress])
 
   const onSubmit = async (data: FormValues) => {
-    if (!signingClient) {
+    if (!signingClient || !walletAddress) {
       return
     }
 
@@ -139,7 +139,7 @@ const TokenUpdate: NextPage = () => {
 
     try {
       let updatedToken = await signingClient.execute(
-        walletAddress,
+        walletAddress!,
         contractAddress,
         msg,
         defaultExecuteFee,
