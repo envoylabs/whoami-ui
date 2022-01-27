@@ -4,7 +4,7 @@ import Image from 'next/image'
 import ThemeToggle from 'components/ThemeToggle'
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/dist/client/router'
-import { InboxInIcon } from '@heroicons/react/solid'
+import { InboxInIcon } from '@heroicons/react/outline'
 import { useStore } from 'store/base'
 import { getNonSigningClient } from 'hooks/cosmwasm'
 
