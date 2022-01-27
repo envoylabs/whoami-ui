@@ -16,6 +16,7 @@ import { Metadata } from 'util/types/messages'
 import { useTokenList } from 'hooks/tokens'
 import { useStore } from 'store/base'
 import * as R from 'ramda'
+import NotFound404 from 'pages/404'
 
 const TokenView: NextPage = () => {
   const { signingClient } = useSigningClient()
@@ -149,7 +150,7 @@ const TokenView: NextPage = () => {
           </div>
         </>
       ) : (
-        <h1 className="text-4xl font-bold">Not found</h1>
+        <NotFound404 />
       )}
     </WalletLoader>
   )

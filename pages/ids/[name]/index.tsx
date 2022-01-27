@@ -17,6 +17,7 @@ import { useTokenList } from 'hooks/tokens'
 import WalletLoader from 'components/WalletLoader'
 import { Send } from 'components/Send'
 import * as R from 'ramda'
+import NotFound404 from 'pages/404'
 
 const TokenView: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
@@ -201,7 +202,7 @@ const TokenView: NextPage = () => {
           </div>
         </div>
       ) : (
-        <h1 className="text-4xl font-bold">Not found</h1>
+        <NotFound404 />
       )}
     </>
   )
