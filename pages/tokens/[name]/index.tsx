@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import { NameCard } from 'components/NameCard'
+import Loader from 'components/Loader'
 import { Error } from 'components/Error'
 import { CopyInput } from 'components/CopyInput'
 import { useSigningClient } from 'contexts/cosmwasm'
@@ -24,7 +25,7 @@ const TokenView: NextPage = () => {
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
   const tokenName = router.query.name as string
-  const { token } = useToken(tokenName)
+  const { token, notFound } = useToken(tokenName)
   const { tokens, paths } = useTokenList()
   const { alias, loadingAlias } = usePrimaryAlias()
   const [error, setError] = useState()
@@ -75,7 +76,7 @@ const TokenView: NextPage = () => {
 
   return (
     <WalletLoader>
-      {token ? (
+      {token && (
         <>
           {error && (
             <div className="py-4">
@@ -149,9 +150,8 @@ const TokenView: NextPage = () => {
             ) : null}
           </div>
         </>
-      ) : (
-        <NotFound404 />
       )}
+      { notFound && <NotFound404 /> }
     </WalletLoader>
   )
 }
