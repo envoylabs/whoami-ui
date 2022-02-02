@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useStore } from 'store/base'
 import * as R from 'ramda'
 
-export const isPath = (str) => R.includes('::', str)
+export const isPath = (str: string) => R.includes('::', str)
 export const isToken = R.complement(isPath)
 
 export function useTokenList() {
