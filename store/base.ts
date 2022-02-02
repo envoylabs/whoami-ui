@@ -20,6 +20,8 @@ interface State {
   token: Metadata | null
   tokenIds: string[]
   tokens: Metadata[]
+  pathIds: string[]
+  paths: Metadata[]
 
   // functions
   setSigningClient: (c: SCWClientOrNull) => void
@@ -31,6 +33,10 @@ interface State {
   setTokenIds: (tids: string[]) => void
   appendToken: (t: Metadata) => void
   setTokens: (ts: Metadata[]) => void
+  appendPathId: (pid: string) => void
+  setPathIds: (pids: string[]) => void
+  appendPath: (p: Metadata) => void
+  setPaths: (ps: Metadata[]) => void
 }
 
 const useStore = create<
@@ -75,6 +81,19 @@ const useStore = create<
           set((state) => ({ tokens: R.append(token, state.tokens) })),
 
         setTokens: (tokens: Metadata[]) => set((state) => ({ tokens: tokens })),
+
+        pathIds: [],
+        appendPathId: (pathId: string) =>
+          set((state) => ({ pathIds: R.append(pathId, state.pathIds) })),
+
+        setPathIds: (pathIds: string[]) =>
+          set((state) => ({ pathIds: pathIds })),
+
+        paths: [],
+        appendPath: (path: Metadata) =>
+          set((state) => ({ paths: R.append(path, state.paths) })),
+
+        setPaths: (paths: Metadata[]) => set((state) => ({ paths: paths })),
       } as State) //,
     //   {
     //     name: 'dens-storage',
