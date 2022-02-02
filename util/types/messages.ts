@@ -20,3 +20,7 @@ interface MintMsg {
   token_uri: OptionString
   extension: Metadata | null
 }
+
+export interface MetadataWithTokenId extends Metadata {
+  token_id: string
+}
