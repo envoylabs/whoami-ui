@@ -60,7 +60,7 @@ const MintPath: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
 
-  const appendTokenId = useStore((state) => state.appendTokenId)
+  const appendPathId = useStore((state) => state.appendPathId)
 
   const {
     register,
@@ -140,7 +140,7 @@ const MintPath: NextPage = () => {
         router.push({
           pathname: `/tokens/${parent_token_id}::${token_id}`,
         })
-        appendTokenId(token_id)
+        appendPathId(token_id)
         // setLoading(false)
       }
     } catch (e) {
