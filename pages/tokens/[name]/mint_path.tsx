@@ -60,8 +60,6 @@ const MintPath: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
 
-  const [tokenId, setTokenId] = useState('')
-
   const appendTokenId = useStore((state) => state.appendTokenId)
 
   const {
