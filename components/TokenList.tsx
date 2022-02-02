@@ -10,7 +10,7 @@ export default function TokenList({
   isPublic,
 }: {
   tokenIds: string[]
-  alias: string | undefined
+  alias: string | undefined | null
   isPublic: boolean
 }) {
   return (

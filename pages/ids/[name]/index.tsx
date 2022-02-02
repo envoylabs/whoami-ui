@@ -130,7 +130,7 @@ const TokenView: NextPage = () => {
 
   return (
     <>
-      {token ? (
+      {token && tokenName ? (
         <div className="py-16">
           <NameCard name={tokenName} token={token as Metadata} />
 
