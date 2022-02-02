@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
+import TokenList from 'components/TokenList'
 import { useTokenList } from 'hooks/tokens'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
 import Link from 'next/link'
@@ -31,30 +32,7 @@ const Manage: NextPage = () => {
                 Manage your names
               </h2>
               <div className="flex w-full justify-center">
-                <ul>
-                  {tokens.map((token, key) => {
-                    return (
-                      <div className="flex w-full justify-center" key={key}>
-                        <li className="card bordered border-secondary hover:border-primary py-4 px-8 mt-6">
-                          <Link href={`/tokens/${token}`} passHref>
-                            <a>
-                              <div className="card-title">
-                                <h3 className="text-2xl font-bold flex">
-                                  {token}
-                                  {alias === token ? (
-                                    <div className="badge ml-2 mt-2">
-                                      primary
-                                    </div>
-                                  ) : null}
-                                </h3>
-                              </div>
-                            </a>
-                          </Link>
-                        </li>
-                      </div>
-                    )
-                  })}
-                </ul>
+                <TokenList tokenIds={tokens} alias={alias} isPublic={false} />
               </div>
             </div>
 
@@ -64,30 +42,7 @@ const Manage: NextPage = () => {
                   Manage your paths
                 </h2>
                 <div className="flex w-full justify-center">
-                  <ul>
-                    {paths.map((path, key) => {
-                      return (
-                        <div className="flex w-full justify-center" key={key}>
-                          <li className="card bordered border-secondary hover:border-primary py-4 px-8 mt-6">
-                            <Link href={`/tokens/${path}`} passHref>
-                              <a>
-                                <div className="card-title">
-                                  <h3 className="text-2xl font-bold flex">
-                                    {path}
-                                    {alias === path ? (
-                                      <div className="badge ml-2 mt-2">
-                                        primary
-                                      </div>
-                                    ) : null}
-                                  </h3>
-                                </div>
-                              </a>
-                            </Link>
-                          </li>
-                        </div>
-                      )
-                    })}
-                  </ul>
+                  <TokenList tokenIds={paths} alias={alias} isPublic={false} />
                 </div>
               </div>
             )}

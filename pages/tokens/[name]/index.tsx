@@ -24,7 +24,7 @@ const TokenView: NextPage = () => {
   const router = useRouter()
   const tokenName = router.query.name as string
   const { token } = useToken(tokenName)
-  const { tokens } = useTokenList()
+  const { tokens, paths } = useTokenList()
   const { alias, loadingAlias } = usePrimaryAlias()
   const [error, setError] = useState()
 
@@ -117,7 +117,9 @@ const TokenView: NextPage = () => {
               </div>
             ) : null}
 
-            {tokenName && tokens && R.includes(tokenName, tokens) ? (
+            {tokenName &&
+            tokens &&
+            (R.includes(tokenName, tokens) || R.includes(tokenName, paths)) ? (
               <>
                 <div className="p-1">
                   <Link href={`/tokens/${tokenName}/update`} passHref>

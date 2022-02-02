@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import { NameCard } from 'components/NameCard'
 import { Notice } from 'components/Notice'
 import { CopyInput } from 'components/CopyInput'
+import TokenList from 'components/TokenList'
 import { getNonSigningClient } from 'hooks/cosmwasm'
 import { useToken } from 'hooks/token'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
@@ -15,15 +16,27 @@ import { Metadata } from 'util/types/messages'
 import { useTokenList } from 'hooks/tokens'
 import WalletLoader from 'components/WalletLoader'
 import { Send } from 'components/Send'
+import * as R from 'ramda'
 
 const TokenView: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
-  const tokenName = router.query.name as string
+  const name = router.query.name as string
 
+  const [tokenName, setTokenName] = useState<string | undefined>()
   const [token, setToken] = useState<Metadata>()
   const [loading, setLoading] = useState(false)
   const [showSend, setShowSend] = useState(false)
+  const [showPaths, setShowPaths] = useState(false)
+  const [paths, setPaths] = useState<string[]>()
+
+  useEffect(() => {
+    if (!name) return
+
+    const amendedName = name.replace(/^dens::/i, '')
+
+    setTokenName(amendedName)
+  }, [name])
 
   useEffect(() => {
     if (!tokenName) return
@@ -41,6 +54,7 @@ const TokenView: NextPage = () => {
         setLoading(false)
       } catch (e) {
         // console.log(e)
+        setLoading(false)
       }
     }
 
@@ -72,6 +86,32 @@ const TokenView: NextPage = () => {
     getOwner()
   }, [tokenName, contract])
 
+  // get nested tokens
+  useEffect(() => {
+    if (!tokenName || !owner) return
+
+    const getPaths = async () => {
+      setLoading(true)
+      try {
+        const client = await getNonSigningClient()
+        const pathsResponse = await client.queryContractSmart(contract, {
+          paths_for_token: {
+            token_id: tokenName,
+            owner: owner,
+            limit: 30,
+          },
+        })
+        setPaths(pathsResponse.tokens)
+        setLoading(false)
+      } catch (e) {
+        // console.log(e)
+        setLoading(false)
+      }
+    }
+
+    getPaths()
+  }, [tokenName, contract, owner])
+
   const handleShowSend = () => {
     if (showSend === false) {
       setShowSend(true)
@@ -80,24 +120,53 @@ const TokenView: NextPage = () => {
     }
   }
 
+  const handleShowPaths = () => {
+    if (showPaths === false) {
+      setShowPaths(true)
+    } else {
+      setShowPaths(false)
+    }
+  }
+
   return (
     <>
       {token ? (
         <div className="py-16">
           <NameCard name={tokenName} token={token as Metadata} />
-          {showSend && (
-            <WalletLoader>
-              <div className="flex w-full justify-center py-6">
+
+          <div className="flex flex-wrap justify-center">
+            {paths && showPaths && !R.isEmpty(paths) && (
+              <div className="flex flex-wrap justify-center w-full pt-6 lg:w-1/2">
                 <div className="py-4">
-                  <Send
-                    address={owner!}
-                    name={tokenName!}
-                    showAddress={false}
-                  />
+                  <h2 className="flex text-4xl w-full font-bold justify-center">
+                    Paths
+                  </h2>
+                  <div className="flex w-full justify-center">
+                    <TokenList
+                      tokenIds={paths}
+                      alias={undefined}
+                      isPublic={true}
+                    />
+                  </div>
                 </div>
               </div>
-            </WalletLoader>
-          )}
+            )}
+
+            {showSend && (
+              <WalletLoader>
+                <div className="flex w-full justify-center py-6 lg:w-1/2">
+                  <div className="py-4">
+                    <Send
+                      address={owner!}
+                      name={tokenName!}
+                      showAddress={false}
+                    />
+                  </div>
+                </div>
+              </WalletLoader>
+            )}
+          </div>
+
           {owner && !showSend && (
             <div className="flex flex-wrap justify-center w-full">
               <div className="py-4">
@@ -105,6 +174,7 @@ const TokenView: NextPage = () => {
               </div>
             </div>
           )}
+
           <div className="flex flex-wrap justify-center">
             <div className="p-1">
               <Link href={`/ids/search`} passHref>
@@ -112,6 +182,11 @@ const TokenView: NextPage = () => {
                   <p className="font-bold flex">{`< Back to search`}</p>
                 </a>
               </Link>
+            </div>
+            <div className="p-1">
+              <button className="btn mt-6" onClick={handleShowPaths}>
+                Show Paths
+              </button>
             </div>
             {!showSend && (
               <div className="p-1">
