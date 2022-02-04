@@ -23,7 +23,7 @@ export default function NameSearch({
         placeholder="name"
         className="input input-primary input-bordered"
         value={query}
-        minLength={2}
+        minLength={1}
         debounceTimeout={300}
         onChange={(e) =>
           setQuery(normalize((e.target as HTMLTextAreaElement).value))
