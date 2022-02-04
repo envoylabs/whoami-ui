@@ -26,7 +26,7 @@ export default function NameSearch({
         minLength={1}
         debounceTimeout={300}
         onChange={(e) =>
-          setQuery(normalize((e.target as HTMLTextAreaElement).value))
+          setQuery(normalize((e.target as HTMLInputElement).value))
         }
         spellCheck="false"
       />
