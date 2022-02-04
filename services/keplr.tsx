@@ -116,7 +116,7 @@ export const connectKeplr = async () => {
             low: 0.01,
             average: 0.025,
             high: 0.04,
-          }
+          },
         })
       } catch {
         alert('Failed to add the chain')
