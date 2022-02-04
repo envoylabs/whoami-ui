@@ -116,8 +116,7 @@ export const connectKeplr = async () => {
             low: 0.01,
             average: 0.025,
             high: 0.04,
-          },
-          features: ["stargate", 'ibc-transfer', 'cosmwasm', 'no-legacy-stdTx', 'ibc-go']
+          }
         })
       } catch {
         alert('Failed to add the chain')
