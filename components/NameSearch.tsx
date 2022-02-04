@@ -1,3 +1,4 @@
+import { DebounceInput } from 'react-debounce-input'
 import * as R from 'ramda'
 
 export default function NameSearch({
@@ -17,12 +18,14 @@ export default function NameSearch({
       <label className="label">
         <span className="sr-only">Search names</span>
       </label>
-      <input
-        type="text"
+
+      <DebounceInput
         placeholder="name"
         className="input input-primary input-bordered"
         value={query}
-        onInput={(e) =>
+        minLength={2}
+        debounceTimeout={300}
+        onChange={(e) =>
           setQuery(normalize((e.target as HTMLTextAreaElement).value))
         }
         spellCheck="false"
