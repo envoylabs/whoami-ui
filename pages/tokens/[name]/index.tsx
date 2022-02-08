@@ -151,7 +151,7 @@ const TokenView: NextPage = () => {
           </div>
         </>
       )}
-      { notFound && <NotFound404 /> }
+      {notFound && <NotFound404 />}
     </WalletLoader>
   )
 }

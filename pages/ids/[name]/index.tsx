@@ -134,7 +134,7 @@ const TokenView: NextPage = () => {
 
   return (
     <>
-      { loading && (
+      {loading && (
         <div className="flex w-full justify-center py-12">
           <Loader />
         </div>
@@ -210,7 +210,7 @@ const TokenView: NextPage = () => {
           </div>
         </div>
       )}
-      { notFound && <NotFound404 /> }
+      {notFound && <NotFound404 />}
     </>
   )
 }
