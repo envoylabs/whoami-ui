@@ -10,6 +10,7 @@ export function useToken(tokenId: string) {
   const token = useStore((state) => state.token)
   //const [token, setToken] = useState<Metadata>()
   const [loadingToken, setLoading] = useState(false)
+  const [notFound, setNotFound] = useState(false)
 
   const { signingClient } = useSigningClient()
   const walletAddress = useStore((state) => state.walletAddress)
@@ -32,6 +33,7 @@ export function useToken(tokenId: string) {
         setLoading(false)
       } catch (e) {
         setStoreToken(null)
+        setNotFound(true)
         console.log(e)
       }
     }
@@ -39,5 +41,5 @@ export function useToken(tokenId: string) {
     getToken()
   }, [tokenId, walletAddress])
 
-  return { token, loadingToken }
+  return { token, loadingToken, notFound }
 }

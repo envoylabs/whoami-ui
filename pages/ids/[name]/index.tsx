@@ -16,6 +16,8 @@ import { Metadata } from 'util/types/messages'
 import { useTokenList } from 'hooks/tokens'
 import WalletLoader from 'components/WalletLoader'
 import { Send } from 'components/Send'
+import Loader from 'components/Loader'
+import NotFound404 from 'pages/404'
 import * as R from 'ramda'
 
 const TokenView: NextPage = () => {
@@ -26,6 +28,7 @@ const TokenView: NextPage = () => {
   const [tokenName, setTokenName] = useState<string | undefined>()
   const [token, setToken] = useState<Metadata>()
   const [loading, setLoading] = useState(false)
+  const [notFound, setNotFound] = useState(false)
   const [showSend, setShowSend] = useState(false)
   const [showPaths, setShowPaths] = useState(false)
   const [paths, setPaths] = useState<string[]>()
@@ -53,6 +56,7 @@ const TokenView: NextPage = () => {
         setToken(tokenInfo.extension)
         setLoading(false)
       } catch (e) {
+        setNotFound(true)
         // console.log(e)
         setLoading(false)
       }
@@ -130,7 +134,12 @@ const TokenView: NextPage = () => {
 
   return (
     <>
-      {token && tokenName ? (
+      {loading && (
+        <div className="flex w-full justify-center py-12">
+          <Loader />
+        </div>
+      )}
+      {token && tokenName && (
         <div className="py-16">
           <NameCard name={tokenName} token={token as Metadata} />
 
@@ -200,9 +209,8 @@ const TokenView: NextPage = () => {
             )}
           </div>
         </div>
-      ) : (
-        <h1 className="text-4xl font-bold">Not found</h1>
       )}
+      {notFound && <NotFound404 />}
     </>
   )
 }

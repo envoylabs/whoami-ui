@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import { NameCard } from 'components/NameCard'
+import Loader from 'components/Loader'
 import { Error } from 'components/Error'
 import { CopyInput } from 'components/CopyInput'
 import { useSigningClient } from 'contexts/cosmwasm'
@@ -16,6 +17,7 @@ import { Metadata } from 'util/types/messages'
 import { useTokenList } from 'hooks/tokens'
 import { useStore } from 'store/base'
 import * as R from 'ramda'
+import NotFound404 from 'pages/404'
 
 const TokenView: NextPage = () => {
   const { signingClient } = useSigningClient()
@@ -23,7 +25,7 @@ const TokenView: NextPage = () => {
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
   const tokenName = router.query.name as string
-  const { token } = useToken(tokenName)
+  const { token, notFound } = useToken(tokenName)
   const { tokens, paths } = useTokenList()
   const { alias, loadingAlias } = usePrimaryAlias()
   const [error, setError] = useState()
@@ -74,7 +76,7 @@ const TokenView: NextPage = () => {
 
   return (
     <WalletLoader>
-      {token ? (
+      {token && (
         <>
           {error && (
             <div className="py-4">
@@ -148,9 +150,8 @@ const TokenView: NextPage = () => {
             ) : null}
           </div>
         </>
-      ) : (
-        <h1 className="text-4xl font-bold">Not found</h1>
       )}
+      {notFound && <NotFound404 />}
     </WalletLoader>
   )
 }
