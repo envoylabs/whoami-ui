@@ -11,10 +11,14 @@ import * as R from 'ramda'
 const Manage: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const { tokens, paths } = useTokenList()
+  const { tokens, paths, page, setPage } = useTokenList()
 
   const { walletAddress, signingClient } = useSigningClient()
   const { alias, loadingAlias } = usePrimaryAlias()
+
+  const handlePrev = () => (page === 0 ? null : setPage(page - 1))
+
+  const handleNext = () => setPage(page + 1)
 
   return (
     <WalletLoader>
@@ -46,6 +50,19 @@ const Manage: NextPage = () => {
                 </div>
               </div>
             )}
+
+            <div className="flex w-full justify-center">
+              <div className="p-1">
+                <button className="btn mt-6" onClick={handlePrev}>
+                  Previous
+                </button>
+              </div>
+              <div className="p-1">
+                <button className="btn mt-6" onClick={handleNext}>
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
