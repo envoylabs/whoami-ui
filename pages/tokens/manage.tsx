@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import TokenList from 'components/TokenList'
-import { useTokenList } from 'hooks/tokens'
+import { useTokenList, noTokens } from 'hooks/tokens'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
 import Link from 'next/link'
 import { useSigningClient } from 'contexts/cosmwasm'
@@ -11,14 +11,41 @@ import * as R from 'ramda'
 const Manage: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const { tokens, paths, page, setPage } = useTokenList()
+  const { tokens, paths, setStartAfter, page, setPage } = useTokenList()
 
   const { walletAddress, signingClient } = useSigningClient()
   const { alias, loadingAlias } = usePrimaryAlias()
 
-  const handlePrev = () => (page === 0 ? null : setPage(page - 1))
+  const [pageStartTokens, setPageStartTokens] = useState([])
 
-  const handleNext = () => setPage(page + 1)
+  useEffect(() => {
+    if (noTokens(tokens)) return
+
+    const firstTokenOnCurrentPage = tokens[0]
+    if (!R.includes(firstTokenOnCurrentPage, pageStartTokens)) {
+      setPageStartTokens(R.append(firstTokenOnCurrentPage, pageStartTokens))
+    }
+    console.log(pageStartTokens)
+  }, [tokens])
+
+  const handlePrev = () => {
+    if (page === 0) {
+      setPage(0)
+      setStartAfter(undefined)
+    } else {
+      const prevPageIndex = page - 1
+      setPage(prevPageIndex)
+
+      if (prevPageIndex < pageStartTokens.length) {
+       setStartAfter(pageStartTokens[prevPageIndex])
+      }
+    }
+  }
+
+  const handleNext = () => {
+    setPage(page + 1)
+    setStartAfter(tokens[tokens.length - 1])
+  }
 
   return (
     <WalletLoader>
@@ -27,7 +54,7 @@ const Manage: NextPage = () => {
           Welcome back{alias ? ', ' + alias : null}!
         </h2>
 
-        {tokens === undefined || R.isEmpty(tokens) ? (
+        {noTokens(tokens) ? (
           <p className="pt-6">No tokens</p>
         ) : (
           <div className="flex flex-wrap w-full justify-center pt-6">

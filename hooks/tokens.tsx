@@ -5,14 +5,16 @@ import * as R from 'ramda'
 
 export const isPath = (str: string) => R.includes('::', str)
 export const isToken = R.complement(isPath)
+export const noTokens = (tokenIds: string[]): boolean =>
+  tokenIds === undefined || R.isEmpty(tokenIds)
 
 // start_after has to be > 1
 const getValidQuery = (
   walletAddress: string,
-  startAfter: number,
+  startAfter: string | undefined,
   perPage: number
 ) => {
-  if (startAfter > 1) {
+  if (startAfter) {
     return {
       tokens: {
         owner: walletAddress,
@@ -30,6 +32,10 @@ const getValidQuery = (
   }
 }
 
+// start_after starts after the token_id
+// so simply take the last token_id from the last page
+// and pass it in with a perPage for the limit arg
+// note that 30 is the limit for that
 export function useTokenList() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const perPage = 1
@@ -41,6 +47,7 @@ export function useTokenList() {
   const paths: string[] = useStore((state) => state.pathIds)
 
   //const [tokens, setTokens] = useState<Array<string>>([])
+  const [startAfter, setStartAfter] = useState(undefined)
   const [page, setPage] = useState(0)
   const [loadingTokens, setLoading] = useState(false)
 
@@ -55,18 +62,14 @@ export function useTokenList() {
     const getTokens = async () => {
       setLoading(true)
 
-      const startAfter = page * perPage
-      const end = startAfter + perPage
-      console.log(startAfter)
-      const query = getValidQuery(walletAddress, startAfter, end)
+      const query = getValidQuery(walletAddress, startAfter, perPage)
 
       try {
         let tokenList = await signingClient.queryContractSmart(contract, query)
 
-        if (!R.isNil(tokenList.tokens) || !R.isEmpty(tokenList.tokens)) {
+        if (!R.isNil(tokenList.tokens) && !R.isEmpty(tokenList.tokens)) {
           // filter tokens and paths
-
-          console.log(tokenList.tokens)
+          console.log(tokenList)
           const returnedTokens = R.filter(isToken, tokenList.tokens)
           const returnedPaths = R.filter(isPath, tokenList.tokens)
 
@@ -81,7 +84,7 @@ export function useTokenList() {
     }
 
     getTokens()
-  }, [tokens.length, walletAddress, page])
+  }, [tokens.length, walletAddress, startAfter])
 
-  return { tokens, paths, loadingTokens, page, setPage }
+  return { tokens, paths, loadingTokens, startAfter, setStartAfter, page, setPage }
 }
