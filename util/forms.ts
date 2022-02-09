@@ -43,7 +43,11 @@ const mintFields: Fields = [
   {
     fieldId: 'external_url',
     fieldName: 'Website',
-    validationParams: { required: false, maxLength: 2048 },
+    validationParams: {
+      required: false,
+      pattern: /^(http)s?:\/\/.+/,
+      maxLength: 2048,
+    },
   },
   {
     fieldId: 'twitter_id',
