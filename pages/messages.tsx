@@ -156,7 +156,7 @@ const Messages: NextPage = () => {
 
     if (mapping[msg!.address]) {
       return (
-        <Link href={`/ids/${msg.sender}`}>
+        <Link href={`/dens::${msg.sender}`}>
           <a className="link-hover link link-primary">
             { senderDisplay }
           </a>
