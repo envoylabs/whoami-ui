@@ -38,7 +38,7 @@ const getValidQuery = (
 // note that 30 is the limit for that
 export function useTokenList() {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
-  const perPage = 1
+  const perPage = 10
 
   const setStoreTokens = useStore((state) => state.setTokenIds)
   const tokens: string[] = useStore((state) => state.tokenIds)
@@ -47,7 +47,7 @@ export function useTokenList() {
   const paths: string[] = useStore((state) => state.pathIds)
 
   //const [tokens, setTokens] = useState<Array<string>>([])
-  const [startAfter, setStartAfter] = useState(undefined)
+  const [startAfter, setStartAfter] = useState<string | undefined>(undefined)
   const [page, setPage] = useState(0)
   const [loadingTokens, setLoading] = useState(false)
 
@@ -86,5 +86,13 @@ export function useTokenList() {
     getTokens()
   }, [tokens.length, walletAddress, startAfter])
 
-  return { tokens, paths, loadingTokens, startAfter, setStartAfter, page, setPage }
+  return {
+    tokens,
+    paths,
+    loadingTokens,
+    startAfter,
+    setStartAfter,
+    page,
+    setPage,
+  }
 }

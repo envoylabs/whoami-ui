@@ -16,7 +16,7 @@ const Manage: NextPage = () => {
   const { walletAddress, signingClient } = useSigningClient()
   const { alias, loadingAlias } = usePrimaryAlias()
 
-  const [pageStartTokens, setPageStartTokens] = useState([])
+  const [pageStartTokens, setPageStartTokens] = useState<string[]>([])
 
   useEffect(() => {
     if (noTokens(tokens)) return
@@ -26,7 +26,7 @@ const Manage: NextPage = () => {
       setPageStartTokens(R.append(firstTokenOnCurrentPage, pageStartTokens))
     }
     console.log(pageStartTokens)
-  }, [tokens])
+  }, [tokens, pageStartTokens])
 
   const handlePrev = () => {
     if (page === 0) {
@@ -37,7 +37,7 @@ const Manage: NextPage = () => {
       setPage(prevPageIndex)
 
       if (prevPageIndex < pageStartTokens.length) {
-       setStartAfter(pageStartTokens[prevPageIndex])
+        setStartAfter(pageStartTokens[prevPageIndex])
       }
     }
   }
