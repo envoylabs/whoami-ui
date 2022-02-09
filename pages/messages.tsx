@@ -96,9 +96,8 @@ const Messages: NextPage = () => {
     const getAliases = async (messages: (Message | undefined)[]) => {
       try {
         let promises = R.map(async (msg) => {
+          let address = msg!.sender
           try {
-            let address = msg!.sender
-
             let aliasResponse = await signingClient.queryContractSmart(
               contract,
               {
@@ -111,6 +110,7 @@ const Messages: NextPage = () => {
             return [address, aliasResponse.username]
           } catch (e) {
             console.error(e.message)
+            return [address, null]
           }
         }, messages)
         Promise.all(promises).then((res: any) => {
@@ -118,8 +118,8 @@ const Messages: NextPage = () => {
             (acc: any, i: string[]) => {
               if (i[1]) {
                 acc[i[0]] = i[1]
-                return acc
               }
+              return acc
             },
             {},
             res
