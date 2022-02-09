@@ -8,7 +8,8 @@ export const isToken = R.complement(isPath)
 export const noTokens = (tokenIds: string[]): boolean =>
   tokenIds === undefined || R.isEmpty(tokenIds)
 
-// start_after has to be > 1
+// if start_after is unset,
+// it should return default (i.e. page 0)
 const getValidQuery = (
   walletAddress: string,
   startAfter: string | undefined,
