@@ -12,6 +12,7 @@ import * as R from 'ramda'
 interface Message {
   memo: string
   sender: string
+  address: string
   height: number
 }
 
@@ -143,13 +144,28 @@ const Messages: NextPage = () => {
     const msgsWithAliases = R.map((msg) => {
       const address = msg!.sender as string
       const sender = mapping[address] || address
-      const newMsg = R.mergeRight(msg!, { sender: sender })
+      const newMsg = R.mergeRight(msg!, { sender: sender, address: address })
       return newMsg
     }, messages)
 
     setComputedMessages(msgsWithAliases)
   }, [signingClient, walletAddress, mappingLoadedAt, mapping, messages])
 
+  const displaySender = (msg: Message) => {
+    const senderDisplay = msg!.sender
+
+    if (mapping[msg!.address]) {
+      return (
+        <Link href={`/ids/${msg.sender}`}>
+          <a className="link-hover link link-primary">
+            { senderDisplay }
+          </a>
+        </Link>
+      )
+    }
+
+    return senderDisplay
+  }
   return (
     <WalletLoader>
       <div className="flex flex-col justify-center p-6">
@@ -176,7 +192,8 @@ const Messages: NextPage = () => {
                       key={key}
                     >
                       <div className="flex justify-center w-2/3 py-2">
-                        <p className="font-semibold">Sender: {msg!.sender}</p>
+
+                        <p className="font-semibold">Sender: { displaySender(msg!) }</p>
                       </div>
                       <div className="flex justify-center w-1/3 py-2">
                         <p className="font-semibold">
