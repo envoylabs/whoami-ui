@@ -37,6 +37,7 @@ const getValidQuery = (
 // and pass it in with a perPage for the limit arg
 // note that 30 is the limit for that
 export function useTokenList() {
+  console.log('firing')
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const perPage = 10
 
@@ -46,7 +47,6 @@ export function useTokenList() {
   const setStorePaths = useStore((state) => state.setPathIds)
   const paths: string[] = useStore((state) => state.pathIds)
 
-  //const [tokens, setTokens] = useState<Array<string>>([])
   const [startAfter, setStartAfter] = useState<string | undefined>(undefined)
   const [page, setPage] = useState(0)
   const [loadingTokens, setLoading] = useState(false)
@@ -69,7 +69,6 @@ export function useTokenList() {
 
         if (!R.isNil(tokenList.tokens) && !R.isEmpty(tokenList.tokens)) {
           // filter tokens and paths
-          console.log(tokenList)
           const returnedTokens = R.filter(isToken, tokenList.tokens)
           const returnedPaths = R.filter(isPath, tokenList.tokens)
 

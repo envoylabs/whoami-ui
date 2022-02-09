@@ -24,8 +24,6 @@ const ListUsernames: NextPage = () => {
     const getAlias = async () => {
       setLoading(true)
 
-      console.log(address)
-
       try {
         const client = await getNonSigningClient()
         let aliasResponse = await client.queryContractSmart(contract, {

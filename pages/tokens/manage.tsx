@@ -25,19 +25,24 @@ const Manage: NextPage = () => {
     if (!R.includes(firstTokenOnCurrentPage, pageStartTokens)) {
       setPageStartTokens(R.append(firstTokenOnCurrentPage, pageStartTokens))
     }
-    console.log(pageStartTokens)
   }, [tokens, pageStartTokens])
 
   const handlePrev = () => {
+    const prevPageIndex = page - 1
+
     if (page === 0) {
       setPage(0)
       setStartAfter(undefined)
+    } else if (page === 1){
+      setPage(prevPageIndex)
+      setStartAfter(undefined)
     } else {
-      const prevPageIndex = page - 1
       setPage(prevPageIndex)
 
       if (prevPageIndex < pageStartTokens.length) {
-        setStartAfter(pageStartTokens[prevPageIndex])
+        const minusTwo = prevPageIndex - 1
+        const newIdx = (minusTwo === 0 ? 0 : minusTwo)
+        setStartAfter(pageStartTokens[prevPageIndex - 1])
       }
     }
   }
