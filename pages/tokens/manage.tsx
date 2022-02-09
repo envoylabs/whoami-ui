@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import WalletLoader from 'components/WalletLoader'
 import TokenList from 'components/TokenList'
-import { useTokenList, noTokens } from 'hooks/tokens'
+import {
+  useTokenList,
+  noTokens,
+  getHandlePrev,
+  getHandleNext,
+} from 'hooks/tokens'
 import { usePrimaryAlias } from 'hooks/primaryAlias'
 import Link from 'next/link'
 import { useSigningClient } from 'contexts/cosmwasm'
@@ -27,30 +32,13 @@ const Manage: NextPage = () => {
     }
   }, [tokens, pageStartTokens])
 
-  const handlePrev = () => {
-    const prevPageIndex = page - 1
-
-    if (page === 0) {
-      setPage(0)
-      setStartAfter(undefined)
-    } else if (page === 1){
-      setPage(prevPageIndex)
-      setStartAfter(undefined)
-    } else {
-      setPage(prevPageIndex)
-
-      if (prevPageIndex < pageStartTokens.length) {
-        const minusTwo = prevPageIndex - 1
-        const newIdx = (minusTwo === 0 ? 0 : minusTwo)
-        setStartAfter(pageStartTokens[prevPageIndex - 1])
-      }
-    }
-  }
-
-  const handleNext = () => {
-    setPage(page + 1)
-    setStartAfter(tokens[tokens.length - 1])
-  }
+  const handlePrev = getHandlePrev(
+    page,
+    pageStartTokens,
+    setPage,
+    setStartAfter
+  )
+  const handleNext = getHandleNext(page, tokens, setPage, setStartAfter)
 
   return (
     <WalletLoader>

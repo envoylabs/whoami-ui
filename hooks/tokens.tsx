@@ -8,6 +8,45 @@ export const isToken = R.complement(isPath)
 export const noTokens = (tokenIds: string[]): boolean =>
   tokenIds === undefined || R.isEmpty(tokenIds)
 
+export const getHandlePrev = (
+  page: number,
+  pageStartTokens: string[],
+  setPage: Function,
+  setStartAfter: Function
+) => {
+  return () => {
+    const prevPageIndex = page - 1
+
+    if (page === 0) {
+      setPage(0)
+      setStartAfter(undefined)
+    } else if (page === 1) {
+      setPage(prevPageIndex)
+      setStartAfter(undefined)
+    } else {
+      setPage(prevPageIndex)
+
+      if (prevPageIndex < pageStartTokens.length) {
+        const minusTwo = prevPageIndex - 1
+        const newIdx = minusTwo === 0 ? 0 : minusTwo
+        setStartAfter(pageStartTokens[prevPageIndex - 1])
+      }
+    }
+  }
+}
+
+export const getHandleNext = (
+  page: number,
+  tokens: string[],
+  setPage: Function,
+  setStartAfter: Function
+) => {
+  return () => {
+    setPage(page + 1)
+    setStartAfter(tokens[tokens.length - 1])
+  }
+}
+
 // if start_after is unset,
 // it should return default (i.e. page 0)
 const getValidQuery = (
@@ -38,7 +77,6 @@ const getValidQuery = (
 // and pass it in with a perPage for the limit arg
 // note that 30 is the limit for that
 export function useTokenList() {
-  console.log('firing')
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const perPage = 10
 
