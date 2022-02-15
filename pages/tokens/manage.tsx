@@ -16,7 +16,8 @@ import * as R from 'ramda'
 const Manage: NextPage = () => {
   const contract = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
 
-  const { pathsAndTokens, tokens, paths, setStartAfter, page, setPage } = useTokenList()
+  const { pathsAndTokens, tokens, paths, setStartAfter, page, setPage } =
+    useTokenList()
 
   const { walletAddress, signingClient } = useSigningClient()
   const { alias, loadingAlias } = usePrimaryAlias()
