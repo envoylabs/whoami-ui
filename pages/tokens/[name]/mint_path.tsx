@@ -138,7 +138,7 @@ const MintPath: NextPage = () => {
       )
       if (mintedToken) {
         router.push({
-          pathname: `/tokens/${parent_token_id}::${token_id}`,
+          pathname: `/tokens/${parent_token_id}::${normalizedTokenId}`,
         })
         appendPathId(token_id)
         // setLoading(false)
