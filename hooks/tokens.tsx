@@ -86,6 +86,8 @@ export function useTokenList() {
   const setStorePaths = useStore((state) => state.setPathIds)
   const paths: string[] = useStore((state) => state.pathIds)
 
+  const [pathsAndTokens, setPathsAndTokens] = useState<string[]>([])
+
   const [startAfter, setStartAfter] = useState<string | undefined>(undefined)
   const [page, setPage] = useState(0)
   const [loadingTokens, setLoading] = useState(false)
@@ -113,6 +115,7 @@ export function useTokenList() {
 
           setStoreTokens(returnedTokens)
           setStorePaths(returnedPaths)
+          setPathsAndTokens(tokenList.tokens)
         }
         setLoading(false)
       } catch (e) {
@@ -125,6 +128,7 @@ export function useTokenList() {
   }, [tokens.length, walletAddress, startAfter])
 
   return {
+    pathsAndTokens,
     tokens,
     paths,
     loadingTokens,
