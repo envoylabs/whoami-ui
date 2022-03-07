@@ -203,7 +203,7 @@ const TokenView: NextPage = () => {
                   className="btn btn-primary hover:text-base-100 mt-6"
                   onClick={handleShowSend}
                 >
-                  Send Funds/Message
+                  Send Funds
                 </button>
               </div>
             )}
