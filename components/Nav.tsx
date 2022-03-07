@@ -106,13 +106,6 @@ function Nav() {
         </div>
         <ThemeToggle />
         <div className="px-4 flex flex-grow lg:flex-grow-0 max-w-full">
-          <Link href="/messages">
-            <a className="ml-1 md:ml-2 link link-hover font-semibold text-xl md:text-2xl align-top">
-              <InboxInIcon className="h-10 w-10" />
-            </a>
-          </Link>
-        </div>
-        <div className="px-4 flex flex-grow lg:flex-grow-0 max-w-full">
           <button
             className="block btn btn-outline btn-primary w-full max-w-full truncate normal-case"
             onClick={handleConnect}
