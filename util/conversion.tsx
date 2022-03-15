@@ -1,3 +1,13 @@
+import { bech32 } from 'bech32'
+import * as R from 'ramda'
+
+const DENOM = process.env.NEXT_PUBLIC_CHAIN_BECH32_PREFIX || 'juno'
+
+export const getDenom = () => R.toLower(DENOM)
+
+export const getJunoAddress = (cosmosAddress: string) =>
+  bech32.encode(getDenom(), bech32.decode(cosmosAddress).words)
+
 export function convertMicroDenomToDenom(amount: number | string) {
   if (typeof amount === 'string') {
     amount = Number(amount)
