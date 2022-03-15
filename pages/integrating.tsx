@@ -13,7 +13,39 @@ const Integrating: NextPage = () => {
           <p className="w-full">Integrating with {siteTitle} is simple.</p>
         </div>
 
-        <h3 className="text-2xl font-bold py-6">Web2 API and UI:</h3>
+        <h3 className="text-2xl font-bold py-6">Web2 API:</h3>
+
+        <div className="flex flex-wrap items-center justify-center  pb-4">
+          <p className="w-full">
+            Note that all addresses can be sent as any valid cosmos bech32.
+          </p>
+          <p>
+            It will be converted to a Juno address and then any data returned
+            based on that.
+          </p>
+          <p>
+            For example, the following is the Uni Faucet, looked up using its
+            STARS address.
+          </p>
+          <pre className="text-left w-full">{`curl -vk https://dens.vercel.app/api/addresses/stars15gu3cm8dpxzf8mzl4meeu0zqa2gt23tz8j7f4h/primary`}</pre>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center  pb-4">
+          <p className="w-full">To see a single name:</p>
+          <pre className="text-left w-full">{`/api/ids/[token-name]`}</pre>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center  pb-4">
+          <p className="w-full">To see all the names registered to a wallet:</p>
+          <pre className="text-left w-full">{`/api/addresses/[address]`}</pre>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center  pb-4">
+          <p className="w-full">To see the primary alias for a wallet:</p>
+          <pre className="text-left w-full">{`/api/addresses/[address]/primary`}</pre>
+        </div>
+
+        <h3 className="text-2xl font-bold py-6">UI:</h3>
 
         <div className="flex flex-wrap items-center justify-center  pb-4">
           <p className="w-full">To see a single name (without logging in):</p>
