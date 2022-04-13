@@ -15,6 +15,14 @@ interface FieldMapping {
 const emailRegex =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
+const transferFields: Fields = [
+  {
+    fieldId: 'recipient',
+    fieldName: 'Recipient',
+    validationParams: { required: true },
+  },
+]
+
 const mintFields: Fields = [
   {
     fieldId: 'public_name',
@@ -108,4 +116,4 @@ const getMintFormErrors = (errors: FieldErrors) => {
   })
 }
 
-export { mintFields, getMintFormErrors }
+export { mintFields, getMintFormErrors, transferFields }
