@@ -15,6 +15,7 @@ import { defaultMemo } from 'util/memo'
 import InputField from 'components/InputField'
 import * as R from 'ramda'
 import { transferFields } from 'util/forms'
+import { Notice } from 'components/Notice'
 
 type FormValues = {
   recipient: string
