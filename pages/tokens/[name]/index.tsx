@@ -132,6 +132,14 @@ const TokenView: NextPage = () => {
                 </div>
 
                 <div className="p-1">
+                  <Link href={`/tokens/${tokenName}/transfer`} passHref>
+                    <a className="btn btn-outline mt-6">
+                      <p className="font-bold flex">{`Transfer`}</p>
+                    </a>
+                  </Link>
+                </div>
+
+                <div className="p-1">
                   <Link href={`/tokens/${tokenName}/mint_path`} passHref>
                     <a className="btn btn-outline mt-6">
                       <p className="font-bold flex">{`Mint path`}</p>
