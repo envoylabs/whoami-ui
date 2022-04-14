@@ -23,6 +23,9 @@ type FormValues = {
 const TransferToken: NextPage = () => {
   const router = useRouter()
   const tokenName = router.query.name as string
+  const enabled = process.env.NEXT_PUBLIC_TRANSFERS_ENABLED
+  const transfersEnabled = enabled === 'true'
+
   const {
     register,
     handleSubmit,
@@ -88,56 +91,67 @@ const TransferToken: NextPage = () => {
   )
 
   return (
-    <WalletLoader>
-      {loading ? (
-        <div className="flex w-full justify-center py-12">
-          <Loader />
-        </div>
-      ) : (
-        <>
-          {error && (
-            <div className="flex w-full justify-center">
-              <div className="py-4 w-96">
-                <Error
-                  errorTitle={'Something went wrong!'}
-                  errorMessage={error!}
-                />
-              </div>
+    <>
+      {transfersEnabled ? (
+        <WalletLoader>
+          {loading ? (
+            <div className="flex w-full justify-center py-12">
+              <Loader />
             </div>
-          )}
-          <div className="flex flex-wrap justify-center pt-4">
-            {token ? (
-              <div className="mr-3">
-                <div className="sticky top-5 mt-5">
-                  <TokenCard name={tokenName} token={token as Metadata} />
-                </div>
-              </div>
-            ) : null}
-
-            <div className="flex flex-col justify-center m-5">
-              <h2 className="text-4xl font-bold">
-                <SwitchHorizontalIcon className="h-9 w-9 inline mr-2 mb-1" />
-                Transfer {tokenName}
-              </h2>
-              <p className="w-96">Transfer the token to another address.</p>
-              <div className="p-1">
-                <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-4">
-                  <>{inputs}</>
-
-                  <div className="py-4">
-                    <input
-                      type="submit"
-                      className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
-                      value="Transfer Token"
+          ) : (
+            <>
+              {error && (
+                <div className="flex w-full justify-center">
+                  <div className="py-4 w-96">
+                    <Error
+                      errorTitle={'Something went wrong!'}
+                      errorMessage={error!}
                     />
                   </div>
-                </form>
+                </div>
+              )}
+              <div className="flex flex-wrap justify-center pt-4">
+                {token ? (
+                  <div className="mr-3">
+                    <div className="sticky top-5 mt-5">
+                      <TokenCard name={tokenName} token={token as Metadata} />
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="flex flex-col justify-center m-5">
+                  <h2 className="text-4xl font-bold">
+                    <SwitchHorizontalIcon className="h-9 w-9 inline mr-2 mb-1" />
+                    Transfer {tokenName}
+                  </h2>
+                  <p className="w-96">Transfer the token to another address.</p>
+                  <div className="p-1">
+                    <form
+                      onSubmit={handleSubmit(onSubmit)}
+                      className="px-4 pb-4"
+                    >
+                      <>{inputs}</>
+
+                      <div className="py-4">
+                        <input
+                          type="submit"
+                          className="btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl w-full"
+                          value="Transfer Token"
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </>
+            </>
+          )}
+        </WalletLoader>
+      ) : (
+        <div className="py-4">
+          <Notice message={`Transfers are not currently available`} />
+        </div>
       )}
-    </WalletLoader>
+    </>
   )
 }
 
