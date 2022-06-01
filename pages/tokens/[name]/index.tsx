@@ -25,7 +25,7 @@ const TokenView: NextPage = () => {
   const contractAddress = process.env.NEXT_PUBLIC_WHOAMI_ADDRESS as string
   const router = useRouter()
   const tokenName = router.query.name as string
-  const { token, notFound } = useToken(tokenName)
+  const { token, notFound, owner } = useToken(tokenName)
   const { tokens, paths } = useTokenList()
   const { alias, loadingAlias } = usePrimaryAlias()
   const [error, setError] = useState()
@@ -119,9 +119,7 @@ const TokenView: NextPage = () => {
               </div>
             ) : null}
 
-            {tokenName &&
-            tokens &&
-            (R.includes(tokenName, tokens) || R.includes(tokenName, paths)) ? (
+            {R.equals(walletAddress, owner) ? (
               <>
                 <div className="p-1">
                   <Link href={`/tokens/${tokenName}/update`} passHref>

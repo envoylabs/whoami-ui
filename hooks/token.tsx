@@ -12,6 +12,8 @@ export function useToken(tokenId: string) {
   const [loadingToken, setLoading] = useState(false)
   const [notFound, setNotFound] = useState(false)
 
+  const [owner, setOwner] = useState()
+
   const { signingClient } = useSigningClient()
   const walletAddress = useStore((state) => state.walletAddress)
 
@@ -30,6 +32,7 @@ export function useToken(tokenId: string) {
         })
         //setToken(tokenInfo.extension)
         setStoreToken(tokenInfo.extension)
+        setOwner(tokenInfo.owner)
         setLoading(false)
       } catch (e) {
         setStoreToken(null)
@@ -41,5 +44,5 @@ export function useToken(tokenId: string) {
     getToken()
   }, [tokenId, walletAddress])
 
-  return { token, loadingToken, notFound }
+  return { token, loadingToken, notFound, owner }
 }
