@@ -25,14 +25,15 @@ export function useToken(tokenId: string) {
     const getToken = async () => {
       setLoading(true)
       try {
-        let tokenInfo = await signingClient.queryContractSmart(contract, {
-          nft_info: {
+        let allInfo = await signingClient.queryContractSmart(contract, {
+          all_nft_info: {
             token_id: tokenId,
           },
         })
-        //setToken(tokenInfo.extension)
-        setStoreToken(tokenInfo.extension)
-        setOwner(tokenInfo.owner)
+
+        setStoreToken(allInfo.info.extension)
+        setOwner(allInfo.access.owner)
+
         setLoading(false)
       } catch (e) {
         setStoreToken(null)
