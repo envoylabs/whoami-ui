@@ -75,6 +75,12 @@ export default function Layout({ children }: { children: ReactNode }) {
               <a className="pl-1 link link-primary link-hover">
                 Terms and Conditions of use
               </a>
+            </Link>{' '}
+            and
+            <Link href={'/privacy'} passHref>
+              <a className="pl-1 link link-primary link-hover">
+                Privacy statement
+              </a>
             </Link>
             .
           </p>
