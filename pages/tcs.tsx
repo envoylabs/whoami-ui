@@ -13,7 +13,7 @@ const Tcs: NextPage = () => {
         TOKEN.
       </p>
       <p className="p-2"> 1. Overview</p>
-      <p className="p-2">What's in these Terms?</p>
+      <p className="p-2">What&lsquo;s in these Terms?</p>
       <p className="p-2">
         These Terms set out the rules for registering, managing and using the
         Decentralised Name Service (DENS) non-fungible name token (Token). The
