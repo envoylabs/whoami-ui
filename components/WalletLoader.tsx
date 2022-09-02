@@ -3,6 +3,7 @@ import { useSigningClient } from 'contexts/cosmwasm'
 import Loader from './Loader'
 import { isKeplrInstalled } from 'services/keplr'
 import { useStore } from 'store/base'
+import Link from 'next/link'
 
 function WalletLoader({
   children,
@@ -13,7 +14,6 @@ function WalletLoader({
 }) {
   const { loading: clientLoading, error, connectWallet } = useSigningClient()
 
-  const walletAddress = useStore((state) => state.walletAddress)
   const signingClient = useStore((state) => state.signingClient)
 
   const [keplrInstalled, setKeplrInstalled] = useState<boolean | undefined>()
@@ -33,7 +33,16 @@ function WalletLoader({
   if (!signingClient) {
     const actionText = keplrInstalled ? (
       <>
-        <p>Please connect your Keplr wallet to continue</p>
+        <p>Please connect your Keplr wallet to continue.</p>
+        <p>
+          By connecting, you accept the{' '}
+          <Link href={'/tcs'} passHref>
+            <a className="pl-1 link link-primary link-hover">
+              Terms and Conditions of use
+            </a>
+          </Link>
+          .
+        </p>
       </>
     ) : (
       <>

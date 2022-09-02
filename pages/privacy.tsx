@@ -13,7 +13,7 @@ const Privacy: NextPage = () => {
         TOKEN.
       </p>
       <p className="p-2">Overview</p>
-      <p className="p-2">What's in this Privacy Statement</p>
+      <p className="p-2">What&lsquo;s in this Privacy Statement</p>
       <p className="p-2">
         This Statement explains how your personal information (also known as
         personal data) may be used or processed when registering, managing and
